@@ -10,11 +10,17 @@ import {
 } from 'react-native';
 
 import {TypingAnimation} from 'react-native-typing-animation';
+import Feather from 'react-native-vector-icons/Feather';
 
 function Login(props) {
   const {width} = Dimensions.get('screen');
 
+  const [email, setEmail] = useState('');
+  const [exactEmail, setExactEmail] = useState(false);
   const [typingEmail, setTypingEmail] = useState(false);
+
+  const [password, setPassword] = useState('');
+  const [exactPassword, setExactPassword] = useState(false);
   const [typingPassword, setTypingPassword] = useState(false);
 
   const focusInput = value => {
@@ -30,7 +36,7 @@ function Login(props) {
   const typing = (
     <TypingAnimation
       dotColor="#93278f"
-      style={{marginRight: 25, marginTop: 10}}
+      style={{marginRight: 25, marginTop: 20}}
     />
   );
 
@@ -38,6 +44,35 @@ function Login(props) {
     setTypingEmail(false);
     setTypingPassword(false);
   };
+
+  const emailChange = email => {
+    setEmail(email.trim());
+
+    if (email.length !== 0) {
+      setExactEmail(true);
+    } else {
+      setExactEmail(false);
+    }
+  };
+
+  const passwordChange = password => {
+    setPassword(password.trim());
+
+    if (password.length !== 0) {
+      setExactPassword(true);
+    } else {
+      setExactPassword(false);
+    }
+  };
+
+  const exactIcon = (
+    <Feather
+      style={{marginTop: 20, marginLeft: 5}}
+      name="check-circle"
+      color="green"
+      size={20}
+    />
+  );
 
   return (
     <View style={styles.container}>
@@ -57,9 +92,11 @@ function Login(props) {
           <TextInput
             style={styles.textInput}
             onFocus={() => focusInput('email')}
+            onChangeText={email => emailChange(email)}
             placeholder="Nhập địa chỉ Email..."
           />
           {typingEmail ? typing : null}
+          {exactEmail ? exactIcon : null}
         </View>
 
         <Text style={[styles.title, {marginTop: 50}]}>Mật khẩu</Text>
@@ -67,9 +104,11 @@ function Login(props) {
           <TextInput
             style={styles.textInput}
             onFocus={() => focusInput('password')}
+            onChangeText={password => passwordChange(password)}
             placeholder="Nhập mật khẩu..."
           />
           {typingPassword ? typing : null}
+          {exactPassword ? exactIcon : null}
         </View>
         <TouchableOpacity onPress={pressLogin}>
           <View style={styles.buttonContainer}>
