@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -9,11 +9,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import {useSelector, useDispatch} from 'react-redux';
 import {TypingAnimation} from 'react-native-typing-animation';
 import Feather from 'react-native-vector-icons/Feather';
 
+import {signInRequest} from './../../actions/actions';
+
 function Login(props) {
   const {width} = Dimensions.get('screen');
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
   const [exactEmail, setExactEmail] = useState(false);
@@ -39,11 +43,6 @@ function Login(props) {
       style={{marginRight: 25, marginTop: 20}}
     />
   );
-
-  const pressLogin = () => {
-    setTypingEmail(false);
-    setTypingPassword(false);
-  };
 
   const emailChange = email => {
     setEmail(email.trim());
@@ -74,6 +73,25 @@ function Login(props) {
     />
   );
 
+  const pressLogin = () => {
+    setTypingEmail(false);
+    setTypingPassword(false);
+
+    if (exactEmail && exactPassword) {
+      const dataLogin = {
+        email,
+        password,
+      };
+
+      if (dispatch(signInRequest(dataLogin))) {
+        console.log('thanh cong');
+      } else {
+        console.log('that bai');
+      }
+    }
+    useEffect(() => {});
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -81,9 +99,11 @@ function Login(props) {
           source={require('./../../../assets/img/header.png')}
           style={styles.imageBackground}>
           <Text style={{color: 'white', fontWeight: 'bold', fontSize: 30}}>
-            Welcome back
+            Xin chào !!!
           </Text>
-          <Text style={{color: 'yellow'}}>Sign in to continue</Text>
+          <Text style={{color: 'yellow', fontWeight: 'bold'}}>
+            Đăng nhập để tiếp tục
+          </Text>
         </ImageBackground>
       </View>
       <View style={styles.footer}>
