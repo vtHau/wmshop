@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Formik} from 'formik';
-import {validateSignup} from './../../utils/validation';
+import {validateSignup} from '../../utils/validation';
 
 function TestVali() {
   const onSubmit = () => {};

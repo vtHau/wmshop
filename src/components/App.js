@@ -3,13 +3,13 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Provider} from 'react-redux';
 import store from './../store';
 
-import TestVali from './Login/Login';
+import SignUp from './SignUp/SignUp';
 
 function App() {
   return (
     <Provider store={store}>
       <View style={{flex: 1}}>
-        <TestVali />
+        <SignUp />
       </View>
     </Provider>
   );

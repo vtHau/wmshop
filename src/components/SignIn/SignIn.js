@@ -13,11 +13,11 @@ import {useSelector, useDispatch} from 'react-redux';
 import {TypingAnimation} from 'react-native-typing-animation';
 // import Feather from 'react-native-vector-icons/Feather';
 import {Formik} from 'formik';
-import {validateSignup} from './../../utils/validation';
+import {validateSignup} from '../../utils/validation';
 
-import {checkSignIn} from './../../utils/checkAPI';
+import {checkSignIn} from '../../utils/checkAPI';
 
-function Login(props) {
+function SignIn(props) {
   const {width} = Dimensions.get('screen');
   const dispatch = useDispatch();
   const [typingEmail, setTypingEmail] = useState(false);
@@ -138,7 +138,7 @@ function Login(props) {
   );
 }
 
-export default Login;
+export default SignIn;
 
 const styles = StyleSheet.create({
   container: {
