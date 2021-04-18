@@ -1,16 +1,28 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Provider} from 'react-redux';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import store from './../store';
+import Authentication from './Authentication/Authentication';
 
-import SignUp from './SignUp/SignUp';
+const Stack = createStackNavigator();
 
 function App() {
   return (
     <Provider store={store}>
-      <View style={{flex: 1}}>
-        <SignUp />
-      </View>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+          initialRouteName="Authentication">
+          {/* <Stack.Screen name="Main" component={Main} /> */}
+          <Stack.Screen name="Authenticaton" component={Authentication} />
+          {/* <Stack.Screen name="ChangeInfo" component={ChangeInfo} />
+          <Stack.Screen name="OrderHistory" component={OrderHistory} /> */}
+        </Stack.Navigator>
+      </NavigationContainer>
     </Provider>
   );
 }

@@ -13,9 +13,9 @@ import {useSelector, useDispatch} from 'react-redux';
 import {TypingAnimation} from 'react-native-typing-animation';
 // import Feather from 'react-native-vector-icons/Feather';
 import {Formik} from 'formik';
-import {validateSignup} from '../../utils/validation';
+import {validateSignUp} from '../../../utils/validation';
 
-import {checkSignIn} from '../../utils/checkAPI';
+import {checkSignUp} from '../../../utils/checkAPI';
 
 function SignIn(props) {
   const {width} = Dimensions.get('screen');
@@ -47,20 +47,22 @@ function SignIn(props) {
     setTypingEmail(false);
     setTypingPassword(false);
 
-    const respSignIn = await checkSignIn(values);
-    if (respSignIn === 'SIGNIN_SUCCESS') {
-      console.log('thanh cong');
-    } else {
+    const respSignUp = await checkSignUp(values);
+    if (respSignUp === 'SIGNUP_SUCCESS') {
+      console.log(respSignUp);
+    } else if (respSignUp === 'SIGNUP_FAIL') {
       setStatusSignIn(true);
-      console.log(respSignIn);
+      console.log(respSignUp);
+    } else if (respSignUp === 'EMAIL_EXIST') {
+      console.log(respSignUp);
     }
   };
 
   return (
     <View style={styles.container}>
       <Formik
-        initialValues={{email: '', password: ''}}
-        validationSchema={validateSignup}
+        initialValues={{name: '', email: '', password: '', prePassword: ''}}
+        validationSchema={validateSignUp}
         onSubmit={values => pressLogin(values)}>
         {({
           handleChange,
@@ -80,12 +82,28 @@ function SignIn(props) {
                   Xin chào !!!
                 </Text>
                 <Text style={{color: 'yellow', fontWeight: 'bold'}}>
-                  Đăng nhập để tiếp tục
+                  Đăng ký tài khoản
                 </Text>
               </ImageBackground>
             </View>
             <View style={styles.footer}>
-              <Text style={styles.title}>Email</Text>
+              <Text style={styles.title}>Tên</Text>
+              <View style={styles.action}>
+                <TextInput
+                  style={styles.textInput}
+                  // onFocus={() => focusInput('email')}
+                  onBlur={handleBlur('name')}
+                  onChangeText={handleChange('name')}
+                  value={values.name}
+                  placeholder="Nhập họ tên..."
+                />
+                {/* {typingEmail ? typing : null} */}
+              </View>
+              {errors.name && touched.name ? (
+                <Text style={styles.textError}>{errors.name}</Text>
+              ) : null}
+
+              <Text style={[styles.title, {marginTop: 20}]}>Email</Text>
               <View style={styles.action}>
                 <TextInput
                   style={styles.textInput}
@@ -117,6 +135,24 @@ function SignIn(props) {
                 <Text style={styles.textError}>{errors.password}</Text>
               ) : null}
 
+              <Text style={[styles.title, {marginTop: 20}]}>
+                Xác nhận mật khẩu
+              </Text>
+              <View style={styles.action}>
+                <TextInput
+                  style={styles.textInput}
+                  // onFocus={() => focusInput('password')}
+                  onBlur={handleBlur('prePassword')}
+                  onChangeText={handleChange('prePassword')}
+                  value={values.prePassword}
+                  placeholder="Nhập lại mật khẩu..."
+                />
+                {/* {typingPassword ? typing : null} */}
+              </View>
+              {errors.prePassword && touched.prePassword ? (
+                <Text style={styles.textError}>{errors.prePassword}</Text>
+              ) : null}
+
               {statusSignIn ? (
                 <Text style={styles.textError}>
                   Email hoặc mật khẩu không đúng
@@ -126,7 +162,7 @@ function SignIn(props) {
               <TouchableOpacity onPress={handleSubmit}>
                 <View style={styles.buttonContainer}>
                   <View style={styles.animation}>
-                    <Text style={styles.textLogin}>Đăng nhập</Text>
+                    <Text style={styles.textLogin}>Đăng ký</Text>
                   </View>
                 </View>
               </TouchableOpacity>
