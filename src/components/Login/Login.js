@@ -21,6 +21,7 @@ function Login(props) {
   const {width} = Dimensions.get('screen');
   const dispatch = useDispatch();
   const [typingEmail, setTypingEmail] = useState(false);
+  const [statusSignIn, setStatusSignIn] = useState(false);
 
   const [typingPassword, setTypingPassword] = useState(false);
 
@@ -32,6 +33,8 @@ function Login(props) {
   );
 
   const focusInput = value => {
+    setStatusSignIn(false);
+
     if (value === 'email') {
       setTypingEmail(true);
       setTypingPassword(false);
@@ -48,6 +51,7 @@ function Login(props) {
     if (respSignIn === 'SIGNIN_SUCCESS') {
       console.log('thanh cong');
     } else {
+      setStatusSignIn(true);
       console.log(respSignIn);
     }
   };
@@ -97,7 +101,7 @@ function Login(props) {
                 <Text style={styles.textError}>{errors.email}</Text>
               ) : null}
 
-              <Text style={[styles.title, {marginTop: 30}]}>Mật khẩu</Text>
+              <Text style={[styles.title, {marginTop: 20}]}>Mật khẩu</Text>
               <View style={styles.action}>
                 <TextInput
                   style={styles.textInput}
@@ -111,6 +115,12 @@ function Login(props) {
               </View>
               {errors.password && touched.password ? (
                 <Text style={styles.textError}>{errors.password}</Text>
+              ) : null}
+
+              {statusSignIn ? (
+                <Text style={styles.textError}>
+                  Email hoặc mật khẩu không đúng
+                </Text>
               ) : null}
 
               <TouchableOpacity onPress={handleSubmit}>
