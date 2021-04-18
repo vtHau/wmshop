@@ -11,21 +11,25 @@ import {
 
 import {useSelector, useDispatch} from 'react-redux';
 import {TypingAnimation} from 'react-native-typing-animation';
-import Feather from 'react-native-vector-icons/Feather';
+// import Feather from 'react-native-vector-icons/Feather';
+import {Formik} from 'formik';
+import {validateSignup} from './../../utils/validation';
 
-import {signInRequest} from './../../actions/actions';
+import {checkSignIn} from './../../utils/checkAPI';
 
 function Login(props) {
   const {width} = Dimensions.get('screen');
   const dispatch = useDispatch();
-
-  const [email, setEmail] = useState('');
-  const [exactEmail, setExactEmail] = useState(false);
   const [typingEmail, setTypingEmail] = useState(false);
 
-  const [password, setPassword] = useState('');
-  const [exactPassword, setExactPassword] = useState(false);
   const [typingPassword, setTypingPassword] = useState(false);
+
+  const typing = (
+    <TypingAnimation
+      dotColor="#93278f"
+      style={{marginRight: 25, marginTop: 20}}
+    />
+  );
 
   const focusInput = value => {
     if (value === 'email') {
@@ -36,108 +40,90 @@ function Login(props) {
       setTypingPassword(true);
     }
   };
-
-  const typing = (
-    <TypingAnimation
-      dotColor="#93278f"
-      style={{marginRight: 25, marginTop: 20}}
-    />
-  );
-
-  const emailChange = email => {
-    setEmail(email.trim());
-
-    if (email.length !== 0) {
-      setExactEmail(true);
-    } else {
-      setExactEmail(false);
-    }
-  };
-
-  const passwordChange = password => {
-    setPassword(password.trim());
-
-    if (password.length !== 0) {
-      setExactPassword(true);
-    } else {
-      setExactPassword(false);
-    }
-  };
-
-  const exactIcon = (
-    <Feather
-      style={{marginTop: 20, marginLeft: 5}}
-      name="check-circle"
-      color="green"
-      size={20}
-    />
-  );
-
-  const pressLogin = () => {
+  const pressLogin = async values => {
     setTypingEmail(false);
     setTypingPassword(false);
 
-    if (exactEmail && exactPassword) {
-      const dataLogin = {
-        email,
-        password,
-      };
-
-      if (dispatch(signInRequest(dataLogin))) {
-        console.log('thanh cong');
-      } else {
-        console.log('that bai');
-      }
+    const respSignIn = await checkSignIn(values);
+    if (respSignIn === 'SIGNIN_SUCCESS') {
+      console.log('thanh cong');
+    } else {
+      console.log(respSignIn);
     }
-    useEffect(() => {});
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <ImageBackground
-          source={require('./../../../assets/img/header.png')}
-          style={styles.imageBackground}>
-          <Text style={{color: 'white', fontWeight: 'bold', fontSize: 30}}>
-            Xin chào !!!
-          </Text>
-          <Text style={{color: 'yellow', fontWeight: 'bold'}}>
-            Đăng nhập để tiếp tục
-          </Text>
-        </ImageBackground>
-      </View>
-      <View style={styles.footer}>
-        <Text style={styles.title}>Email</Text>
-        <View style={styles.action}>
-          <TextInput
-            style={styles.textInput}
-            onFocus={() => focusInput('email')}
-            onChangeText={email => emailChange(email)}
-            placeholder="Nhập địa chỉ Email..."
-          />
-          {typingEmail ? typing : null}
-          {exactEmail ? exactIcon : null}
-        </View>
-
-        <Text style={[styles.title, {marginTop: 50}]}>Mật khẩu</Text>
-        <View style={styles.action}>
-          <TextInput
-            style={styles.textInput}
-            onFocus={() => focusInput('password')}
-            onChangeText={password => passwordChange(password)}
-            placeholder="Nhập mật khẩu..."
-          />
-          {typingPassword ? typing : null}
-          {exactPassword ? exactIcon : null}
-        </View>
-        <TouchableOpacity onPress={pressLogin}>
-          <View style={styles.buttonContainer}>
-            <View style={styles.animation}>
-              <Text style={styles.textLogin}>Đăng nhập</Text>
+      <Formik
+        initialValues={{email: '', password: ''}}
+        validationSchema={validateSignup}
+        onSubmit={values => pressLogin(values)}>
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          errors,
+          touched,
+          values,
+        }) => (
+          <>
+            <View style={styles.header}>
+              <ImageBackground
+                source={require('./../../../assets/img/header.png')}
+                style={styles.imageBackground}>
+                <Text
+                  style={{color: 'white', fontWeight: 'bold', fontSize: 30}}>
+                  Xin chào !!!
+                </Text>
+                <Text style={{color: 'yellow', fontWeight: 'bold'}}>
+                  Đăng nhập để tiếp tục
+                </Text>
+              </ImageBackground>
             </View>
-          </View>
-        </TouchableOpacity>
-      </View>
+            <View style={styles.footer}>
+              <Text style={styles.title}>Email</Text>
+              <View style={styles.action}>
+                <TextInput
+                  style={styles.textInput}
+                  onFocus={() => focusInput('email')}
+                  onBlur={handleBlur('email')}
+                  onChangeText={handleChange('email')}
+                  value={values.email}
+                  placeholder="Nhập địa chỉ Email..."
+                />
+                {typingEmail ? typing : null}
+              </View>
+              {errors.email && touched.email ? (
+                <Text style={styles.textError}>{errors.email}</Text>
+              ) : null}
+
+              <Text style={[styles.title, {marginTop: 30}]}>Mật khẩu</Text>
+              <View style={styles.action}>
+                <TextInput
+                  style={styles.textInput}
+                  onFocus={() => focusInput('password')}
+                  onBlur={handleBlur('password')}
+                  onChangeText={handleChange('password')}
+                  value={values.password}
+                  placeholder="Nhập mật khẩu..."
+                />
+                {typingPassword ? typing : null}
+              </View>
+              {errors.password && touched.password ? (
+                <Text style={styles.textError}>{errors.password}</Text>
+              ) : null}
+
+              <TouchableOpacity onPress={handleSubmit}>
+                <View style={styles.buttonContainer}>
+                  <View style={styles.animation}>
+                    <Text style={styles.textLogin}>Đăng nhập</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
+      </Formik>
     </View>
   );
 }
@@ -177,6 +163,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     marginTop: 5,
+    fontSize: 15,
     paddingBottom: 5,
     color: 'gray',
   },
@@ -197,5 +184,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 18,
+  },
+  textError: {
+    paddingLeft: 5,
+    fontSize: 13,
+    color: 'red',
   },
 });
