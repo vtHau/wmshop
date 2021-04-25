@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,13 +8,27 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchCategory, fetchBrand} from './../../actions/actions';
 const {height, width} = Dimensions.get('window');
 const imageWidth = width - 40;
 const imageHeight = (imageWidth / 933) * 465;
+import Swiper from 'react-native-swiper';
+import * as Config from './../../Config/config';
 import product from './../../../assets/img/product.png';
 
-const Home = () => {
+const Home = props => {
+  const dispatch = useDispatch();
+  const cates = useSelector(state => state.cateReducer.cates);
+  const brands = useSelector(state => state.brandReducer.brands);
+
+  useEffect(() => {
+    dispatch(fetchCategory());
+    dispatch(fetchBrand());
+  }, [dispatch]);
+
+  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
+
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={styles.container}>
@@ -22,25 +36,59 @@ const Home = () => {
           <View style={styles.boxTitle}>
             <Text style={styles.title}>sản phẩm hot</Text>
           </View>
-          <TouchableOpacity>
-            <Image style={styles.image} source={product} />
-          </TouchableOpacity>
+          <Swiper showsButtons={true} style={styles.boxImage}>
+            <TouchableOpacity>
+              <Image style={styles.image} source={product} />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Image style={styles.image} source={product} />
+            </TouchableOpacity>
+          </Swiper>
         </View>
         <View style={styles.box}>
           <View style={styles.boxTitle}>
             <Text style={styles.title}>danh mục</Text>
           </View>
-          <TouchableOpacity>
-            <Image style={styles.image} source={product} />
-          </TouchableOpacity>
+          <Swiper
+            autoplay
+            autoplayTimeout={2.5}
+            showsButtons={true}
+            style={styles.boxImage}>
+            {cates.length > 0 &&
+              cates.map((value, key) => (
+                <TouchableOpacity key={key}>
+                  <Image
+                    style={styles.image}
+                    source={{
+                      uri: `${URL}/categorys/${value.catImage}`,
+                    }}
+                  />
+                </TouchableOpacity>
+              ))}
+          </Swiper>
         </View>
+
         <View style={styles.box}>
           <View style={styles.boxTitle}>
             <Text style={styles.title}>thương hiệu</Text>
           </View>
-          <TouchableOpacity>
-            <Image style={styles.image} source={product} />
-          </TouchableOpacity>
+          <Swiper
+            autoplay
+            autoplayTimeout={2.5}
+            showsButtons={true}
+            style={styles.boxImage}>
+            {brands.length > 0 &&
+              brands.map((value, key) => (
+                <TouchableOpacity key={key}>
+                  <Image
+                    style={styles.image}
+                    source={{
+                      uri: `${URL}/brands/${value.brandImage}`,
+                    }}
+                  />
+                </TouchableOpacity>
+              ))}
+          </Swiper>
         </View>
       </View>
     </ScrollView>
@@ -80,9 +128,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textTransform: 'uppercase',
   },
+  boxImage: {
+    height: imageHeight + 15,
+  },
   image: {
     width: imageWidth,
     height: imageHeight + 15,
     borderRadius: 6,
+    resizeMode: 'cover',
   },
 });

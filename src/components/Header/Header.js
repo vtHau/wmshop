@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import avatar from './../../../assets/img/avatars/avatar.png';
+
+
 const {height, width} = Dimensions.get('window');
 
 const Header = () => {
