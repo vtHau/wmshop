@@ -26,10 +26,10 @@ export const fetchCategory = () => {
   };
 };
 
-export const initCate = cate => {
+export const initCate = cates => {
   return {
     type: 'INIT_CATE',
-    payload: cate,
+    payload: cates,
   };
 };
 
@@ -41,9 +41,24 @@ export const fetchBrand = () => {
   };
 };
 
-export const initBrand = brand => {
+export const initBrand = brands => {
   return {
     type: 'INIT_BRAND',
-    payload: brand,
+    payload: brands,
+  };
+};
+
+export const fetchHotProduct = () => {
+  return dispatch => {
+    CallAPI(`${Config.API_PRODUCT}hot`, 'GET', null).then(res => {
+      dispatch(initProduct(res.data));
+    });
+  };
+};
+
+export const initProduct = products => {
+  return {
+    type: 'INIT_PRODUCT',
+    payload: products,
   };
 };
