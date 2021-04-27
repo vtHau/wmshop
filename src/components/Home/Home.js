@@ -21,10 +21,8 @@ const productWidth = (width - 50) / 2 - 16;
 const productHeight = (productWidth / 361) * 410;
 import Swiper from 'react-native-swiper';
 import * as Config from './../../Config/config';
-import product from './../../../assets/img/product.png';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {HomeOutlined} from 'react-native-vector-icons/AntDesign';
 
 const Home = props => {
   const dispatch = useDispatch();
