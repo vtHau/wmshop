@@ -23,6 +23,7 @@ import Swiper from 'react-native-swiper';
 import * as Config from './../../Config/config';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {renderRating} from './../../utils/common';
 
 const Home = props => {
   const dispatch = useDispatch();
@@ -35,21 +36,6 @@ const Home = props => {
     dispatch(fetchBrand());
     dispatch(fetchHotProduct());
   }, [dispatch]);
-
-  const showRatings = rating => {
-    var result = [];
-    for (var i = 1; i <= rating; i++) {
-      result.push(
-        <AntDesign key={i} name={'star'} size={14} color={'#f39c11'} />,
-      );
-    }
-    for (var j = 1; j <= 5 - rating; j++) {
-      result.push(
-        <AntDesign key={100 + j} name={'star'} size={14} color={'grey'} />,
-      );
-    }
-    return result;
-  };
 
   const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
@@ -140,7 +126,7 @@ const Home = props => {
                       </Text>
                       <View style={styles.starView}>
                         <View style={styles.productStar}>
-                          {showRatings(value.productStar)}
+                          {renderRating(value.productStar)}
                         </View>
                         <View style={styles.productView}>
                           <Text style={styles.productViewText}>

@@ -1,4 +1,4 @@
-export const API_URL = 'http://192.168.1.9/webshop';
+export const API_URL = 'http://10.15.99.148/webshop';
 export const API_CATE = '/other/api/category.php';
 export const API_BRAND = '/other/api/brand.php';
 export const API_PRODUCT = '/other/api/product.php?type=';

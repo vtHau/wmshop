@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     backgroundColor: '#003FFF',
     borderRadius: 18,
+    textTransform: 'uppercase',
   },
   productName: {
     fontSize: 22,
