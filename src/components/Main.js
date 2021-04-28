@@ -6,8 +6,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Cart from './Cart/Cart';
 import Home from './Home/Home';
-import Search from './Setting/Setting';
-import Header from './Header/Header';
+import Profile from './Profile/Profile'
+// import Header from './Header/Header';
 import ProductDetail from './ProductDetail/ProductDetail';
 import ProductList from './ProductList/ProductList';
 
@@ -16,7 +16,7 @@ const Tab = createBottomTabNavigator();
 const Main = () => {
   return (
     <View style={styles.container}>
-      <Header />
+      {/* <Header /> */}
       <NavigationContainer>
         <Tab.Navigator
           tabBarOptions={{
@@ -29,7 +29,7 @@ const Main = () => {
           }}>
           <Tab.Screen
             name="SEARCH"
-            component={Search}
+            component={Profile}
             options={{
               tabBarLabel: 'Tìm kiếm',
               tabBarIcon: ({color}) => (

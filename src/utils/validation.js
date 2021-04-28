@@ -28,3 +28,18 @@ export const validateSignUp = Yup.object().shape({
     .max(50, 'Too Long!')
     .required('Vui lòng nhập mật khẩu'),
 });
+
+export const validateUpdateProfile = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Tên quá ngắn!')
+    .max(50, 'Tên quá dài!')
+    .required('Nhập tên của bạn'),
+  phone: Yup.string()
+    .min(1, 'Số điện thoại quá ngắn!')
+    .max(50, 'Số điện thoạin quá dài!')
+    .required('Nhập số điện thoại của bạn'),
+  status: Yup.string()
+    .min(1, 'Trạng thái quá ngắn!')
+    .max(50, 'Trạng thái dài!')
+    .required('Nhập trạng thái của bạn'),
+});

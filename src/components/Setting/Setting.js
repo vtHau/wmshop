@@ -14,7 +14,6 @@ const {height, width} = Dimensions.get('window');
 const boxSize = width / 2 - 40;
 
 const Setting = () => {
-  const products = [1, 2, 3, 4];
   return (
     <View style={styles.container}>
       <View style={styles.boxHeader}>
@@ -55,7 +54,7 @@ const Setting = () => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.settingItem}>
             <FontAwesome5 name={'cloud-moon'} size={22} color={'#414dd1'} />
-            <Text style={styles.titleItem}>Tiện tích</Text>
+            <Text style={styles.titleItem}>Tiện ích</Text>
             <FontAwesome5 name={'angle-right'} size={20} color={'#414dd1'} />
           </TouchableOpacity>
 
@@ -154,8 +153,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     flexGrow: 1,
     color: '#414dd1',
-  },
-  iconView: {
-    // paddingHorizontal: 30,
   },
 });
