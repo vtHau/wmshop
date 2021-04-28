@@ -9,7 +9,7 @@ import Home from './Home/Home';
 import Search from './Search/Search';
 import Header from './Header/Header';
 import ProductDetail from './ProductDetail/ProductDetail';
-import ProductList from './ProductList/ProductList'
+import ProductList from './ProductList/ProductList';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,36 +27,6 @@ const Main = () => {
             activeTintColor: '#0077FF',
             inactiveTintColor: '#636466',
           }}>
-          <Tab.Screen
-            name="ProductList"
-            component={ProductList}
-            options={{
-              tabBarLabel: 'ProductList',
-              tabBarIcon: ({color}) => (
-                <FontAwesome5 name={'home'} size={20} color={color} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="ProductDetail"
-            component={ProductDetail}
-            options={{
-              tabBarLabel: 'ProductDetail',
-              tabBarIcon: ({color}) => (
-                <FontAwesome5 name={'home'} size={20} color={color} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="HOME"
-            component={Home}
-            options={{
-              tabBarLabel: 'Trang chủ',
-              tabBarIcon: ({color}) => (
-                <FontAwesome5 name={'home'} size={20} color={color} />
-              ),
-            }}
-          />
           <Tab.Screen
             name="CART"
             component={Cart}
