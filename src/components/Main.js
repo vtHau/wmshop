@@ -6,7 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Cart from './Cart/Cart';
 import Home from './Home/Home';
-import Search from './Search/Search';
+import Search from './Setting/Setting';
 import Header from './Header/Header';
 import ProductDetail from './ProductDetail/ProductDetail';
 import ProductList from './ProductList/ProductList';
@@ -27,16 +27,6 @@ const Main = () => {
             activeTintColor: '#0077FF',
             inactiveTintColor: '#636466',
           }}>
-          <Tab.Screen
-            name="CART"
-            component={Cart}
-            options={{
-              tabBarLabel: 'Giỏ hàng',
-              tabBarIcon: ({color}) => (
-                <FontAwesome5 name={'shopping-cart'} size={20} color={color} />
-              ),
-            }}
-          />
           <Tab.Screen
             name="SEARCH"
             component={Search}

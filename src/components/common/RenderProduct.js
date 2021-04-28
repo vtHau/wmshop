@@ -14,9 +14,9 @@ const productWidth = (width - 50) / 2 - 16;
 const productHeight = (productWidth / 361) * 410;
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import product from './../../../assets/img/product.png';
-import {renderRating} from './../../utils/common';
+import {renderRating} from '../../utils/common';
 
-const RenderProductList = props => {
+const RenderProduct = props => {
   const {products} = props;
 
   return (
@@ -49,7 +49,7 @@ const RenderProductList = props => {
   );
 };
 
-export default RenderProductList;
+export default RenderProduct;
 
 const styles = StyleSheet.create({
   box: {
