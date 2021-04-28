@@ -41,25 +41,40 @@ const Cart = () => {
                       <Image style={styles.productImage} source={product} />
                     </TouchableOpacity>
                     <View style={styles.productInfo}>
-                      <Text style={styles.productName}>samsung s20</Text>
+                      <TouchableOpacity>
+                        <Text style={styles.productName}>samsung s20</Text>
+                      </TouchableOpacity>
                       <Text style={styles.productPrice}>12345678</Text>
                       <View style={styles.boxQuantity}>
-                        <FontAwesome5
-                          style={styles.inDeQuantity}
-                          name={'angle-left'}
-                          size={18}
-                          color={'#000'}
-                        />
+                        <TouchableOpacity>
+                          <FontAwesome5
+                            name={'angle-left'}
+                            size={18}
+                            color={'#616161'}
+                          />
+                        </TouchableOpacity>
                         <Text style={styles.quantity}>1</Text>
-                        <FontAwesome5
-                          name={'angle-right'}
-                          size={18}
-                          color={'#000'}
-                        />
+                        <TouchableOpacity>
+                          <FontAwesome5
+                            name={'angle-right'}
+                            size={18}
+                            color={'#616161'}
+                          />
+                        </TouchableOpacity>
                       </View>
                       <Text style={styles.totalMoneyProduct}>
                         Tổng tiền: 4656535
                       </Text>
+                    </View>
+                    <View style={styles.boxClose}>
+                      <TouchableOpacity>
+                        <FontAwesome5
+                          style={styles.inDeQuantity}
+                          name={'times'}
+                          size={18}
+                          color={'#5059B6'}
+                        />
+                      </TouchableOpacity>
                     </View>
                   </View>
                 </View>
@@ -108,6 +123,7 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     fontWeight: 'bold',
     fontSize: 16,
+    color: '#5059B6',
     textTransform: 'uppercase',
   },
   listProduct: {
@@ -149,11 +165,13 @@ const styles = StyleSheet.create({
   productName: {
     flexGrow: 1,
     fontSize: 16,
+    color: '#5059B6',
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
   productPrice: {
     flexGrow: 1,
+    color: '#5B6397',
     fontSize: 14,
   },
   starView: {
@@ -201,11 +219,13 @@ const styles = StyleSheet.create({
   },
   quantity: {
     fontSize: 16,
-    color: '#000',
+    fontWeight: 'bold',
+    color: '#616161',
     paddingHorizontal: 18,
   },
   totalMoneyProduct: {
     flexGrow: 1,
+    color: '#616161',
     alignItems: 'center',
   },
   boxTotal: {
@@ -217,6 +237,13 @@ const styles = StyleSheet.create({
   totalMoney: {
     paddingRight: 4,
     fontSize: 15,
+    color: '#616161',
     fontWeight: 'bold',
+  },
+  boxClose: {
+    height: '100%',
+    alignItems: 'center',
+    paddingTop: 10,
+    paddingRight: 10,
   },
 });
