@@ -43,3 +43,19 @@ export const validateUpdateProfile = Yup.object().shape({
     .max(50, 'Trạng thái dài!')
     .required('Nhập trạng thái của bạn'),
 });
+
+export const validateUpdatePassword = Yup.object().shape({
+  password: Yup.string()
+    .min(2, 'Mật khẩu quá ngắn!')
+    .max(50, 'Mật khẩu quá dài!')
+    .required('Vui lòng nhập mật khẩu hiện tại của bạn'),
+  newPassword: Yup.string()
+    .min(2, 'Mật khẩu quá ngắn!')
+    .max(50, 'Mật khẩu quá dài!')
+    .required('Vui lòng nhập mật khẩu mới của bạn'),
+  preNewPassword: Yup.string()
+    .oneOf([Yup.ref('newPassword')], 'Mật khẩu không khớp')
+    .min(2, 'Mật khẩu quá ngắn!')
+    .max(50, 'Mật khẩu quá dài!')
+    .required('Vui lòng nhập lại mật khẩu mới của bạn'),
+});

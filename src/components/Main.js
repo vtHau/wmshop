@@ -9,7 +9,7 @@ import Home from './Home/Home';
 import Profile from './Profile/Profile';
 import Header from './Header/Header';
 import ProductDetail from './ProductDetail/ProductDetail';
-import OrderHistory from './OrderHistory/OrderHistory';
+import ChangePassword from './ChangePassword/ChangePassword';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,17 +27,7 @@ const Main = () => {
             activeTintColor: '#0077FF',
             inactiveTintColor: '#636466',
           }}>
-          <Tab.Screen
-            name="OrderHistory"
-            component={OrderHistory}
-            options={{
-              tabBarLabel: 'Tìm kiếm',
-              tabBarIcon: ({color}) => (
-                <FontAwesome5 name={'search'} size={20} color={color} />
-              ),
-            }}
-          />
-          <Tab.Screen
+             {/* <Tab.Screen
             name="Profile"
             component={Profile}
             options={{
@@ -46,7 +36,18 @@ const Main = () => {
                 <FontAwesome5 name={'search'} size={20} color={color} />
               ),
             }}
+          /> */}
+          <Tab.Screen
+            name="OrderHistory"
+            component={ChangePassword}
+            options={{
+              tabBarLabel: 'Tìm kiếm',
+              tabBarIcon: ({color}) => (
+                <FontAwesome5 name={'search'} size={20} color={color} />
+              ),
+            }}
           />
+         
           <Tab.Screen
             name="Cart"
             component={Cart}
