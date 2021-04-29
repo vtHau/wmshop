@@ -6,17 +6,17 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Cart from './Cart/Cart';
 import Home from './Home/Home';
-import Profile from './Profile/Profile'
-// import Header from './Header/Header';
+import Profile from './Profile/Profile';
+import Header from './Header/Header';
 import ProductDetail from './ProductDetail/ProductDetail';
-import ProductList from './ProductList/ProductList';
+import OrderHistory from './OrderHistory/OrderHistory';
 
 const Tab = createBottomTabNavigator();
 
 const Main = () => {
   return (
     <View style={styles.container}>
-      {/* <Header /> */}
+      <Header />
       <NavigationContainer>
         <Tab.Navigator
           tabBarOptions={{
@@ -28,8 +28,48 @@ const Main = () => {
             inactiveTintColor: '#636466',
           }}>
           <Tab.Screen
-            name="SEARCH"
+            name="OrderHistory"
+            component={OrderHistory}
+            options={{
+              tabBarLabel: 'Tìm kiếm',
+              tabBarIcon: ({color}) => (
+                <FontAwesome5 name={'search'} size={20} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
             component={Profile}
+            options={{
+              tabBarLabel: 'Tìm kiếm',
+              tabBarIcon: ({color}) => (
+                <FontAwesome5 name={'search'} size={20} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Cart"
+            component={Cart}
+            options={{
+              tabBarLabel: 'Tìm kiếm',
+              tabBarIcon: ({color}) => (
+                <FontAwesome5 name={'search'} size={20} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              tabBarLabel: 'Tìm kiếm',
+              tabBarIcon: ({color}) => (
+                <FontAwesome5 name={'search'} size={20} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="ProductDetail"
+            component={ProductDetail}
             options={{
               tabBarLabel: 'Tìm kiếm',
               tabBarIcon: ({color}) => (
