@@ -9,7 +9,7 @@ import Home from './Home/Home';
 import Profile from './Profile/Profile';
 import Header from './Header/Header';
 import ProductDetail from './ProductDetail/ProductDetail';
-import ChangePassword from './ChangePassword/ChangePassword';
+import Contact from './Contact/Contact';
 
 const Tab = createBottomTabNavigator();
 
@@ -38,8 +38,8 @@ const Main = () => {
             }}
           /> */}
           <Tab.Screen
-            name="OrderHistory"
-            component={ChangePassword}
+            name="Contact"
+            component={Contact}
             options={{
               tabBarLabel: 'Tìm kiếm',
               tabBarIcon: ({color}) => (
@@ -48,7 +48,7 @@ const Main = () => {
             }}
           />
          
-          <Tab.Screen
+          {/* <Tab.Screen
             name="Cart"
             component={Cart}
             options={{
@@ -77,7 +77,7 @@ const Main = () => {
                 <FontAwesome5 name={'search'} size={20} color={color} />
               ),
             }}
-          />
+          /> */}
         </Tab.Navigator>
       </NavigationContainer>
     </View>
