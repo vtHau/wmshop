@@ -9,6 +9,11 @@ export const checkSignIn = async signin => {
   return 'SIGIN_FAIL';
 };
 
+export const updateInfo = async userInfo => {
+  const res = await CallAPI(Config.API_UPDATE_INFO, 'POST', {...userInfo});
+  return res.data.trim();
+};
+
 export const checkSignUp = async signup => {
   const res = await CallAPI('/other/api/signup.php', 'POST', {...signup});
   return res.data.trim();

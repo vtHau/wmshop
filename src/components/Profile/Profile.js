@@ -15,12 +15,14 @@ const {height, width} = Dimensions.get('window');
 import * as Config from './../../Config/config';
 import {Formik} from 'formik';
 import {validateUpdateProfile} from './../../utils/validation';
+import {updateInfo} from './../../utils/checkAPI';
 
 const Proflie = props => {
   const {navigation, route} = props;
   const dispatch = useDispatch();
   const user = route.params;
 
+  const [userID, setUserID] = useState(user.userID);
   const [name, setName] = useState(user.userFullName);
   const [email, setEmail] = useState(user.userEmail);
   const [phone, setPhone] = useState(user.userPhone);
@@ -29,8 +31,16 @@ const Proflie = props => {
   const [avatar, setAvatar] = useState(user.userImage);
   const [update, setUpdate] = useState(false);
 
-  const changeInfo = values => {
-    console.log(values);
+  const changeInfo = async info => {
+    const userInfo = {
+      userID,
+      ...info,
+    };
+    const resUpdate = await updateInfo(userInfo);
+    if (resUpdate === 'UPDATE_INFO_SUCCESS') {
+      console.log('thanh cong');
+      setUpdate(false);
+    }
   };
 
   const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
@@ -73,7 +83,7 @@ const Proflie = props => {
           <Formik
             initialValues={{name, email, phone, address, status}}
             validationSchema={validateUpdateProfile}
-            onSubmit={values => changeInfo(values)}>
+            onSubmit={info => changeInfo(info)}>
             {({
               handleChange,
               handleBlur,
@@ -170,11 +180,7 @@ const Proflie = props => {
                   <Text style={styles.errorFill}>{errors.address}</Text>
                 ) : null}
                 {update ? (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setUpdate(false);
-                      handleSubmit();
-                    }}>
+                  <TouchableOpacity onPress={() => handleSubmit()}>
                     <View style={styles.changeInfo}>
                       <Text style={styles.textChangeInfo}>Cập nhập</Text>
                     </View>

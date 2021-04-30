@@ -35,8 +35,8 @@ export const validateUpdateProfile = Yup.object().shape({
     .max(50, 'Tên quá dài!')
     .required('Nhập tên của bạn'),
   phone: Yup.string()
-    .min(1, 'Số điện thoại quá ngắn!')
-    .max(50, 'Số điện thoạin quá dài!')
+    .min(10, 'Số điện thoại không hợp lệ!!!')
+    .max(11, 'Số điện thoại không hợp lệ!')
     .required('Nhập số điện thoại của bạn'),
   status: Yup.string()
     .min(1, 'Trạng thái quá ngắn!')
