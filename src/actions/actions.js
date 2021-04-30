@@ -18,6 +18,12 @@ export const signIn = info => {
   };
 };
 
+export const signOut = () => {
+  return {
+    type: 'SIGN_OUT',
+  };
+};
+
 export const fetchCategory = () => {
   return dispatch => {
     CallAPI(Config.API_CATE, 'GET', null).then(res => {

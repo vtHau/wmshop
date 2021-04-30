@@ -17,7 +17,7 @@ function App() {
           screenOptions={{
             headerShown: false,
           }}
-          initialRouteName="Main">
+          initialRouteName="MAIN">
           <Stack.Screen name="MAIN" component={Main} />
           <Stack.Screen name="SETTING_NAVIGATOR" component={SettingNavigator} />
         </Stack.Navigator>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,12 +9,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import avatar from './../../../assets/img/avatars/avatar.png';
+import {useSelector, useDispatch} from 'react-redux';
 const {height, width} = Dimensions.get('window');
 const boxSize = width / 2 - 40;
+import * as Config from './../../Config/config';
+import {signOut} from './../../actions/actions';
 
 const Setting = props => {
   const {navigation} = props;
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.authenReducer.userInfo);
+  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
     <View style={styles.container}>
@@ -23,9 +28,14 @@ const Setting = props => {
           <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />
         </TouchableOpacity>
         <View style={styles.headerItem}>
-          <Text style={styles.userName}>Trung Hau</Text>
+          <Text style={styles.userName}>{user.userFullName}</Text>
           <TouchableOpacity>
-            <Image style={styles.avatarIcon} source={avatar} />
+            <Image
+              style={styles.avatarIcon}
+              source={{
+                uri: `${URL}/avatars/${user.userImage}`,
+              }}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -38,7 +48,7 @@ const Setting = props => {
         <View style={styles.boxBig}>
           <TouchableOpacity
             style={styles.boxBigItem}
-            onPress={() => navigation.push('PROFILE')}>
+            onPress={() => navigation.push('PROFILE', user)}>
             <FontAwesome5 name={'info-circle'} size={34} color={'#414dd1'} />
             <Text style={styles.boxBigName}>Thông tin</Text>
             <Text style={styles.boxNameDetail}>Xem thông tin tài khoản</Text>
@@ -70,7 +80,9 @@ const Setting = props => {
             <FontAwesome5 name={'angle-right'} size={20} color={'#414dd1'} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => dispatch(signOut())}>
             <FontAwesome5 name={'sign-out-alt'} size={22} color={'#414dd1'} />
             <Text style={styles.titleItem}>Đăng xuất</Text>
             <FontAwesome5 name={'angle-right'} size={22} color={'#414dd1'} />

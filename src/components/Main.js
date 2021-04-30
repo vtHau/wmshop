@@ -66,16 +66,6 @@ const Main = props => {
             ),
           }}
         />
-        {/* <Tab.Screen
-          name="Setting"
-          component={Setting}
-          options={{
-            tabBarLabel: 'Cài đặt',
-            tabBarIcon: ({color}) => (
-              <FontAwesome5 name={'bars'} size={20} color={color} />
-            ),
-          }}
-        /> */}
       </Tab.Navigator>
     </View>
   );

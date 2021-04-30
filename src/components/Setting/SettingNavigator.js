@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Setting from './Setting';
+import SettingContainer from './SettingContainer';
 import Profile from './../Profile/Profile';
 import ChangePassword from './../ChangePassword/ChangePassword';
 import OrderHistory from './../OrderHistory/OrderHistory';
@@ -15,8 +15,8 @@ function CartNavigator(props) {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName="SETTING">
-      <Stack.Screen name="SETTING" component={Setting} />
+      initialRouteName="SETTING_CONTAINER">
+      <Stack.Screen name="SETTING_CONTAINER" component={SettingContainer} />
       <Stack.Screen name="PROFILE" component={Profile} />
       <Stack.Screen name="CHANGE_PASSWORD" component={ChangePassword} />
       <Stack.Screen name="ORDER_HISTORY" component={OrderHistory} />

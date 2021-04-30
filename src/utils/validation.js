@@ -5,8 +5,8 @@ export const validateSignIn = Yup.object().shape({
     .email('Email khong hop le')
     .required('Vui lòng nhập địa chỉ Email'),
   password: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
+    .min(2, 'Mật khẩu quá ngắn!')
+    .max(50, 'Mật khẩu quá dài!')
     .required('Vui lòng nhập mật khẩu'),
 });
 

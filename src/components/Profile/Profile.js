@@ -10,24 +10,30 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import avatar from './../../../assets/img/avatars/avatar.png';
+import {useSelector, useDispatch} from 'react-redux';
 const {height, width} = Dimensions.get('window');
-const boxSize = width / 2 - 40;
+import * as Config from './../../Config/config';
 import {Formik} from 'formik';
 import {validateUpdateProfile} from './../../utils/validation';
 
 const Proflie = props => {
-  const {navigation} = props;
-  const [name, setName] = useState('Trung Hau');
-  const [email, setEmail] = useState('crtrunghau@gmail.com');
-  const [phone, setPhone] = useState('0382881573');
-  const [address, setAddress] = useState('ben tre');
-  const [status, setStatus] = useState('khong gi khong the');
+  const {navigation, route} = props;
+  const dispatch = useDispatch();
+  const user = route.params;
+
+  const [name, setName] = useState(user.userFullName);
+  const [email, setEmail] = useState(user.userEmail);
+  const [phone, setPhone] = useState(user.userPhone);
+  const [address, setAddress] = useState(user.userAddress);
+  const [status, setStatus] = useState(user.userStatus);
+  const [avatar, setAvatar] = useState(user.userImage);
   const [update, setUpdate] = useState(false);
 
   const changeInfo = values => {
     console.log(values);
   };
+
+  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
     <ScrollView>
@@ -36,20 +42,32 @@ const Proflie = props => {
           <TouchableOpacity onPress={() => navigation.pop()}>
             <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />
           </TouchableOpacity>
-          <Text style={styles.titlePage}>Thong tin tai khoan</Text>
+          <Text style={styles.titlePage}>Thông tin tài khoản</Text>
           <View></View>
         </View>
         <View style={styles.boxBackground}>
           <View style={styles.boxImage}>
             <TouchableOpacity style={styles.wrapImage}>
-              <Image style={styles.avatarImage} source={avatar} />
+              <Image
+                style={styles.avatarImage}
+                source={{
+                  uri: `${URL}/avatars/${avatar}`,
+                }}
+              />
             </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.boxName}>
-          <Text style={styles.userName}>Trung Hau</Text>
-          <Text style={styles.status}>Khong gi khong the</Text>
+          <View style={styles.boxNameEdit}>
+            <Text style={styles.userName}>{name}</Text>
+            <TouchableOpacity
+              style={styles.editIcon}
+              onPress={() => setUpdate(true)}>
+              <FontAwesome5 name={'pen'} size={14} color={'#414dd1'} />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.status}>{status}</Text>
         </View>
         <View style={styles.boxInfo}>
           <Formik
@@ -70,7 +88,6 @@ const Proflie = props => {
                   <FontAwesome5 name={'user'} size={22} color={'#616161'} />
                   <TextInput
                     style={styles.textInput}
-                    // onFocus={() => focusInput('email')}
                     onBlur={handleBlur('name')}
                     onChangeText={handleChange('name')}
                     value={values.name}
@@ -102,7 +119,6 @@ const Proflie = props => {
                   />
                   <TextInput
                     style={styles.textInput}
-                    // onFocus={() => focusInput('email')}
                     onBlur={handleBlur('phone')}
                     onChangeText={handleChange('phone')}
                     value={values.phone}
@@ -123,7 +139,6 @@ const Proflie = props => {
                   />
                   <TextInput
                     style={styles.textInput}
-                    // onFocus={() => focusInput('email')}
                     onBlur={handleBlur('status')}
                     onChangeText={handleChange('status')}
                     value={values.status}
@@ -144,7 +159,6 @@ const Proflie = props => {
                   />
                   <TextInput
                     style={styles.textInput}
-                    // onFocus={() => focusInput('email')}
                     onBlur={handleBlur('address')}
                     onChangeText={handleChange('address')}
                     value={values.address}
@@ -184,6 +198,15 @@ const Proflie = props => {
 export default Proflie;
 
 const styles = StyleSheet.create({
+  boxNameEdit: {
+    position: 'relative',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  editIcon: {
+    position: 'absolute',
+    right: -24,
+  },
   textChangeInfo: {
     padding: 10,
     fontWeight: 'bold',

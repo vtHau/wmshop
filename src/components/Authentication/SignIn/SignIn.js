@@ -11,17 +11,16 @@ import {
 
 import {useSelector, useDispatch} from 'react-redux';
 import {TypingAnimation} from 'react-native-typing-animation';
-// import Feather from 'react-native-vector-icons/Feather';
 import {Formik} from 'formik';
-import {validateSignup} from '../../../utils/validation';
-import header from './../../../../assets/img/header.png'
+import {validateSignIn} from './../../../utils/validation';
+import header from './../../../../assets/img/header.png';
 import {checkSignIn} from './../../../utils/checkAPI';
+import {signIn} from './../../../actions/actions';
 
 function SignIn(props) {
-  const {width} = Dimensions.get('screen');
   const dispatch = useDispatch();
   const [typingEmail, setTypingEmail] = useState(false);
-  const [statusSignIn, setStatusSignIn] = useState(false);
+  const [statusSignIn, setStatusSignIn] = useState(true);
 
   const [typingPassword, setTypingPassword] = useState(false);
 
@@ -33,7 +32,7 @@ function SignIn(props) {
   );
 
   const focusInput = value => {
-    setStatusSignIn(false);
+    setStatusSignIn(true);
 
     if (value === 'email') {
       setTypingEmail(true);
@@ -43,16 +42,16 @@ function SignIn(props) {
       setTypingPassword(true);
     }
   };
-  const pressLogin = async values => {
+  const btnSignIn = async values => {
     setTypingEmail(false);
     setTypingPassword(false);
 
     const respSignIn = await checkSignIn(values);
-    if (respSignIn === 'SIGNIN_SUCCESS') {
-      console.log('thanh cong');
-    } else {
+    if (respSignIn !== 'SIGIN_FAIL') {
       setStatusSignIn(true);
-      console.log(respSignIn);
+      dispatch(signIn(respSignIn));
+    } else {
+      setStatusSignIn(false);
     }
   };
 
@@ -60,8 +59,8 @@ function SignIn(props) {
     <View style={styles.container}>
       <Formik
         initialValues={{email: '', password: ''}}
-        validationSchema={validateSignup}
-        onSubmit={values => pressLogin(values)}>
+        validationSchema={validateSignIn}
+        onSubmit={values => btnSignIn(values)}>
         {({
           handleChange,
           handleBlur,
@@ -72,9 +71,7 @@ function SignIn(props) {
         }) => (
           <>
             <View style={styles.header}>
-              <ImageBackground
-                source={header}
-                style={styles.imageBackground}>
+              <ImageBackground source={header} style={styles.imageBackground}>
                 <Text
                   style={{color: 'white', fontWeight: 'bold', fontSize: 30}}>
                   Xin chào !!!
@@ -117,8 +114,8 @@ function SignIn(props) {
                 <Text style={styles.textError}>{errors.password}</Text>
               ) : null}
 
-              {statusSignIn ? (
-                <Text style={styles.textError}>
+              {!statusSignIn ? (
+                <Text style={styles.loginFail}>
                   Email hoặc mật khẩu không đúng
                 </Text>
               ) : null}
@@ -196,7 +193,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   textError: {
-    paddingLeft: 5,
+    paddingTop: 4,
+    marginLeft: 4,
+    fontSize: 13,
+    color: 'red',
+  },
+
+  loginFail: {
+    textAlign: 'center',
+    paddingTop: 14,
     fontSize: 13,
     color: 'red',
   },
