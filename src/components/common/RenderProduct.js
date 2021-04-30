@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     borderColor: '#e8e9ed',
   },
   productName: {
+    color: '#5059B6',
     fontSize: 16,
     fontWeight: 'bold',
   },

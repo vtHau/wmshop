@@ -30,6 +30,9 @@ const Cart = () => {
       <View style={styles.container}>
         <View style={styles.box}>
           <View style={styles.boxTitle}>
+            <TouchableOpacity>
+              <FontAwesome5 name={'angle-left'} size={22} color={'#414dd1'} />
+            </TouchableOpacity>
             <Text style={styles.title}>giỏ hàng</Text>
           </View>
           <View style={styles.listProduct}>
@@ -115,11 +118,15 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   boxTitle: {
+    alignItems: 'center',
+    flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#d9dade',
+    paddingBottom: 6,
     marginBottom: 10,
   },
   title: {
+    marginLeft: 14,
     paddingBottom: 4,
     fontWeight: 'bold',
     fontSize: 16,

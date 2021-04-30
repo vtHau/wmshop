@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   title: {
+    color: '#5059B6',
     paddingBottom: 4,
     fontWeight: 'bold',
     fontSize: 16,
@@ -232,6 +233,7 @@ const styles = StyleSheet.create({
     borderColor: '#e8e9ed',
   },
   productName: {
+    color: '#5059B6',
     fontSize: 16,
     fontWeight: 'bold',
   },

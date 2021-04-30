@@ -43,10 +43,14 @@ const ProductDetail = props => {
         <View style={styles.boxDetail}>
           <View style={styles.contentInfo}>
             <View style={styles.existProduct}>
-              <Text style={styles.exist}>
-                {product.productQuantity > 0 ? 'Còn hàng' : 'Hết hàng'}
-              </Text>
-              <FontAwesome5 name={'check'} size={14} color={'green'} />
+              {product.productQuantity > 0 ? (
+                <>
+                  <Text style={styles.exist}>Còn hàng</Text>
+                  <FontAwesome5 name={'check'} size={14} color={'green'} />
+                </>
+              ) : (
+                <Text style={styles.exist}>Hết hàng</Text>
+              )}
             </View>
             <Text style={styles.productName}>{product.productName}</Text>
             <TouchableOpacity style={styles.boxPrice}>
