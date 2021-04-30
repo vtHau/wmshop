@@ -13,11 +13,15 @@ import avatar from './../../../assets/img/avatars/avatar.png';
 const {height, width} = Dimensions.get('window');
 const boxSize = width / 2 - 40;
 
-const Setting = () => {
+const Setting = props => {
+  const {navigation} = props;
+
   return (
     <View style={styles.container}>
       <View style={styles.boxHeader}>
-        <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />
+        <TouchableOpacity onPress={() => navigation.pop()}>
+          <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />
+        </TouchableOpacity>
         <View style={styles.headerItem}>
           <Text style={styles.userName}>Trung Hau</Text>
           <TouchableOpacity>
@@ -32,13 +36,17 @@ const Setting = () => {
 
       <View style={styles.boxListSetting}>
         <View style={styles.boxBig}>
-          <TouchableOpacity style={styles.boxBigItem}>
+          <TouchableOpacity
+            style={styles.boxBigItem}
+            onPress={() => navigation.push('PROFILE')}>
             <FontAwesome5 name={'info-circle'} size={34} color={'#414dd1'} />
             <Text style={styles.boxBigName}>Thông tin</Text>
             <Text style={styles.boxNameDetail}>Xem thông tin tài khoản</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.boxBigItem}>
+          <TouchableOpacity
+            style={styles.boxBigItem}
+            onPress={() => navigation.push('CHANGE_PASSWORD')}>
             <FontAwesome5 name={'key'} size={34} color={'#414dd1'} />
             <Text style={styles.boxBigName}>Mật khẩu</Text>
             <Text style={styles.boxNameDetail}>
@@ -47,12 +55,16 @@ const Setting = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.boxListItem}>
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => navigation.push('ORDER_HISTORY')}>
             <FontAwesome5 name={'credit-card'} size={22} color={'#414dd1'} />
             <Text style={styles.titleItem}>Lịch sử thanh toán</Text>
             <FontAwesome5 name={'angle-right'} size={22} color={'#414dd1'} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => navigation.push('WEATHER')}>
             <FontAwesome5 name={'cloud-moon'} size={22} color={'#414dd1'} />
             <Text style={styles.titleItem}>Tiện ích</Text>
             <FontAwesome5 name={'angle-right'} size={20} color={'#414dd1'} />

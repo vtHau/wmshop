@@ -21,15 +21,16 @@ import * as Config from '../../Config/config';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import product from './../../../assets/img/product.png';
-const OrderHistory = () => {
+const OrderHistory = props => {
+  const {navigation} = props;
   const products = [1, 2, 3, 4, 5];
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={styles.container}>
         <View style={styles.box}>
           <View style={styles.boxTitle}>
-            <TouchableOpacity>
-              <FontAwesome5 name={'angle-left'} size={22} color={'#414dd1'} />
+            <TouchableOpacity onPress={() => navigation.pop()}>
+              <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />
             </TouchableOpacity>
             <Text style={styles.title}>lịch sử đặt hàng</Text>
           </View>

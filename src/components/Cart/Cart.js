@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#d9dade',
+    borderColor: '#e8e9ed',
   },
   productImage: {
     width: productWidth,

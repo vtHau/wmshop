@@ -22,10 +22,10 @@ const productHeight = (productWidth / 361) * 410;
 import Swiper from 'react-native-swiper';
 import * as Config from './../../Config/config';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {renderRating} from './../../utils/common';
 
 const Home = props => {
+  const {navigation} = props;
   const dispatch = useDispatch();
   const cates = useSelector(state => state.cateReducer.cates);
   const brands = useSelector(state => state.brandReducer.brands);
@@ -108,29 +108,32 @@ const Home = props => {
           </View>
           <View style={styles.listProduct}>
             {hotProducts.length > 0 &&
-              hotProducts.map((value, key) => (
-                <TouchableOpacity key={key} style={styles.boxProduct}>
+              hotProducts.map((product, key) => (
+                <TouchableOpacity
+                  key={key}
+                  style={styles.boxProduct}
+                  onPress={() => navigation.push('PRODUCT_DETAIL', product)}>
                   <View style={styles.product}>
                     <Image
                       style={styles.productImage}
                       source={{
-                        uri: `${URL}/products/${value.productImage}`,
+                        uri: `${URL}/products/${product.productImage}`,
                       }}
                     />
                     <View style={styles.productInfo}>
                       <Text style={styles.productName}>
-                        {value.productName}
+                        {product.productName}
                       </Text>
                       <Text style={styles.productPrice}>
-                        {value.productPrice}
+                        {product.productPrice}
                       </Text>
                       <View style={styles.starView}>
                         <View style={styles.productStar}>
-                          {renderRating(value.productStar)}
+                          {renderRating(product.productStar)}
                         </View>
                         <View style={styles.productView}>
                           <Text style={styles.productViewText}>
-                            {value.productView}
+                            {product.productView}
                           </Text>
                           <FontAwesome5 name={'eye'} size={18} color={'grey'} />
                         </View>
@@ -170,7 +173,7 @@ const styles = StyleSheet.create({
   },
   boxTitle: {
     borderBottomWidth: 1,
-    borderBottomColor: '#d9dade',
+    borderColor: '#e8e9ed',
     marginBottom: 10,
   },
   title: {
@@ -204,8 +207,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#d9dade',
+    borderWidth: 0.8,
+    borderColor: '#e8e9ed',
   },
   productImage: {
     width: productWidth,
@@ -218,7 +221,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
     paddingHorizontal: 4,
     borderTopWidth: 1,
-    borderTopColor: '#d9dade',
+    borderColor: '#e8e9ed',
   },
   productName: {
     fontSize: 16,

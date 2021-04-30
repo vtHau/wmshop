@@ -96,8 +96,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#d9dade',
+    borderWidth: 0.8,
+    borderColor: '#e8e9ed',
   },
   productImage: {
     width: productWidth,
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
     paddingHorizontal: 4,
     borderTopWidth: 1,
-    borderTopColor: '#d9dade',
+    borderColor: '#e8e9ed',
   },
   productName: {
     fontSize: 16,

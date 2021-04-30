@@ -16,7 +16,8 @@ const boxSize = width / 2 - 40;
 import {Formik} from 'formik';
 import {validateUpdateProfile} from './../../utils/validation';
 
-const Proflie = () => {
+const Proflie = props => {
+  const {navigation} = props;
   const [name, setName] = useState('Trung Hau');
   const [email, setEmail] = useState('crtrunghau@gmail.com');
   const [phone, setPhone] = useState('0382881573');
@@ -32,7 +33,9 @@ const Proflie = () => {
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.boxHeader}>
-          <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />
+          <TouchableOpacity onPress={() => navigation.pop()}>
+            <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />
+          </TouchableOpacity>
           <Text style={styles.titlePage}>Thong tin tai khoan</Text>
           <View></View>
         </View>

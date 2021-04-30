@@ -1,13 +1,27 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Provider} from 'react-redux';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import Main from './Main';
+import SettingNavigator from './Setting/SettingNavigator';
 import store from './../store';
+
+const Stack = createStackNavigator();
 
 function App() {
   return (
     <Provider store={store}>
-      <Main />
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+          initialRouteName="Main">
+          <Stack.Screen name="MAIN" component={Main} />
+          <Stack.Screen name="SETTING_NAVIGATOR" component={SettingNavigator} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </Provider>
   );
 }

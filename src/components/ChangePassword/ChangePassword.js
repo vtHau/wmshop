@@ -12,11 +12,12 @@ import {
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import avatar from './../../../assets/img/avatars/avatar.png';
 const {height, width} = Dimensions.get('window');
-const boxSize = width / 2 - 40;
 import {Formik} from 'formik';
 import {validateUpdatePassword} from '../../utils/validation';
 
-const ChangePassword = () => {
+const ChangePassword = (props) => {
+  const {navigation} = props;
+
   const changeInfo = values => {
     console.log(values);
   };
@@ -25,7 +26,9 @@ const ChangePassword = () => {
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.boxHeader}>
-          <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />
+          <TouchableOpacity onPress={() => navigation.pop()}>
+            <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />
+          </TouchableOpacity>
           <Text style={styles.titlePage}>Thong tin tai khoan</Text>
           <View></View>
         </View>

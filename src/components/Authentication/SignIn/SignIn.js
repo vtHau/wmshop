@@ -14,8 +14,8 @@ import {TypingAnimation} from 'react-native-typing-animation';
 // import Feather from 'react-native-vector-icons/Feather';
 import {Formik} from 'formik';
 import {validateSignup} from '../../../utils/validation';
-
-import {checkSignIn} from '../../../utils/checkAPI';
+import header from './../../../../assets/img/header.png'
+import {checkSignIn} from './../../../utils/checkAPI';
 
 function SignIn(props) {
   const {width} = Dimensions.get('screen');
@@ -73,7 +73,7 @@ function SignIn(props) {
           <>
             <View style={styles.header}>
               <ImageBackground
-                source={require('./../../../assets/img/header.png')}
+                source={header}
                 style={styles.imageBackground}>
                 <Text
                   style={{color: 'white', fontWeight: 'bold', fontSize: 30}}>

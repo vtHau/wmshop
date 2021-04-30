@@ -12,10 +12,9 @@ import {
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import avatar from './../../../assets/img/avatars/avatar.png';
 
+const Header = props => {
+  const {navigation} = props;
 
-const {height, width} = Dimensions.get('window');
-
-const Header = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.btnSearch}>
@@ -27,7 +26,9 @@ const Header = () => {
         />
       </TouchableOpacity>
       <Text style={styles.title}>WB Shop</Text>
-      <TouchableOpacity style={styles.btnSearch}>
+      <TouchableOpacity
+        style={styles.btnSearch}
+        onPress={() => navigation.push('SETTING_NAVIGATOR')}>
         <Image style={styles.avatarIcon} source={avatar} />
       </TouchableOpacity>
     </View>

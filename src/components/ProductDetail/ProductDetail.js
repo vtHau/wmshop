@@ -5,67 +5,74 @@ import {
   View,
   Image,
   Dimensions,
+  ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import product from './../../../assets/img/product.png';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import {renderRating} from './../../utils/common';
+
+import * as Config from './../../Config/config';
 
 const {height, width} = Dimensions.get('window');
 const productWidth = width - 200;
 const productHeight = productWidth * 1.25;
 
-const ProductDetail = () => {
-  const showRatings = rating => {
-    var result = [];
-    for (var i = 1; i <= rating; i++) {
-      result.push(
-        <AntDesign key={i} name={'star'} size={14} color={'#f39c11'} />,
-      );
-    }
-    for (var j = 1; j <= 5 - rating; j++) {
-      result.push(
-        <AntDesign key={100 + j} name={'star'} size={14} color={'grey'} />,
-      );
-    }
-    return result;
-  };
+const ProductDetail = props => {
+  const {navigation, route} = props;
+  const product = route.params;
+
+  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
+
+  console.log(product);
 
   return (
     <View style={styles.container}>
-      <View style={styles.boxImage}>
-        <TouchableOpacity style={styles.backIcon}>
-          <FontAwesome5 name={'angle-left'} size={20} color={'#878695'} />
-        </TouchableOpacity>
-        <Image style={styles.image} source={product} />
-      </View>
-
-      <View style={styles.boxDetail}>
-        <View style={styles.contentInfo}>
-          <View style={styles.existProduct}>
-            <Text style={styles.exist}>Còn hàng</Text>
-            <FontAwesome5 name={'check'} size={14} color={'green'} />
-          </View>
-          <Text style={styles.productName}>Samsung Galaxy S21</Text>
-          <Text style={styles.productPrice}>23.03.000 VND</Text>
-          <View style={styles.starView}>
-            <View style={styles.productStar}>{showRatings(3)}</View>
-            <View style={styles.productView}>
-              <Text style={styles.productViewText}>108 </Text>
-              <FontAwesome5 name={'eye'} size={18} color={'grey'} />
-            </View>
-          </View>
-          <Text style={styles.productBrand}>Thương hiệu: Samsung</Text>
-          <Text style={styles.productDesc}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente
-            distinctio nihil omnis, obcaecati harum, officiis pariatur
-            consectetur in.
-          </Text>
+      <ScrollView>
+        <View style={styles.boxImage}>
+          <TouchableOpacity
+            style={styles.backIcon}
+            onPress={() => navigation.pop()}>
+            <FontAwesome5 name={'angle-left'} size={20} color={'#878695'} />
+          </TouchableOpacity>
+          <Image
+            style={styles.image}
+            source={{
+              uri: `${URL}/products/${product.productImage}`,
+            }}
+          />
         </View>
-        <TouchableOpacity>
-          <Text style={styles.textAddCart}>Thêm vào giỏ hàng</Text>
-        </TouchableOpacity>
-      </View>
+
+        <View style={styles.boxDetail}>
+          <View style={styles.contentInfo}>
+            <View style={styles.existProduct}>
+              <Text style={styles.exist}>Còn hàng</Text>
+              <FontAwesome5 name={'check'} size={14} color={'green'} />
+            </View>
+            <Text style={styles.productName}>{product.productName}</Text>
+            <Text style={styles.productPrice}>{product.productPrice} VND</Text>
+            <View style={styles.starView}>
+              <View style={styles.productStar}>{renderRating(3)}</View>
+              <View style={styles.productView}>
+                <Text style={styles.productViewText}>
+                  {product.productView}
+                </Text>
+                <FontAwesome5 name={'eye'} size={18} color={'grey'} />
+              </View>
+            </View>
+            <Text style={styles.productBrand}>
+              Thương hiệu: {product.brandName}
+            </Text>
+            <Text style={styles.productDesc}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
+              velit omnis laborum ducimus, aperiam, ab sequi aspernatur
+            </Text>
+          </View>
+        </View>
+      </ScrollView>
+
+      <TouchableOpacity style={styles.btnAddCart}>
+        <Text style={styles.textAddCart}>Thêm vào giỏ hàng</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -74,6 +81,7 @@ export default ProductDetail;
 
 const styles = StyleSheet.create({
   container: {
+    position: 'relative',
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
@@ -108,7 +116,6 @@ const styles = StyleSheet.create({
   boxDetail: {
     flex: 1,
     justifyContent: 'space-between',
-    alignItems: 'center',
     padding: 10,
   },
   image: {
@@ -122,16 +129,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingLeft: 14,
   },
-  textAddCart: {
-    paddingHorizontal: 95,
-    paddingVertical: 14,
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
-    backgroundColor: '#003FFF',
-    borderRadius: 18,
-    textTransform: 'uppercase',
-  },
+
   productName: {
     fontSize: 22,
     fontWeight: 'bold',
@@ -175,10 +173,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   productViewText: {
+    marginRight: 4,
     fontSize: 14,
   },
   existProduct: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  btnAddCart: {
+    borderTopWidth: 1.1,
+    borderColor: '#e8e9ed',
+    position: 'absolute',
+    paddingHorizontal: 24,
+    paddingVertical: 6,
+    backgroundColor: '#fff',
+    width: '100%',
+    bottom: 0,
+  },
+  textAddCart: {
+    textAlign: 'center',
+    paddingVertical: 14,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
+    backgroundColor: '#003FFF',
+    borderRadius: 18,
+    textTransform: 'uppercase',
   },
 });
