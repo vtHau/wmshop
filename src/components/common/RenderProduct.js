@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   productViewText: {
+    marginRight: 4,
     fontSize: 14,
   },
 });

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
@@ -27,6 +28,9 @@ import {renderRating} from './../../utils/common';
 const Home = props => {
   const {navigation} = props;
   const dispatch = useDispatch();
+
+  const [refresh, setRefresh] = useState(false);
+
   const cates = useSelector(state => state.cateReducer.cates);
   const brands = useSelector(state => state.brandReducer.brands);
   const hotProducts = useSelector(state => state.productReducer.hotProducts);
@@ -37,10 +41,20 @@ const Home = props => {
     dispatch(fetchHotProduct());
   }, [dispatch]);
 
+  const onRefresh = () => {
+    setRefresh(true);
+    dispatch(fetchHotProduct());
+    setRefresh(false);
+  };
+
   const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
+    <ScrollView
+      style={{flex: 1, backgroundColor: '#fff'}}
+      refreshControl={
+        <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+      }>
       <View style={styles.container}>
         <View style={styles.box}>
           <View style={styles.boxTitle}>
@@ -162,14 +176,8 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#fff',
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 3,
-      height: 3,
-    },
-    shadowOpacity: 0.01,
-    shadowRadius: 0.05,
-    elevation: 3,
+    borderWidth: 1.2,
+    borderColor: '#e8e9ed',
   },
   boxTitle: {
     borderBottomWidth: 1,
@@ -243,6 +251,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   productViewText: {
+    marginRight: 4,
     fontSize: 14,
   },
 });

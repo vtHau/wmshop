@@ -23,8 +23,6 @@ const ProductDetail = props => {
 
   const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
-  console.log(product);
-
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -32,7 +30,7 @@ const ProductDetail = props => {
           <TouchableOpacity
             style={styles.backIcon}
             onPress={() => navigation.pop()}>
-            <FontAwesome5 name={'angle-left'} size={20} color={'#878695'} />
+            <FontAwesome5 name={'angle-left'} size={28} color={'#003FFF'} />
           </TouchableOpacity>
           <Image
             style={styles.image}
@@ -45,11 +43,18 @@ const ProductDetail = props => {
         <View style={styles.boxDetail}>
           <View style={styles.contentInfo}>
             <View style={styles.existProduct}>
-              <Text style={styles.exist}>Còn hàng</Text>
+              <Text style={styles.exist}>
+                {product.productQuantity > 0 ? 'Còn hàng' : 'Hết hàng'}
+              </Text>
               <FontAwesome5 name={'check'} size={14} color={'green'} />
             </View>
             <Text style={styles.productName}>{product.productName}</Text>
-            <Text style={styles.productPrice}>{product.productPrice} VND</Text>
+            <TouchableOpacity style={styles.boxPrice}>
+              <FontAwesome5 name={'dollar-sign'} size={16} color={'#003FFF'} />
+              <Text style={styles.productPrice}>
+                {product.productPrice} VND
+              </Text>
+            </TouchableOpacity>
             <View style={styles.starView}>
               <View style={styles.productStar}>{renderRating(3)}</View>
               <View style={styles.productView}>
@@ -70,9 +75,17 @@ const ProductDetail = props => {
         </View>
       </ScrollView>
 
-      <TouchableOpacity style={styles.btnAddCart}>
-        <Text style={styles.textAddCart}>Thêm vào giỏ hàng</Text>
-      </TouchableOpacity>
+      {product.productQuantity > 0 ? (
+        <TouchableOpacity style={styles.btnAddCart}>
+          <Text style={styles.textAddCart}>Thêm vào giỏ hàng</Text>
+        </TouchableOpacity>
+      ) : (
+        <View style={styles.btnAddCart}>
+          <Text style={[styles.textAddCart, styles.textAddCartDisable]}>
+            Thêm vào giỏ hàng
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -86,6 +99,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   boxImage: {
+    paddingTop: 24,
     flex: 1,
     position: 'relative',
     justifyContent: 'flex-end',
@@ -106,12 +120,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     top: 20,
     left: 20,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 10,
   },
   boxDetail: {
     flex: 1,
@@ -119,10 +131,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   image: {
-    marginBottom: 20,
+    marginBottom: 0,
     width: productWidth,
     height: productHeight,
-    resizeMode: 'stretch',
+    resizeMode: 'contain',
     borderRadius: 10,
   },
   contentInfo: {
@@ -134,6 +146,10 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: '#000',
+  },
+  boxPrice: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   productPrice: {
     marginTop: 2,
@@ -199,5 +215,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#003FFF',
     borderRadius: 18,
     textTransform: 'uppercase',
+  },
+  textAddCartDisable: {
+    backgroundColor: '#ccc',
   },
 });
