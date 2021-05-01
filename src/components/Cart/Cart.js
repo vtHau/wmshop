@@ -10,21 +10,42 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
-  fetchCategory,
-  fetchBrand,
-  fetchHotProduct,
+  fetchCart,
+  updateCartQuantity,
+  deleteCart,
 } from './../../actions/actions';
 const {height, width} = Dimensions.get('window');
 const productWidth = width / 4.5;
 const productHeight = productWidth * 1.2;
 import * as Config from './../../Config/config';
+
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {renderRating} from './../../utils/common';
 
 import product from './../../../assets/img/product.png';
 const Cart = () => {
-  const products = [1, 2, 3, 4, 5, 1, 1, 1, 1, 1, 1];
+  const dispatch = useDispatch();
+  const carts = useSelector(state => state.cartReducer.carts) || [];
+  let totalMoney = 0;
+  carts.forEach(cart => {
+    totalMoney += cart.productQuantity * cart.productPrice;
+  });
+
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, [dispatch]);
+
+  const updateQuantity = (cartID, quantity) => {
+    if (quantity >= 1) {
+      dispatch(updateCartQuantity(cartID, quantity));
+    }
+  };
+
+  const deleteCarts = cartID => {
+    dispatch(deleteCart(cartID));
+  };
+
+  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
+
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={styles.container}>
@@ -36,28 +57,51 @@ const Cart = () => {
             <Text style={styles.title}>giỏ hàng</Text>
           </View>
           <View style={styles.listProduct}>
-            {products.length > 0 &&
-              products.map((value, key) => (
+            {carts.length > 0 &&
+              carts.map((cart, key) => (
                 <View key={key} style={styles.boxProduct}>
                   <View style={styles.product}>
                     <TouchableOpacity>
-                      <Image style={styles.productImage} source={product} />
+                      <Image
+                        style={styles.productImage}
+                        source={{
+                          uri: `${URL}/products/${cart.productImage}`,
+                        }}
+                      />
                     </TouchableOpacity>
                     <View style={styles.productInfo}>
                       <TouchableOpacity>
-                        <Text style={styles.productName}>samsung s20</Text>
+                        <Text style={styles.productName}>
+                          {cart.productName}
+                        </Text>
                       </TouchableOpacity>
-                      <Text style={styles.productPrice}>12345678</Text>
+                      <Text style={styles.productPrice}>
+                        {cart.productPrice}
+                      </Text>
                       <View style={styles.boxQuantity}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() =>
+                            updateQuantity(
+                              cart.cartID,
+                              Number(cart.productQuantity) - 1,
+                            )
+                          }>
                           <FontAwesome5
                             name={'angle-left'}
                             size={18}
                             color={'#616161'}
                           />
                         </TouchableOpacity>
-                        <Text style={styles.quantity}>1</Text>
-                        <TouchableOpacity>
+                        <Text style={styles.quantity}>
+                          {cart.productQuantity}
+                        </Text>
+                        <TouchableOpacity
+                          onPress={() =>
+                            updateQuantity(
+                              cart.cartID,
+                              Number(cart.productQuantity) + 1,
+                            )
+                          }>
                           <FontAwesome5
                             name={'angle-right'}
                             size={18}
@@ -66,11 +110,13 @@ const Cart = () => {
                         </TouchableOpacity>
                       </View>
                       <Text style={styles.totalMoneyProduct}>
-                        Tổng tiền: 4656535
+                        Tổng tiền: {cart.productPrice * cart.productQuantity}{' '}
+                        VND
                       </Text>
                     </View>
                     <View style={styles.boxClose}>
-                      <TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => deleteCarts(cart.cartID)}>
                         <FontAwesome5
                           style={styles.inDeQuantity}
                           name={'times'}
@@ -83,7 +129,7 @@ const Cart = () => {
                 </View>
               ))}
             <View style={styles.boxTotal}>
-              <Text style={styles.totalMoney}>Tổng cộng: 2222.565656</Text>
+              <Text style={styles.totalMoney}>Tổng cộng: {totalMoney} VND</Text>
             </View>
           </View>
         </View>

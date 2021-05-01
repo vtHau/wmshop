@@ -1,6 +1,8 @@
 export const API_URL = 'http://192.168.1.22/webshop';
 export const API_CATE = '/other/api/category.php';
 export const API_BRAND = '/other/api/brand.php';
+export const API_CART = '/other/api/cart.php';
+export const API_CART_UPDATE = '/other/api/cartupdate.php';
 export const API_PRODUCT = '/other/api/product.php?type=';
 export const API_SIGNIN = '/other/api/signin.php';
 export const API_SIGNUP = '/other/api/signup.php';

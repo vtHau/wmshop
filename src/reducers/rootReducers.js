@@ -4,6 +4,7 @@ import cateReducer from './cateReducer';
 import brandReducer from './brandReducer';
 import productReducer from './productReducer';
 import orderHistoryReducer from './orderHistoryReducer';
+import cartReducer from './cartReducer';
 
 const rootReducers = combineReducers({
   authenReducer,
@@ -11,6 +12,7 @@ const rootReducers = combineReducers({
   brandReducer,
   productReducer,
   orderHistoryReducer,
+  cartReducer,
 });
 
 export default rootReducers;
