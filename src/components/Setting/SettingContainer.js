@@ -6,10 +6,10 @@ import Setting from './Setting';
 const SettingContainer = props => {
   const {navigation} = props;
   const dispatch = useDispatch();
-  const sigin = useSelector(state => state.authenReducer.sigin);
+  const signIn = useSelector(state => state.authenReducer.signIn);
 
   return (
-    <>{sigin ? <Setting navigation={navigation} /> : <AuthenNavigator />}</>
+    <>{signIn ? <Setting navigation={navigation} /> : <AuthenNavigator />}</>
   );
 };
 

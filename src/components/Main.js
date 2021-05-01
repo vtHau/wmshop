@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {signInToken} from './../actions/actions';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Header from './Header/Header';
@@ -8,11 +10,17 @@ import CartNavigator from './Cart/CartNavigator';
 import Search from './Search/Search';
 import Contact from './Contact/Contact';
 import Setting from './Setting/Setting';
+import removeStorage from './../utils/removeStorage';
 
 const Tab = createBottomTabNavigator();
 
 const Main = props => {
   const {navigation} = props;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(signInToken());
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>

@@ -23,6 +23,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import product from './../../../assets/img/product.png';
 const OrderHistory = props => {
   const {navigation} = props;
+
   const products = [1, 2, 3, 4, 5];
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>

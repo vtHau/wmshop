@@ -16,6 +16,7 @@ import * as Config from './../../Config/config';
 import {Formik} from 'formik';
 import {validateUpdateProfile} from './../../utils/validation';
 import {updateInfo} from './../../utils/checkAPI';
+import {signInToken} from './../../actions/actions';
 
 const Proflie = props => {
   const {navigation, route} = props;
@@ -38,7 +39,7 @@ const Proflie = props => {
     };
     const resUpdate = await updateInfo(userInfo);
     if (resUpdate === 'UPDATE_INFO_SUCCESS') {
-      console.log('thanh cong');
+      dispatch(signInToken());
       setUpdate(false);
     }
   };

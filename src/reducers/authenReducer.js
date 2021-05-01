@@ -2,7 +2,7 @@ import writeStorage from './../utils/writeStorage';
 import removeStorage from './../utils/removeStorage';
 
 const initialState = {
-  sigin: false,
+  signIn: false,
   token: null,
   userInfo: {},
 };
@@ -11,9 +11,11 @@ const authenReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SIGN_IN': {
       const {token, userInfo} = action.payload;
-      state.sigin = true;
+      state.signIn = true;
       state.token = token;
       state.userInfo = userInfo;
+
+      writeStorage('signIn', state);
 
       return {
         ...state,
@@ -21,9 +23,12 @@ const authenReducer = (state = initialState, action) => {
     }
 
     case 'SIGN_OUT': {
-      state.sigin = false;
+      state.signIn = false;
       state.token = null;
       state.userInfo = {};
+
+      writeStorage('signIn', state);
+
       return {
         ...state,
       };

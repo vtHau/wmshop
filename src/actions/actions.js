@@ -1,5 +1,6 @@
 import CallAPI from './../utils/CallAPI';
 import * as Config from './../Config/config';
+import readStorage from './../utils/readStorage';
 
 export const signInRequest = dataLogin => {
   return dispatch => {
@@ -15,6 +16,25 @@ export const signIn = info => {
   return {
     type: 'SIGN_IN',
     payload: info,
+  };
+};
+
+export const signInToken = () => {
+  return async dispatch => {
+    const resp = await readStorage('signIn');
+    if (resp !== null && resp.token !== null) {
+      const {token} = resp;
+
+      CallAPI(Config.API_SIGNIN_TOKEN, 'POST', {token: token})
+        .then(res => {
+          if (res.data !== 'TOKEN_INVALID') {
+            dispatch(signIn(res.data));
+          }
+        })
+        .catch(() => {
+          console.log('error check login');
+        });
+    }
   };
 };
 
@@ -66,5 +86,20 @@ export const initProduct = products => {
   return {
     type: 'INIT_PRODUCT',
     payload: products,
+  };
+};
+
+export const fetchOrderHistory = () => {
+  return dispatch => {
+    CallAPI(Config.API_CATE, 'POST', null).then(res => {
+      dispatch(initOrderHistory(res.data));
+    });
+  };
+};
+
+export const initOrderHistory = orderHistory => {
+  return {
+    type: 'ORDER_HISTORY',
+    payload: orderHistory,
   };
 };
