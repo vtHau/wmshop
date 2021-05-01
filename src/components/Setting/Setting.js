@@ -69,7 +69,7 @@ const Setting = props => {
             style={styles.settingItem}
             onPress={() => navigation.push('ORDER_HISTORY', user)}>
             <FontAwesome5 name={'credit-card'} size={22} color={'#414dd1'} />
-            <Text style={styles.titleItem}>Lịch sử thanh toán</Text>
+            <Text style={styles.titleItem}>Lịch sử mua hàng</Text>
             <FontAwesome5 name={'angle-right'} size={22} color={'#414dd1'} />
           </TouchableOpacity>
           <TouchableOpacity

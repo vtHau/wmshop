@@ -19,7 +19,7 @@ const productWidth = width / 4.5;
 const productHeight = productWidth * 1.2;
 import * as Config from '../../Config/config';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {orderHistory} from './../../actions/actions';
+import {fetchOrderHistory} from './../../actions/actions';
 
 import product from './../../../assets/img/product.png';
 const OrderHistory = props => {
@@ -28,10 +28,13 @@ const OrderHistory = props => {
   const userID = route.params.userID;
 
   useEffect(() => {
-    dispatch(orderHistory(userID));
+    dispatch(fetchOrderHistory(userID));
   }, [dispatch]);
 
-  const products = [1, 2, 3, 4, 5];
+  const orderHistorys = useSelector(
+    state => state.orderHistoryReducer.orderHistorys,
+  );
+
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={styles.container}>
@@ -43,8 +46,8 @@ const OrderHistory = props => {
             <Text style={styles.title}>lịch sử đặt hàng</Text>
           </View>
           <View style={styles.listProduct}>
-            {products.length > 0 &&
-              products.map((value, key) => (
+            {orderHistorys.length > 0 &&
+              orderHistorys.map((orderHistory, key) => (
                 <View key={key} style={styles.boxProduct}>
                   <View style={styles.product}>
                     <TouchableOpacity>
@@ -53,14 +56,18 @@ const OrderHistory = props => {
                     <View style={styles.productInfo}>
                       <TouchableOpacity>
                         <Text style={styles.productName}>
-                          Samsung Galaxy S20
+                          {orderHistory.productName}
                         </Text>
                       </TouchableOpacity>
-                      <Text style={styles.quantity}>Số lương: 1</Text>
-                      <Text style={styles.totalMoneyProduct}>
-                        Tổng tiền: 4656535
+                      <Text style={styles.quantity}>
+                        Số lương: {orderHistory.productQuantity}
                       </Text>
-                      <Text style={styles.timeOrder}>Thời gian: 12345678</Text>
+                      <Text style={styles.totalMoneyProduct}>
+                        Tổng tiền: {orderHistory.productPrice} VND
+                      </Text>
+                      <Text style={styles.timeOrder}>
+                        Thời gian: {orderHistory.timeOrder}
+                      </Text>
                     </View>
                   </View>
                 </View>

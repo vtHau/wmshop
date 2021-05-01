@@ -1,5 +1,5 @@
-// import writeStorage from './../utils/writeStorage';
-// import removeStorage from './../utils/removeStorage';
+import writeStorage from './../utils/writeStorage';
+import removeStorage from './../utils/removeStorage';
 
 const initialState = {
   cates: [],

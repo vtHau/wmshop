@@ -22,7 +22,7 @@ export const signInToken = () => {
     const resp = await readStorage('signIn');
     if (resp && resp !== null) {
       const {token} = resp;
-      CallAPI(Config.API_SIGNIN_TOKEN, 'POST', {token: token})
+      CallAPI(Config.API_SIGNIN_TOKEN, 'POST', {token})
         .then(res => {
           if (typeof res.data !== 'string' && typeof res.data === 'object') {
             dispatch(signIn(res.data));
@@ -93,28 +93,19 @@ export const initProduct = products => {
   };
 };
 
-export const fetchOrderHistory = () => {
-  return dispatch => {
-    CallAPI(Config.API_CATE, 'POST', null).then(res => {
-      dispatch(initOrderHistory(res.data));
-    });
-  };
-};
-
-export const initOrderHistory = orderHistory => {
+export const initOrderHistory = orderHistorys => {
   return {
-    type: 'ORDER_HISTORY',
-    payload: orderHistory,
+    type: 'INIT_ORDER_HISTORY',
+    payload: orderHistorys,
   };
 };
 
-export const orderHistory = userID => {
+export const fetchOrderHistory = userID => {
   return async dispatch => {
-    CallAPI(Config.API_ORDER_HISTORY, 'POST', {userID: userID})
+    CallAPI(Config.API_ORDER_HISTORY, 'POST', {userID})
       .then(res => {
-        if (res.data !== 'NOT_FOUND_ORDER_HISTORY') {
-          // dispatch(signIn(res.data));
-          console.log(res.data);
+        if (typeof res.data !== 'string' && typeof res.data === 'object') {
+          dispatch(initOrderHistory(res.data));
         }
       })
       .catch(() => {
