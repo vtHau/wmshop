@@ -22,7 +22,9 @@ import * as Config from './../../Config/config';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import product from './../../../assets/img/product.png';
-const Cart = () => {
+const Cart = props => {
+  const {navigation} = props;
+
   const dispatch = useDispatch();
   const carts = useSelector(state => state.cartReducer.carts) || [];
   let totalMoney = 0;
@@ -61,7 +63,8 @@ const Cart = () => {
               carts.map((cart, key) => (
                 <View key={key} style={styles.boxProduct}>
                   <View style={styles.product}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => navigation.push('PRODUCT_DETAIL', cart)}>
                       <Image
                         style={styles.productImage}
                         source={{
@@ -70,7 +73,8 @@ const Cart = () => {
                       />
                     </TouchableOpacity>
                     <View style={styles.productInfo}>
-                      <TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => navigation.push('PRODUCT_DETAIL', cart)}>
                         <Text style={styles.productName}>
                           {cart.productName}
                         </Text>
