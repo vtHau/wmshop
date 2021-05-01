@@ -3,7 +3,7 @@ import removeStorage from './../utils/removeStorage';
 
 const initialState = {
   signIn: false,
-  token: null,
+  token: '',
   userInfo: {},
 };
 
@@ -11,26 +11,26 @@ const authenReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SIGN_IN': {
       const {token, userInfo} = action.payload;
-      state.signIn = true;
-      state.token = token;
-      state.userInfo = userInfo;
-
-      writeStorage('signIn', state);
-
+      const newState = {
+        signIn: true,
+        token: token,
+        userInfo: userInfo,
+      };
+      writeStorage('signIn', newState);
       return {
-        ...state,
+        ...newState,
       };
     }
 
     case 'SIGN_OUT': {
-      state.signIn = false;
-      state.token = null;
-      state.userInfo = {};
-
-      writeStorage('signIn', state);
-
+      const newState = {
+        signIn: false,
+        token: '',
+        userInfo: {},
+      };
+      removeStorage('signIn');
       return {
-        ...state,
+        ...newState,
       };
     }
 

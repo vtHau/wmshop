@@ -19,10 +19,17 @@ const productWidth = width / 4.5;
 const productHeight = productWidth * 1.2;
 import * as Config from '../../Config/config';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {orderHistory} from './../../actions/actions';
 
 import product from './../../../assets/img/product.png';
 const OrderHistory = props => {
-  const {navigation} = props;
+  const {navigation, route} = props;
+  const dispatch = useDispatch();
+  const userID = route.params.userID;
+
+  useEffect(() => {
+    dispatch(orderHistory(userID));
+  }, [dispatch]);
 
   const products = [1, 2, 3, 4, 5];
   return (
