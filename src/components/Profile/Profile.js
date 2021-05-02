@@ -17,6 +17,7 @@ import {Formik} from 'formik';
 import {validateUpdateProfile} from './../../utils/validation';
 import {updateInfo} from './../../utils/checkAPI';
 import {signInToken} from './../../actions/actions';
+import ModalChangeInfo from './../common/ModalChangeInfo';
 
 const Proflie = props => {
   const {navigation, route} = props;
@@ -38,16 +39,23 @@ const Proflie = props => {
       ...info,
     };
     const resUpdate = await updateInfo(userInfo);
-    if (resUpdate === 'UPDATE_INFO_SUCCESS') {
+    if (resUpdate.trim() === 'UPDATE_INFO_SUCCESS') {
       dispatch(signInToken());
+      setModalVisible(!modalVisible);
       setUpdate(false);
     }
   };
+  const handleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
     <ScrollView>
+      <ModalChangeInfo modalVisible={modalVisible} handleModal={handleModal} />
       <View style={styles.container}>
         <View style={styles.boxHeader}>
           <TouchableOpacity onPress={() => navigation.pop()}>
