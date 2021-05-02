@@ -12,6 +12,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {renderRating} from './../../utils/common';
 
 import * as Config from './../../Config/config';
+import {inserCart} from './../../actions/actions';
+import {useSelector, useDispatch} from 'react-redux';
 
 const {height, width} = Dimensions.get('window');
 const productWidth = width - 200;
@@ -19,7 +21,13 @@ const productHeight = productWidth * 1.25;
 
 const ProductDetail = props => {
   const {navigation, route} = props;
+  const dispatch = useDispatch();
+
   const product = route.params;
+
+  const insertCarts = () => {
+    dispatch(inserCart(product.productID));
+  };
 
   const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
@@ -80,7 +88,7 @@ const ProductDetail = props => {
       </ScrollView>
 
       {product.productQuantity > 0 ? (
-        <TouchableOpacity style={styles.btnAddCart}>
+        <TouchableOpacity style={styles.btnAddCart} onPress={insertCarts}>
           <Text style={styles.textAddCart}>Thêm vào giỏ hàng</Text>
         </TouchableOpacity>
       ) : (

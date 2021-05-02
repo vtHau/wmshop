@@ -78,25 +78,6 @@ export const initBrand = brands => {
   };
 };
 
-export const fetchCart = () => {
-  return async dispatch => {
-    const resp = await readStorage('signIn');
-    if (resp && resp !== null) {
-      const {userID} = resp.userInfo;
-
-      CallAPI(Config.API_CART, 'POST', {userID})
-        .then(res => {
-          if (typeof res.data !== 'string' && typeof res.data === 'object') {
-            dispatch(initCart(res.data));
-          }
-        })
-        .catch(() => {
-          console.log('Error sigin via token');
-        });
-    }
-  };
-};
-
 export const updateCartQuantity = (cartID, quantity) => {
   return async dispatch => {
     const update = {
@@ -119,6 +100,34 @@ export const updateCartQuantity = (cartID, quantity) => {
   };
 };
 
+export const inserCart = (productID, quantity = 1) => {
+  return async dispatch => {
+    const resp = await readStorage('signIn');
+    if (resp && resp !== null) {
+      const {userID} = resp.userInfo;
+      const update = {
+        type: 'INSERT_CART',
+        userID,
+        productID,
+        quantity,
+      };
+
+      CallAPI(Config.API_CART_UPDATE, 'POST', update)
+        .then(res => {
+          if (
+            typeof res.data === 'string' &&
+            res.data.trim() == 'INSERT_CART_SUCCESS'
+          ) {
+            dispatch(fetchCart());
+          }
+        })
+        .catch(() => {
+          console.log('Error insert cart');
+        });
+    }
+  };
+};
+
 export const deleteCart = cartID => {
   return async dispatch => {
     const update = {
@@ -126,12 +135,12 @@ export const deleteCart = cartID => {
       cartID,
     };
     CallAPI(Config.API_CART_UPDATE, 'POST', update)
-      .then(res => {
+      .then(async res => {
         if (
           typeof res.data === 'string' &&
           res.data.trim() == 'DELETE_CART_SUCCESS'
         ) {
-          dispatch(fetchCart());
+          await dispatch(fetchCart());
         }
       })
       .catch(() => {
@@ -180,5 +189,29 @@ export const fetchOrderHistory = userID => {
       .catch(() => {
         console.log('Error fetch orderHistory');
       });
+  };
+};
+
+export const fetchCart = () => {
+  return async dispatch => {
+    const resp = await readStorage('signIn');
+    if (resp && resp !== null) {
+      const {userID} = resp.userInfo;
+
+      CallAPI(Config.API_CART, 'POST', {userID})
+        .then(res => {
+          if (typeof res.data !== 'string' && typeof res.data === 'object') {
+            dispatch(initCart(res.data));
+          } else if (
+            typeof res.data === 'string' &&
+            res.data.trim() === 'NOT_FOUND_CART'
+          ) {
+            dispatch(initCart([]));
+          }
+        })
+        .catch(() => {
+          console.log('Error sigin via token');
+        });
+    }
   };
 };

@@ -26,7 +26,7 @@ const Cart = props => {
   const {navigation} = props;
 
   const dispatch = useDispatch();
-  const carts = useSelector(state => state.cartReducer.carts) || [];
+  const carts = useSelector(state => state.cartReducer.carts);
   let totalMoney = 0;
   carts.forEach(cart => {
     totalMoney += cart.productQuantity * cart.productPrice;
