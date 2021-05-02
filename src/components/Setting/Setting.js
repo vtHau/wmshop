@@ -56,7 +56,7 @@ const Setting = props => {
 
           <TouchableOpacity
             style={styles.boxBigItem}
-            onPress={() => navigation.push('CHANGE_PASSWORD')}>
+            onPress={() => navigation.push('CHANGE_PASSWORD', user)}>
             <FontAwesome5 name={'key'} size={34} color={'#414dd1'} />
             <Text style={styles.boxBigName}>Mật khẩu</Text>
             <Text style={styles.boxNameDetail}>

@@ -9,6 +9,13 @@ export const checkSignIn = async signin => {
   return 'SIGIN_FAIL';
 };
 
+export const updatePassword = async infoPassword => {
+  const res = await CallAPI(Config.API_UPDATE_PASSWORD, 'POST', {
+    ...infoPassword,
+  });
+  return res.data.trim();
+};
+
 export const updateInfo = async userInfo => {
   const res = await CallAPI(Config.API_UPDATE_INFO, 'POST', {...userInfo});
   return res.data.trim();

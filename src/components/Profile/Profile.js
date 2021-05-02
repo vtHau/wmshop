@@ -40,8 +40,8 @@ const Proflie = props => {
     };
     const resUpdate = await updateInfo(userInfo);
     if (resUpdate.trim() === 'UPDATE_INFO_SUCCESS') {
-      dispatch(signInToken());
       setModalVisible(!modalVisible);
+      dispatch(signInToken());
       setUpdate(false);
     }
   };

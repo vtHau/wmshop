@@ -10,45 +10,93 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import avatar from './../../../assets/img/avatars/avatar.png';
 const {height, width} = Dimensions.get('window');
+import * as Config from './../../Config/config';
 import {Formik} from 'formik';
 import {validateUpdatePassword} from '../../utils/validation';
+import ModalChangeInfo from './../common/ModalChangeInfo';
+import {updatePassword} from './../../utils/checkAPI';
 
-const ChangePassword = (props) => {
-  const {navigation} = props;
+const ChangePassword = props => {
+  const [wrongPassword, setWrongPassword] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const {navigation, route} = props;
+  const user = route.params;
+  const [userID, setUserID] = useState(user.userID);
+  const [userFullName, setUserFullName] = useState(user.userFullName);
+  const [avatar, setAvatar] = useState(user.userImage);
+  const [userStatus, setUserStatus] = useState(user.userStatus);
 
-  const changeInfo = values => {
-    console.log(values);
+  const changePassword = async (values, resetForm) => {
+    const userInfo = {
+      userID,
+      password: values.password,
+      newPassword: values.newPassword,
+    };
+
+    const resUpdate = await updatePassword(userInfo);
+    if (resUpdate === 'UPDATE_PASSWORD_FAIL') {
+      setWrongPassword(true);
+    } else if (resUpdate === 'UPDATE_PASSWORD_SUCCESS') {
+      resetForm();
+      setModalVisible(true);
+    }
   };
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
+  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
     <ScrollView>
+      <ModalChangeInfo modalVisible={modalVisible} handleModal={handleModal} />
       <View style={styles.container}>
         <View style={styles.boxHeader}>
           <TouchableOpacity onPress={() => navigation.pop()}>
             <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />
           </TouchableOpacity>
-          <Text style={styles.titlePage}>Thong tin tai khoan</Text>
+          <Text style={styles.titlePage}>Cập nhập mật khẩu</Text>
           <View></View>
         </View>
         <View style={styles.boxBackground}>
           <View style={styles.boxImage}>
             <TouchableOpacity style={styles.wrapImage}>
-              <Image style={styles.avatarImage} source={avatar} />
+              <Image
+                style={styles.avatarImage}
+                source={{
+                  uri: `${URL}/avatars/${avatar}`,
+                }}
+              />
             </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.boxName}>
-          <Text style={styles.userName}>Trung Hau</Text>
-          <Text style={styles.status}>Khong gi khong the</Text>
+          <View style={styles.boxNameEdit}>
+            <Text style={styles.userName}>{userFullName}</Text>
+            <TouchableOpacity
+              style={styles.editIcon}
+              onPress={() => setUpdate(!update)}>
+              <FontAwesome5 name={'pen'} size={14} color={'#414dd1'} />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.status}>{userStatus}</Text>
         </View>
         <View style={styles.boxInfo}>
           <Formik
-            initialValues={{password: '', newPassword: '', preNewPassword: ''}}
+            initialValues={{
+              password: '',
+              newPassword: '',
+              preNewPassword: '',
+            }}
             validationSchema={validateUpdatePassword}
-            onSubmit={values => changeInfo(values)}>
+            onSubmit={(values, {resetForm}) =>
+              changePassword(values, resetForm)
+            }>
             {({
               handleChange,
               handleBlur,
@@ -63,9 +111,11 @@ const ChangePassword = (props) => {
                   <FontAwesome5 name={'key'} size={22} color={'#616161'} />
                   <TextInput
                     style={styles.textInput}
+                    onFocus={() => setWrongPassword(false)}
                     onBlur={handleBlur('password')}
                     onChangeText={handleChange('password')}
                     value={values.password}
+                    editable={update}
                     placeholder="Nhập tên của bạn..."
                   />
                 </View>
@@ -81,6 +131,7 @@ const ChangePassword = (props) => {
                     onBlur={handleBlur('newPassword')}
                     onChangeText={handleChange('newPassword')}
                     value={values.newPassword}
+                    editable={update}
                     placeholder="Nhập tên của bạn..."
                   />
                 </View>
@@ -95,6 +146,7 @@ const ChangePassword = (props) => {
                     onBlur={handleBlur('preNewPassword')}
                     onChangeText={handleChange('preNewPassword')}
                     value={values.preNewPassword}
+                    editable={update}
                     placeholder="Nhập số điện thoại của bạn..."
                   />
                 </View>
@@ -102,14 +154,25 @@ const ChangePassword = (props) => {
                   <Text style={styles.errorFill}>{errors.preNewPassword}</Text>
                 ) : null}
 
-                <TouchableOpacity
-                  onPress={() => {
-                    handleSubmit();
-                  }}>
-                  <View style={styles.changeInfo}>
-                    <Text style={styles.textChangeInfo}>Cập nhập</Text>
-                  </View>
-                </TouchableOpacity>
+                {wrongPassword ? (
+                  <Text style={styles.wrongPassword}>
+                    Mật khẩu hiện tại của bạn không đúng
+                  </Text>
+                ) : null}
+
+                {update ? (
+                  <TouchableOpacity onPress={() => handleSubmit()}>
+                    <View style={styles.changeInfo}>
+                      <Text style={styles.textChangeInfo}>Cập nhập</Text>
+                    </View>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => setUpdate(true)}>
+                    <View style={styles.changeInfo}>
+                      <Text style={styles.textChangeInfo}>Chỉnh sửa</Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
               </>
             )}
           </Formik>
@@ -122,6 +185,15 @@ const ChangePassword = (props) => {
 export default ChangePassword;
 
 const styles = StyleSheet.create({
+  editIcon: {
+    position: 'absolute',
+    right: -24,
+  },
+  boxNameEdit: {
+    position: 'relative',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   textChangeInfo: {
     padding: 10,
     fontWeight: 'bold',
@@ -144,6 +216,14 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     color: 'red',
     fontSize: 14,
+  },
+
+  wrongPassword: {
+    paddingTop: 10,
+    color: 'red',
+    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   boxInfo: {
     paddingTop: 10,

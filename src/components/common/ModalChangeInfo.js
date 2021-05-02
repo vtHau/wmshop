@@ -11,7 +11,7 @@ const ModalView = props => {
         <View style={styles.modalView}>
           <View style={styles.boxContent}>
             <Text style={styles.textContent}>
-              Cập nhập thông tin tài khoản thành công
+              Cập nhập tài khoản thành công
             </Text>
           </View>
           <View style={styles.boxIcon}>
