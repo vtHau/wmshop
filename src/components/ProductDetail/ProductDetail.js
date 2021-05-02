@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -18,21 +18,33 @@ import {useSelector, useDispatch} from 'react-redux';
 const {height, width} = Dimensions.get('window');
 const productWidth = width - 200;
 const productHeight = productWidth * 1.25;
+import ModalView from './../common/ModalView';
 
 const ProductDetail = props => {
   const {navigation, route} = props;
+  const [modalVisible, setModalVisible] = useState(true);
   const dispatch = useDispatch();
+  const signIn = useSelector(state => state.authenReducer.signIn);
 
   const product = route.params;
 
   const insertCarts = () => {
-    dispatch(inserCart(product.productID));
+    if (signIn) {
+      dispatch(inserCart(product.productID));
+    } else {
+      setModalVisible(!modalVisible);
+    }
+  };
+
+  const handleModal = () => {
+    setModalVisible(!modalVisible);
   };
 
   const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
     <View style={styles.container}>
+      <ModalView modalVisible={modalVisible} handleModal={handleModal} />
       <ScrollView>
         <View style={styles.boxImage}>
           <TouchableOpacity
