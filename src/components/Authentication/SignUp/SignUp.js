@@ -15,6 +15,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {Formik} from 'formik';
 import {validateSignUp} from '../../../utils/validation';
 import header from './../../../../assets/img/header.png';
+import {checkSignUp} from './../../../utils/checkAPI';
+import ModalSignUp from './../../common/ModalSignUp';
 
 function SignIn(props) {
   const {navigation} = props;
@@ -22,8 +24,15 @@ function SignIn(props) {
   const dispatch = useDispatch();
   const [typingEmail, setTypingEmail] = useState(false);
   const [statusSignIn, setStatusSignIn] = useState(false);
-
+  const [statusSignUp, setStatusSignUp] = useState(false);
   const [typingPassword, setTypingPassword] = useState(false);
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleModal = () => {
+    setModalVisible(!modalVisible);
+    navigation.pop();
+  };
 
   const typing = (
     <TypingAnimation
@@ -43,30 +52,31 @@ function SignIn(props) {
       setTypingPassword(true);
     }
   };
-  const pressLogin = async values => {
+  const signUpAccount = async values => {
     setTypingEmail(false);
+    setStatusSignUp(false);
     setTypingPassword(false);
 
     const respSignUp = await checkSignUp(values);
     if (respSignUp === 'SIGNUP_SUCCESS') {
-      console.log(respSignUp);
+      setModalVisible(!modalVisible);
     } else if (respSignUp === 'SIGNUP_FAIL') {
-      setStatusSignIn(true);
-      console.log(respSignUp);
+      setStatusSignUp(true);
     } else if (respSignUp === 'EMAIL_EXIST') {
-      console.log(respSignUp);
+      setStatusSignIn(true);
     }
   };
 
   return (
     <View style={styles.container}>
+      <ModalSignUp modalVisible={modalVisible} handleModal={handleModal} />
       <TouchableOpacity style={styles.boxBack} onPress={() => navigation.pop()}>
         <FontAwesome5 name={'angle-left'} size={26} color={'#fff'} />
       </TouchableOpacity>
       <Formik
         initialValues={{name: '', email: '', password: '', prePassword: ''}}
         validationSchema={validateSignUp}
-        onSubmit={values => pressLogin(values)}>
+        onSubmit={values => signUpAccount(values)}>
         {({
           handleChange,
           handleBlur,
@@ -155,8 +165,11 @@ function SignIn(props) {
               ) : null}
 
               {statusSignIn ? (
-                <Text style={styles.textError}>
-                  Email hoặc mật khẩu không đúng
+                <Text style={styles.emailExist}>Địa chỉ Email đã tồn tại</Text>
+              ) : null}
+              {statusSignUp ? (
+                <Text style={styles.emailExist}>
+                  Đăng ký tài khoản không thành công
                 </Text>
               ) : null}
 
@@ -185,6 +198,13 @@ function SignIn(props) {
 export default SignIn;
 
 const styles = StyleSheet.create({
+  emailExist: {
+    paddingTop: 10,
+    color: 'red',
+    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
   boxBack: {
     position: 'absolute',
     zIndex: 1,
