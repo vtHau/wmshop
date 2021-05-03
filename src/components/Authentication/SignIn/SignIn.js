@@ -16,8 +16,10 @@ import {validateSignIn} from './../../../utils/validation';
 import header from './../../../../assets/img/header.png';
 import {checkSignIn} from './../../../utils/checkAPI';
 import {signIn} from './../../../actions/actions';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 function SignIn(props) {
+  const {navigation} = props;
   const dispatch = useDispatch();
   const [typingEmail, setTypingEmail] = useState(false);
   const [statusSignIn, setStatusSignIn] = useState(true);
@@ -57,6 +59,9 @@ function SignIn(props) {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.boxBack} onPress={() => navigation.pop()}>
+        <FontAwesome5 name={'angle-left'} size={26} color={'#fff'} />
+      </TouchableOpacity>
       <Formik
         initialValues={{email: '', password: ''}}
         validationSchema={validateSignIn}
@@ -82,51 +87,60 @@ function SignIn(props) {
               </ImageBackground>
             </View>
             <View style={styles.footer}>
-              <Text style={styles.title}>Email</Text>
-              <View style={styles.action}>
-                <TextInput
-                  style={styles.textInput}
-                  onFocus={() => focusInput('email')}
-                  onBlur={handleBlur('email')}
-                  onChangeText={handleChange('email')}
-                  value={values.email}
-                  placeholder="Nhập địa chỉ Email..."
-                />
-                {typingEmail ? typing : null}
-              </View>
-              {errors.email && touched.email ? (
-                <Text style={styles.textError}>{errors.email}</Text>
-              ) : null}
-
-              <Text style={[styles.title, {marginTop: 20}]}>Mật khẩu</Text>
-              <View style={styles.action}>
-                <TextInput
-                  style={styles.textInput}
-                  onFocus={() => focusInput('password')}
-                  onBlur={handleBlur('password')}
-                  onChangeText={handleChange('password')}
-                  value={values.password}
-                  placeholder="Nhập mật khẩu..."
-                />
-                {typingPassword ? typing : null}
-              </View>
-              {errors.password && touched.password ? (
-                <Text style={styles.textError}>{errors.password}</Text>
-              ) : null}
-
-              {!statusSignIn ? (
-                <Text style={styles.loginFail}>
-                  Email hoặc mật khẩu không đúng
-                </Text>
-              ) : null}
-
-              <TouchableOpacity onPress={handleSubmit}>
-                <View style={styles.buttonContainer}>
-                  <View style={styles.animation}>
-                    <Text style={styles.textLogin}>Đăng nhập</Text>
-                  </View>
+              <View style={styles.boxInput}>
+                <Text style={styles.title}>Email</Text>
+                <View style={styles.action}>
+                  <TextInput
+                    style={styles.textInput}
+                    onFocus={() => focusInput('email')}
+                    onBlur={handleBlur('email')}
+                    onChangeText={handleChange('email')}
+                    value={values.email}
+                    placeholder="Nhập địa chỉ Email..."
+                  />
+                  {typingEmail ? typing : null}
                 </View>
-              </TouchableOpacity>
+                {errors.email && touched.email ? (
+                  <Text style={styles.textError}>{errors.email}</Text>
+                ) : null}
+
+                <Text style={[styles.title, {marginTop: 20}]}>Mật khẩu</Text>
+                <View style={styles.action}>
+                  <TextInput
+                    style={styles.textInput}
+                    onFocus={() => focusInput('password')}
+                    onBlur={handleBlur('password')}
+                    onChangeText={handleChange('password')}
+                    value={values.password}
+                    placeholder="Nhập mật khẩu..."
+                  />
+                  {typingPassword ? typing : null}
+                </View>
+                {errors.password && touched.password ? (
+                  <Text style={styles.textError}>{errors.password}</Text>
+                ) : null}
+
+                {!statusSignIn ? (
+                  <Text style={styles.loginFail}>
+                    Email hoặc mật khẩu không đúng
+                  </Text>
+                ) : null}
+              </View>
+              <View style={styles.boxAction}>
+                <TouchableOpacity onPress={handleSubmit}>
+                  <View style={styles.buttonContainer}>
+                    <View style={styles.animation}>
+                      <Text style={styles.textLogin}>Đăng nhập</Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+                <View style={styles.btnSignUp}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('SIGN_UP')}>
+                    <Text style={styles.textSignIn}>Đăng ký</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
           </>
         )}
@@ -138,7 +152,25 @@ function SignIn(props) {
 export default SignIn;
 
 const styles = StyleSheet.create({
+  boxBack: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 20,
+    left: 20,
+  },
+  textSignIn: {
+    marginVertical: 4,
+    marginHorizontal: 10,
+    fontSize: 16,
+    color: '#93278f',
+    fontWeight: 'bold',
+  },
+  btnSignUp: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
   container: {
+    position: 'relative',
     flex: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
@@ -147,8 +179,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   footer: {
+    justifyContent: 'space-between',
     flex: 2,
     padding: 20,
+    paddingBottom: 40,
   },
   imageBackground: {
     flex: 1,

@@ -28,7 +28,7 @@ const Header = props => {
       <Text style={styles.title}>WB Shop</Text>
       <TouchableOpacity
         style={styles.btnSearch}
-        onPress={() => navigation.push('SETTING_NAVIGATOR')}>
+        onPress={() => navigation.push('SETTING_AUTHEN_CONTAINER')}>
         <Image style={styles.avatarIcon} source={avatar} />
       </TouchableOpacity>
     </View>

@@ -11,13 +11,13 @@ import {
 
 import {useSelector, useDispatch} from 'react-redux';
 import {TypingAnimation} from 'react-native-typing-animation';
-// import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {Formik} from 'formik';
-import {validateSignup} from '../../../utils/validation';
-import header from './../../../../assets/img/header.png'
-import {checkSignIn} from './../../../utils/checkAPI';
+import {validateSignUp} from '../../../utils/validation';
+import header from './../../../../assets/img/header.png';
 
 function SignIn(props) {
+  const {navigation} = props;
   const {width} = Dimensions.get('screen');
   const dispatch = useDispatch();
   const [typingEmail, setTypingEmail] = useState(false);
@@ -60,6 +60,9 @@ function SignIn(props) {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.boxBack} onPress={() => navigation.pop()}>
+        <FontAwesome5 name={'angle-left'} size={26} color={'#fff'} />
+      </TouchableOpacity>
       <Formik
         initialValues={{name: '', email: '', password: '', prePassword: ''}}
         validationSchema={validateSignUp}
@@ -74,9 +77,7 @@ function SignIn(props) {
         }) => (
           <>
             <View style={styles.header}>
-              <ImageBackground
-                source={header}
-                style={styles.imageBackground}>
+              <ImageBackground source={header} style={styles.imageBackground}>
                 <Text
                   style={{color: 'white', fontWeight: 'bold', fontSize: 30}}>
                   Xin chào !!!
@@ -166,6 +167,13 @@ function SignIn(props) {
                   </View>
                 </View>
               </TouchableOpacity>
+
+              <View style={styles.btnSignUp}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('SIGN_IN')}>
+                  <Text style={styles.textSignIn}>Đăng nhập</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </>
         )}
@@ -177,7 +185,25 @@ function SignIn(props) {
 export default SignIn;
 
 const styles = StyleSheet.create({
+  boxBack: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 20,
+    left: 20,
+  },
+  textSignIn: {
+    marginVertical: 4,
+    marginHorizontal: 10,
+    fontSize: 16,
+    color: '#93278f',
+    fontWeight: 'bold',
+  },
+  btnSignUp: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
   container: {
+    position: 'relative',
     flex: 1,
     backgroundColor: 'white',
     justifyContent: 'center',

@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Main from './Main';
-import SettingNavigator from './Setting/SettingNavigator';
+import SettingAuthenContainer from './SettingAuthenContainer/SettingAuthenContainer';
 import store from './../store';
 
 const Stack = createStackNavigator();
@@ -19,7 +19,10 @@ function App() {
           }}
           initialRouteName="MAIN">
           <Stack.Screen name="MAIN" component={Main} />
-          <Stack.Screen name="SETTING_NAVIGATOR" component={SettingNavigator} />
+          <Stack.Screen
+            name="SETTING_AUTHEN_CONTAINER"
+            component={SettingAuthenContainer}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
