@@ -9,6 +9,7 @@ import HomeNavigator from './Home/HomeNavigator';
 import CartNavigator from './Cart/CartNavigator';
 import Search from './Search/Search';
 import Contact from './Contact/Contact';
+import Tabb from './Tab/Tab';
 import Setting from './Setting/Setting';
 import removeStorage from './../utils/removeStorage';
 
@@ -34,6 +35,16 @@ const Main = props => {
           activeTintColor: '#0077FF',
           inactiveTintColor: '#636466',
         }}>
+        {/* <Tab.Screen
+          name="Rating"
+          component={Tabb}
+          options={{
+            tabBarLabel: 'Trang chủ',
+            tabBarIcon: ({color}) => (
+              <FontAwesome5 name={'home'} size={20} color={color} />
+            ),
+          }}
+        /> */}
         <Tab.Screen
           name="HOME_NAVIGATOR"
           component={HomeNavigator}
