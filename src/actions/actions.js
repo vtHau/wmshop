@@ -78,6 +78,32 @@ export const initBrand = brands => {
   };
 };
 
+export const fetchReview = productID => {
+  return dispatch => {
+    const review = {
+      type: 'GET_REVIEW',
+      productID,
+    };
+    CallAPI(Config.API_REVIEW, 'POST', review).then(res => {
+      if (typeof res.data !== 'string' && typeof res.data === 'object') {
+        dispatch(initReview(res.data));
+      } else if (
+        typeof res.data === 'string' &&
+        res.data.trim() === 'NOT_FOUND_REVIEW'
+      ) {
+        dispatch(initReview([]));
+      }
+    });
+  };
+};
+
+export const initReview = reviews => {
+  return {
+    type: 'INIT_REVIEW',
+    payload: reviews,
+  };
+};
+
 export const updateCartQuantity = (cartID, quantity) => {
   return async dispatch => {
     const update = {

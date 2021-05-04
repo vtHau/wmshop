@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,9 +10,10 @@ import {
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {renderRating} from './../../utils/common';
+import avatar from './../../../assets/img/avatars/avatar.png';
 
 import * as Config from './../../Config/config';
-import {inserCart} from './../../actions/actions';
+import {inserCart, fetchReview} from './../../actions/actions';
 import {useSelector, useDispatch} from 'react-redux';
 
 const {height, width} = Dimensions.get('window');
@@ -20,13 +21,36 @@ const productWidth = width - 200;
 const productHeight = productWidth * 1.25;
 import ModalView from './../common/ModalView';
 
+const listTab = [
+  {
+    name: 'Tất cả đánh giá',
+    status: 'ALL_COMMENT',
+  },
+];
+
 const ProductDetail = props => {
   const {navigation, route} = props;
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [status, setStatus] = useState('ALL_COMMENT');
   const dispatch = useDispatch();
   const signIn = useSelector(state => state.authenReducer.signIn);
-
+  const reviews = useSelector(state => state.reviewReducer.reviews);
   const product = route.params;
+
+  useEffect(() => {
+    dispatch(fetchReview(product.productID));
+  }, [dispatch]);
+
+  if (signIn) {
+    const index = listTab.findIndex(tabl => tabl.status === 'YOUR_COMMENT');
+    if (index === -1) {
+      listTab.push({name: 'Đánh giá của bạn', status: 'YOUR_COMMENT'});
+    }
+  }
+
+  const YourComment = () => {
+    return <Text>Your commetn</Text>;
+  };
 
   const insertCarts = () => {
     if (signIn) {
@@ -42,6 +66,36 @@ const ProductDetail = props => {
 
   const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
+  const AllComment = () => {
+    return (
+      <View style={styles.allComment}>
+        {reviews.map((review, key) => (
+          <View style={styles.boxComment} key={key}>
+            <View style={styles.boxAvatar}>
+              <Image
+                style={styles.avatarIcon}
+                source={{
+                  uri: `${URL}/avatars/${review.userImage}`,
+                }}
+              />
+            </View>
+            <View style={styles.boxContentComment}>
+              <Text style={styles.nameUser}> {review.userFullName}</Text>
+              <View>
+                <Text style={styles.contentComment}>{review.comment}</Text>
+              </View>
+              <View style={styles.starTime}>
+                <View style={styles.productStar}>
+                  {renderRating(review.star)}
+                </View>
+                <Text style={styles.time}> {review.timeReview}</Text>
+              </View>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
   return (
     <View style={styles.container}>
       <ModalView modalVisible={modalVisible} handleModal={handleModal} />
@@ -93,8 +147,35 @@ const ProductDetail = props => {
             </Text>
             <Text style={styles.productDesc}>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
-              velit omnis laborum ducimus, aperiam, ab sequi aspernatur
+              velit omnis laborum ducimus, aperiam, ab sequi aspernatur Lorem
+              ipsum dolor sit amet consectetur adipisicing elit. Ipsam velit
+              omnis laborum ducimus, aperiam, ab sequi aspernatur
             </Text>
+          </View>
+        </View>
+        <View style={styles.boxReview}>
+          <Text style={styles.titleReview}>Đánh giá</Text>
+          <View style={styles.listTab}>
+            {listTab.map((itemTab, key) => (
+              <TouchableOpacity
+                key={key}
+                style={[
+                  styles.tabItem,
+                  status === itemTab.status && styles.tabItemActive,
+                ]}
+                onPress={() => setStatus(itemTab.status)}>
+                <Text
+                  style={[
+                    styles.textTabItem,
+                    status === itemTab.status && styles.textActive,
+                  ]}>
+                  {itemTab.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <View style-={styles.reviewContent}>
+            {status === 'ALL_COMMENT' ? <AllComment /> : <YourComment />}
           </View>
         </View>
       </ScrollView>
@@ -117,6 +198,77 @@ const ProductDetail = props => {
 export default ProductDetail;
 
 const styles = StyleSheet.create({
+  titleReview: {
+    color: '#000',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 20,
+  },
+  time: {
+    color: '#616161',
+  },
+  nameUser: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  contentComment: {
+    flexShrink: 1,
+    color: '#616161',
+  },
+  boxContentComment: {
+    flex: 1,
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+  },
+  boxAvatar: {
+    alignItems: 'center',
+    padding: 6,
+  },
+  avatarIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+  },
+  boxComment: {
+    flexDirection: 'row',
+    backgroundColor: '#F0F2F5',
+    borderRadius: 10,
+    width: '100%',
+    marginBottom: 14,
+  },
+  allComment: {
+    paddingHorizontal: 20,
+    paddingTop: 40,
+  },
+  textTabItem: {
+    color: '#000',
+    marginHorizontal: 10,
+  },
+  textActive: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  tabItemActive: {
+    marginHorizontal: 10,
+    backgroundColor: '#003FFF',
+  },
+  tabItem: {
+    padding: 8,
+    borderWidth: 0.5,
+    borderColor: '#ccc',
+    borderRadius: 10,
+  },
+  listTab: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  boxReview: {
+    borderTopWidth: 1,
+    borderTopColor: '#F0F2F5',
+    paddingBottom: 80,
+  },
   container: {
     position: 'relative',
     flex: 1,
@@ -202,6 +354,11 @@ const styles = StyleSheet.create({
     marginTop: 4,
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  starTime: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   productStar: {
