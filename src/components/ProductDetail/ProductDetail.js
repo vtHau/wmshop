@@ -33,8 +33,14 @@ import ModalView from './../common/ModalView';
 
 const listTab = [
   {
+    signInR: false,
     name: 'Tất cả đánh giá',
     status: 'ALL_COMMENT',
+  },
+  {
+    signInR: true,
+    name: 'Đánh giá của bạn',
+    status: 'YOUR_COMMENT',
   },
 ];
 
@@ -53,8 +59,13 @@ const ProductDetail = props => {
 
   useEffect(() => {
     dispatch(fetchReview(product.productID));
-    dispatch(fetchYourReview(product.productID));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (status === 'YOUR_COMMENT') {
+      dispatch(fetchYourReview(product.productID));
+    }
+  }, [status]);
 
   const changeComment = async values => {
     const review = {
@@ -92,13 +103,6 @@ const ProductDetail = props => {
       dispatch(fetchYourReview(product.productID));
     }
   };
-
-  if (signIn) {
-    const index = listTab.findIndex(tabl => tabl.status === 'YOUR_COMMENT');
-    if (index === -1) {
-      listTab.push({name: 'Đánh giá của bạn', status: 'YOUR_COMMENT'});
-    }
-  }
 
   const insertCarts = () => {
     if (signIn) {
@@ -147,6 +151,7 @@ const ProductDetail = props => {
     return (
       <View style={styles.allComment}>
         {yourReviews.length > 0 &&
+          signIn &&
           yourReviews.map((yourReview, key) => (
             <View style={styles.boxComment} key={key}>
               <View style={styles.boxAvatar}>
@@ -382,30 +387,56 @@ const ProductDetail = props => {
         <View style={styles.boxReview}>
           <Text style={styles.titleReview}>Đánh giá</Text>
           <View style={styles.listTab}>
-            {listTab.map((itemTab, key) => (
-              <TouchableOpacity
-                key={key}
-                style={[
-                  styles.tabItem,
-                  status === itemTab.status && styles.tabItemActive,
-                ]}
-                onPress={() => {
-                  setStatus(itemTab.status);
-                  dispatch(fetchReview(product.productID));
-                  dispatch(fetchYourReview(product.productID));
-                }}>
-                <Text
-                  style={[
-                    styles.textTabItem,
-                    status === itemTab.status && styles.textActive,
-                  ]}>
-                  {itemTab.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
+            {listTab.map((itemTab, key) => {
+              if (itemTab.signInR && signIn) {
+                return (
+                  <TouchableOpacity
+                    key={key}
+                    style={[
+                      styles.tabItem,
+                      status === itemTab.status && styles.tabItemActive,
+                    ]}
+                    onPress={() => {
+                      setStatus(itemTab.status);
+                      dispatch(fetchReview(product.productID));
+                      dispatch(fetchYourReview(product.productID));
+                    }}>
+                    <Text
+                      style={[
+                        styles.textTabItem,
+                        status === itemTab.status && styles.textActive,
+                      ]}>
+                      {itemTab.name}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              } else if (!itemTab.signInR) {
+                return (
+                  <TouchableOpacity
+                    key={key}
+                    style={[
+                      styles.tabItem,
+                      status === itemTab.status && styles.tabItemActive,
+                    ]}
+                    onPress={() => {
+                      setStatus(itemTab.status);
+                      dispatch(fetchReview(product.productID));
+                    }}>
+                    <Text
+                      style={[
+                        styles.textTabItem,
+                        status === itemTab.status && styles.textActive,
+                      ]}>
+                      {itemTab.name}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }
+            })}
           </View>
           <View style-={styles.reviewContent}>
-            {status === 'ALL_COMMENT' ? <AllComment /> : <YourComment />}
+            {status === 'ALL_COMMENT' ? <AllComment /> : null}
+            {status === 'YOUR_COMMENT' && signIn ? <YourComment /> : null}
           </View>
         </View>
       </ScrollView>
