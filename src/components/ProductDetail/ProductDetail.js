@@ -16,7 +16,12 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {renderRating} from './../../utils/common';
 import Rating from './../Rating/Rating';
 import * as Config from './../../Config/config';
-import {inserCart, fetchReview, fetchYourReview} from './../../actions/actions';
+import {
+  inserCart,
+  fetchReview,
+  fetchYourReview,
+  updateYourReview,
+} from './../../actions/actions';
 import {useSelector, useDispatch} from 'react-redux';
 
 const {height, width} = Dimensions.get('window');
@@ -42,15 +47,21 @@ const ProductDetail = props => {
   const signIn = useSelector(state => state.authenReducer.signIn);
   const reviews = useSelector(state => state.reviewReducer.reviews);
   const yourReviews = useSelector(state => state.reviewReducer.yourReviews);
+  console.log(yourReviews);
 
-  const changeComment = comment => {
+  const changeComment = async values => {
     const review = {
       star: rating,
-      comment,
+      comment: values.comment,
+      productID: product.productID,
     };
 
-    console.log(review);
+    const res = await updateYourReview(review);
+    if (res) {
+      dispatch(fetchYourReview(product.productID));
+    }
   };
+
   useEffect(() => {
     dispatch(fetchReview(product.productID));
     dispatch(fetchYourReview(product.productID));
@@ -168,9 +179,7 @@ const ProductDetail = props => {
               comment: yourReviews[0].comment,
             }}
             validationSchema={validateUpdateComment}
-            onSubmit={(values, {resetForm}) =>
-              changeComment(values, resetForm)
-            }>
+            onSubmit={values => changeComment(values)}>
             {({
               handleChange,
               handleBlur,

@@ -126,6 +126,31 @@ export const fetchYourReview = productID => {
   };
 };
 
+export const updateYourReview = async review => {
+  const resp = await readStorage('signIn');
+  if (resp && resp !== null) {
+    const {userID} = resp.userInfo;
+    const {comment, star, productID} = review;
+    const reviews = {
+      type: 'UPDATE_YOUR_REVIEW',
+      userID,
+      productID,
+      comment,
+      star,
+    };
+
+    const res = await CallAPI(Config.API_REVIEW, 'POST', reviews);
+
+    if (
+      typeof res.data === 'string' &&
+      res.data.trim() === 'UPDATE_YOUR_REVIEW_SUCCESS'
+    ) {
+      return true;
+    }
+    return false;
+  }
+};
+
 export const initReview = reviews => {
   return {
     type: 'INIT_REVIEW',
