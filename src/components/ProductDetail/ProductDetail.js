@@ -21,6 +21,8 @@ import {
   fetchReview,
   fetchYourReview,
   updateYourReview,
+  deleteYourComment,
+  newYourReview,
 } from './../../actions/actions';
 import {useSelector, useDispatch} from 'react-redux';
 
@@ -42,16 +44,21 @@ const ProductDetail = props => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [status, setStatus] = useState('ALL_COMMENT');
-  const [editComment, setEditComment] = useState(true);
+  const [editComment, setEditComment] = useState(false);
   const [rating, setRating] = useState(0);
   const signIn = useSelector(state => state.authenReducer.signIn);
   const reviews = useSelector(state => state.reviewReducer.reviews);
   const yourReviews = useSelector(state => state.reviewReducer.yourReviews);
-  console.log(yourReviews);
+  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
+
+  useEffect(() => {
+    dispatch(fetchReview(product.productID));
+    dispatch(fetchYourReview(product.productID));
+  }, [dispatch]);
 
   const changeComment = async values => {
     const review = {
-      star: rating,
+      star: rating === 0 ? yourReviews[0].star : rating,
       comment: values.comment,
       productID: product.productID,
     };
@@ -59,13 +66,32 @@ const ProductDetail = props => {
     const res = await updateYourReview(review);
     if (res) {
       dispatch(fetchYourReview(product.productID));
+      setEditComment(!editComment);
     }
   };
 
-  useEffect(() => {
-    dispatch(fetchReview(product.productID));
-    dispatch(fetchYourReview(product.productID));
-  }, [dispatch]);
+  const deleteComment = async () => {
+    const res = await deleteYourComment(product.productID);
+
+    if (res) {
+      dispatch(fetchReview(product.productID));
+      dispatch(fetchYourReview(product.productID));
+    }
+  };
+
+  const newReview = async values => {
+    const review = {
+      star: rating,
+      comment: values.comment,
+      productID: product.productID,
+    };
+
+    const res = await newYourReview(review);
+    if (res) {
+      dispatch(fetchReview(product.productID));
+      dispatch(fetchYourReview(product.productID));
+    }
+  };
 
   if (signIn) {
     const index = listTab.findIndex(tabl => tabl.status === 'YOUR_COMMENT');
@@ -85,8 +111,6 @@ const ProductDetail = props => {
   const handleModal = () => {
     setModalVisible(!modalVisible);
   };
-
-  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   const AllComment = () => {
     return (
@@ -149,30 +173,99 @@ const ProductDetail = props => {
               </View>
 
               <View style={styles.boxFeature}>
-                <TouchableOpacity onPress={() => {}}>
-                  <FontAwesome
-                    name={'check-circle'}
-                    size={20}
-                    color={'#003FFF'}
-                  />
+                <TouchableOpacity>
+                  {Number(yourReview.status) === 1 ? (
+                    <FontAwesome
+                      style={styles.iconF}
+                      name={'check-circle'}
+                      size={18}
+                      color={'#003FFF'}
+                    />
+                  ) : (
+                    <FontAwesome
+                      style={styles.iconF}
+                      name={'spinner'}
+                      size={18}
+                      color={'grey'}
+                    />
+                  )}
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
                     setEditComment(!editComment);
                     setRating(0);
                   }}>
-                  <FontAwesome5 name={'edit'} size={20} color={'#003FFF'} />
+                  <FontAwesome5 name={'edit'} size={18} color={'#003FFF'} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={deleteComment}>
                   <FontAwesome5
+                    style={styles.iconF}
                     name={'trash-alt'}
-                    size={20}
+                    size={18}
                     color={'#003FFF'}
                   />
                 </TouchableOpacity>
               </View>
             </View>
           ))}
+        {yourReviews.length === 0 && (
+          <View>
+            <Formik
+              initialValues={{
+                comment: '',
+              }}
+              validationSchema={validateUpdateComment}
+              onSubmit={values => newReview(values)}>
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                errors,
+                touched,
+                values,
+              }) => (
+                <>
+                  <View style={styles.boxEditComment}>
+                    <Text style={styles.titleEditComment}>Thêm đánh giá</Text>
+                    <View style={styles.boxEdit}>
+                      <View style={styles.selectStar}>
+                        <Rating
+                          size={18}
+                          numStars={5}
+                          rating={rating}
+                          setRating={setRating}
+                        />
+                      </View>
+                    </View>
+                    <View style={styles.infoItem}>
+                      <FontAwesome5
+                        name={'comment-alt'}
+                        size={22}
+                        color={'#616161'}
+                      />
+
+                      <TextInput
+                        style={styles.textInput}
+                        onBlur={handleBlur('comment')}
+                        onChangeText={handleChange('comment')}
+                        value={values.comment}
+                        placeholder="Nhập tên của bạn..."
+                      />
+                    </View>
+                    {errors.comment && touched.comment ? (
+                      <Text style={styles.errorFill}>{errors.comment}</Text>
+                    ) : null}
+                    <TouchableOpacity
+                      style={styles.btnReview}
+                      onPress={() => handleSubmit()}>
+                      <Text style={styles.textReview}>Đánh giá</Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
+            </Formik>
+          </View>
+        )}
         {editComment ? (
           <Formik
             initialValues={{
@@ -252,7 +345,6 @@ const ProductDetail = props => {
             }}
           />
         </View>
-
         <View style={styles.boxDetail}>
           <View style={styles.contentInfo}>
             <View style={styles.existProduct}>
@@ -284,12 +376,7 @@ const ProductDetail = props => {
             <Text style={styles.productBrand}>
               Thương hiệu: {product.brandName}
             </Text>
-            <Text style={styles.productDesc}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
-              velit omnis laborum ducimus, aperiam, ab sequi aspernatur Lorem
-              ipsum dolor sit amet consectetur adipisicing elit. Ipsam velit
-              omnis laborum ducimus, aperiam, ab sequi aspernatur
-            </Text>
+            <Text style={styles.productDesc}>{product.productDesc}</Text>
           </View>
         </View>
         <View style={styles.boxReview}>
@@ -302,7 +389,11 @@ const ProductDetail = props => {
                   styles.tabItem,
                   status === itemTab.status && styles.tabItemActive,
                 ]}
-                onPress={() => setStatus(itemTab.status)}>
+                onPress={() => {
+                  setStatus(itemTab.status);
+                  dispatch(fetchReview(product.productID));
+                  dispatch(fetchYourReview(product.productID));
+                }}>
                 <Text
                   style={[
                     styles.textTabItem,
@@ -337,6 +428,9 @@ const ProductDetail = props => {
 export default ProductDetail;
 
 const styles = StyleSheet.create({
+  iconF: {
+    marginVertical: 4,
+  },
   errorFill: {
     marginTop: 4,
     paddingLeft: 10,
@@ -409,6 +503,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 6,
     paddingVertical: 4,
+    justifyContent: 'space-around',
   },
   boxAvatar: {
     alignItems: 'center',

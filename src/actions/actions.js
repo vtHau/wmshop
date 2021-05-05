@@ -151,6 +151,53 @@ export const updateYourReview = async review => {
   }
 };
 
+export const newYourReview = async review => {
+  const resp = await readStorage('signIn');
+  if (resp && resp !== null) {
+    const {userID} = resp.userInfo;
+    const {comment, star, productID} = review;
+    const reviews = {
+      type: 'NEW_YOUR_REVIEW',
+      userID,
+      productID,
+      comment,
+      star,
+    };
+
+    const res = await CallAPI(Config.API_REVIEW, 'POST', reviews);
+
+    if (
+      typeof res.data === 'string' &&
+      res.data.trim() === 'NEW_YOUR_REVIEW_SUCCESS'
+    ) {
+      return true;
+    }
+    return false;
+  }
+};
+
+export const deleteYourComment = async productID => {
+  const resp = await readStorage('signIn');
+  if (resp && resp !== null) {
+    const {userID} = resp.userInfo;
+    const reviews = {
+      type: 'DELETE_YOUR_REVIEW',
+      userID,
+      productID,
+    };
+
+    const res = await CallAPI(Config.API_REVIEW, 'POST', reviews);
+
+    if (
+      typeof res.data === 'string' &&
+      res.data.trim() === 'DELETE_YOUR_REVIEW_SUCCESS'
+    ) {
+      return true;
+    }
+    return false;
+  }
+};
+
 export const initReview = reviews => {
   return {
     type: 'INIT_REVIEW',
