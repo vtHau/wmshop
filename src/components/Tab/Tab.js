@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
@@ -7,9 +13,14 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 const Tab = createMaterialTopTabNavigator();
 
 function HomeScreen() {
+  const [comment, setComment] = useState('');
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Home!</Text>
+      <TextInput
+        value={comment}
+        onChangeText={text => setComment(text)}
+        placeholder="fasfsf"
+      />
     </View>
   );
 }

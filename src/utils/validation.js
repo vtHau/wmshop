@@ -59,3 +59,10 @@ export const validateUpdatePassword = Yup.object().shape({
     .max(50, 'Mật khẩu quá dài!')
     .required('Vui lòng nhập lại mật khẩu mới của bạn'),
 });
+
+export const validateUpdateComment = Yup.object().shape({
+  comment: Yup.string()
+    .min(2, 'Đánh giá quá ngắn!')
+    .max(50, 'Đánh giá quá dài!')
+    .required('Vui lòng nhập đánh giá'),
+});

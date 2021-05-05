@@ -35,7 +35,7 @@ const Main = props => {
           activeTintColor: '#0077FF',
           inactiveTintColor: '#636466',
         }}>
-        {/* <Tab.Screen
+        <Tab.Screen
           name="Rating"
           component={Tabb}
           options={{
@@ -44,7 +44,7 @@ const Main = props => {
               <FontAwesome5 name={'home'} size={20} color={color} />
             ),
           }}
-        /> */}
+        />
         <Tab.Screen
           name="HOME_NAVIGATOR"
           component={HomeNavigator}

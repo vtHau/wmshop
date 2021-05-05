@@ -97,9 +97,45 @@ export const fetchReview = productID => {
   };
 };
 
+export const fetchYourReview = productID => {
+  return async dispatch => {
+    const resp = await readStorage('signIn');
+    if (resp && resp !== null) {
+      const {userID} = resp.userInfo;
+      const review = {
+        type: 'GET_YOUR_REVIEW',
+        userID,
+        productID,
+      };
+
+      CallAPI(Config.API_REVIEW, 'POST', review)
+        .then(res => {
+          if (typeof res.data !== 'string' && typeof res.data === 'object') {
+            dispatch(initYourReview(res.data));
+          } else if (
+            typeof res.data === 'string' &&
+            res.data.trim() === 'NOT_FOUND_YOUR_REVIEW'
+          ) {
+            dispatch(initYourReview([]));
+          }
+        })
+        .catch(() => {
+          console.log('Error insert cart');
+        });
+    }
+  };
+};
+
 export const initReview = reviews => {
   return {
     type: 'INIT_REVIEW',
+    payload: reviews,
+  };
+};
+
+export const initYourReview = reviews => {
+  return {
+    type: 'INIT_YOUR_REVIEW',
     payload: reviews,
   };
 };

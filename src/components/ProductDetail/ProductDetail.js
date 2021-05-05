@@ -7,13 +7,16 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
+import {Formik} from 'formik';
+import {validateUpdateComment} from '../../utils/validation';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {renderRating} from './../../utils/common';
-import avatar from './../../../assets/img/avatars/avatar.png';
-
+import Rating from './../Rating/Rating';
 import * as Config from './../../Config/config';
-import {inserCart, fetchReview} from './../../actions/actions';
+import {inserCart, fetchReview, fetchYourReview} from './../../actions/actions';
 import {useSelector, useDispatch} from 'react-redux';
 
 const {height, width} = Dimensions.get('window');
@@ -30,15 +33,27 @@ const listTab = [
 
 const ProductDetail = props => {
   const {navigation, route} = props;
+  const product = route.params;
+  const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [status, setStatus] = useState('ALL_COMMENT');
-  const dispatch = useDispatch();
+  const [editComment, setEditComment] = useState(true);
+  const [rating, setRating] = useState(0);
   const signIn = useSelector(state => state.authenReducer.signIn);
   const reviews = useSelector(state => state.reviewReducer.reviews);
-  const product = route.params;
+  const yourReviews = useSelector(state => state.reviewReducer.yourReviews);
 
+  const changeComment = comment => {
+    const review = {
+      star: rating,
+      comment,
+    };
+
+    console.log(review);
+  };
   useEffect(() => {
     dispatch(fetchReview(product.productID));
+    dispatch(fetchYourReview(product.productID));
   }, [dispatch]);
 
   if (signIn) {
@@ -47,10 +62,6 @@ const ProductDetail = props => {
       listTab.push({name: 'Đánh giá của bạn', status: 'YOUR_COMMENT'});
     }
   }
-
-  const YourComment = () => {
-    return <Text>Your commetn</Text>;
-  };
 
   const insertCarts = () => {
     if (signIn) {
@@ -96,6 +107,125 @@ const ProductDetail = props => {
       </View>
     );
   };
+
+  const YourComment = () => {
+    return (
+      <View style={styles.allComment}>
+        {yourReviews.length > 0 &&
+          yourReviews.map((yourReview, key) => (
+            <View style={styles.boxComment} key={key}>
+              <View style={styles.boxAvatar}>
+                <Image
+                  style={styles.avatarIcon}
+                  source={{
+                    uri: `${URL}/avatars/${yourReview.userImage}`,
+                  }}
+                />
+              </View>
+              <View style={styles.boxContentComment}>
+                <Text style={styles.nameUser}>{yourReview.userFullName}</Text>
+                <View>
+                  <Text style={styles.contentComment}>
+                    {yourReview.comment}
+                  </Text>
+                </View>
+                <View style={styles.starTime}>
+                  <View style={styles.productStar}>
+                    {renderRating(yourReview.star)}
+                  </View>
+                  <Text style={styles.time}>{yourReview.timeReview}</Text>
+                </View>
+              </View>
+
+              <View style={styles.boxFeature}>
+                <TouchableOpacity onPress={() => {}}>
+                  <FontAwesome
+                    name={'check-circle'}
+                    size={20}
+                    color={'#003FFF'}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setEditComment(!editComment);
+                    setRating(0);
+                  }}>
+                  <FontAwesome5 name={'edit'} size={20} color={'#003FFF'} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {}}>
+                  <FontAwesome5
+                    name={'trash-alt'}
+                    size={20}
+                    color={'#003FFF'}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ))}
+        {editComment ? (
+          <Formik
+            initialValues={{
+              comment: yourReviews[0].comment,
+            }}
+            validationSchema={validateUpdateComment}
+            onSubmit={(values, {resetForm}) =>
+              changeComment(values, resetForm)
+            }>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              errors,
+              touched,
+              values,
+            }) => (
+              <>
+                <View style={styles.boxEditComment}>
+                  <Text style={styles.titleEditComment}>
+                    Chỉnh sửa đánh giá
+                  </Text>
+                  <View style={styles.boxEdit}>
+                    <View style={styles.selectStar}>
+                      <Rating
+                        size={18}
+                        numStars={5}
+                        rating={rating > 0 ? rating : yourReviews[0].star}
+                        setRating={setRating}
+                      />
+                    </View>
+                  </View>
+                  <View style={styles.infoItem}>
+                    <FontAwesome5
+                      name={'comment-alt'}
+                      size={22}
+                      color={'#616161'}
+                    />
+
+                    <TextInput
+                      style={styles.textInput}
+                      onBlur={handleBlur('comment')}
+                      onChangeText={handleChange('comment')}
+                      value={values.comment}
+                      placeholder="Nhập tên của bạn..."
+                    />
+                  </View>
+                  {errors.comment && touched.comment ? (
+                    <Text style={styles.errorFill}>{errors.comment}</Text>
+                  ) : null}
+                  <TouchableOpacity
+                    style={styles.btnReview}
+                    onPress={() => handleSubmit()}>
+                    <Text style={styles.textReview}>Đánh giá</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
+          </Formik>
+        ) : null}
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ModalView modalVisible={modalVisible} handleModal={handleModal} />
@@ -198,6 +328,56 @@ const ProductDetail = props => {
 export default ProductDetail;
 
 const styles = StyleSheet.create({
+  errorFill: {
+    marginTop: 4,
+    paddingLeft: 10,
+    color: 'red',
+    fontSize: 14,
+  },
+  textReview: {
+    fontSize: 16,
+    marginTop: 14,
+    backgroundColor: '#003FFF',
+    padding: 10,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  infoItem: {
+    width: '80%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    backgroundColor: '#F3F3F3',
+    borderRadius: 18,
+    paddingLeft: 8,
+    overflow: 'hidden',
+  },
+  textInput: {
+    width: '85%',
+    overflow: 'hidden',
+    color: '#414dd1',
+    marginLeft: 6,
+  },
+  boxEditComment: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  selectStar: {
+    marginTop: 14,
+    flexDirection: 'row',
+    width: '100%',
+  },
+  titleEditComment: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  boxFeature: {
+    justifyContent: 'space-around',
+    padding: 6,
+  },
   titleReview: {
     color: '#000',
     fontSize: 20,
