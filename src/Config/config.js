@@ -5,6 +5,7 @@ export const API_CART = '/other/api/cart.php';
 export const API_CART_UPDATE = '/other/api/cartupdate.php';
 export const API_PRODUCT = '/other/api/product.php?type=';
 export const API_REVIEW = '/other/api/review.php';
+export const API_SEARCH = '/other/api/search.php';
 export const API_SIGNIN = '/other/api/signin.php';
 export const API_SIGNUP = '/other/api/signup.php';
 export const API_SIGNIN_TOKEN = '/other/api/signintoken.php';

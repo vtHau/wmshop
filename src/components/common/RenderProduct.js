@@ -13,11 +13,13 @@ const imageHeight = (imageWidth / 933) * 465;
 const productWidth = (width - 50) / 2 - 16;
 const productHeight = (productWidth / 361) * 410;
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import product from './../../../assets/img/product.png';
+import * as Config from './../../Config/config';
+
 import {renderRating} from '../../utils/common';
 
 const RenderProduct = props => {
-  const {products} = props;
+  const {products, navigation} = props;
+  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
     <View style={styles.box}>
@@ -26,17 +28,34 @@ const RenderProduct = props => {
       </View>
       <View style={styles.listProduct}>
         {products.length > 0 &&
-          products.map((value, key) => (
-            <TouchableOpacity key={key} style={styles.boxProduct}>
+          products.map((product, key) => (
+            <TouchableOpacity
+              key={key}
+              style={styles.boxProduct}
+              onPress={() => {
+                console.log('da chay');
+                navigation.navigate('PRODUCT_DETAIL', product);
+              }}>
               <View style={styles.product}>
-                <Image style={styles.productImage} source={product} />
+                <Image
+                  style={styles.productImage}
+                  source={{
+                    uri: `${URL}/products/${product.productImage}`,
+                  }}
+                />
                 <View style={styles.productInfo}>
-                  <Text style={styles.productName}>samsung s2999</Text>
-                  <Text style={styles.productPrice}>1234</Text>
+                  <Text style={styles.productName}>{product.productName}</Text>
+                  <Text style={styles.productPrice}>
+                    {product.productPrice}
+                  </Text>
                   <View style={styles.starView}>
-                    <View style={styles.productStar}>{renderRating(4)}</View>
+                    <View style={styles.productStar}>
+                      {renderRating(product.productStar)}
+                    </View>
                     <View style={styles.productView}>
-                      <Text style={styles.productViewText}>108</Text>
+                      <Text style={styles.productViewText}>
+                        {product.productView}
+                      </Text>
                       <FontAwesome5 name={'eye'} size={18} color={'grey'} />
                     </View>
                   </View>

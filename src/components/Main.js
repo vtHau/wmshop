@@ -7,7 +7,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Header from './Header/Header';
 import HomeNavigator from './Home/HomeNavigator';
 import CartNavigator from './Cart/CartNavigator';
-import Search from './Search/Search';
+import SearchNavigator from './Search/SearchNavigator';
 import Contact from './Contact/Contact';
 import Tabb from './Tab/Tab';
 import Setting from './Setting/Setting';
@@ -35,7 +35,7 @@ const Main = props => {
           activeTintColor: '#0077FF',
           inactiveTintColor: '#636466',
         }}>
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Rating"
           component={Tabb}
           options={{
@@ -44,7 +44,7 @@ const Main = props => {
               <FontAwesome5 name={'home'} size={20} color={color} />
             ),
           }}
-        />
+        /> */}
         <Tab.Screen
           name="HOME_NAVIGATOR"
           component={HomeNavigator}
@@ -66,8 +66,8 @@ const Main = props => {
           }}
         />
         <Tab.Screen
-          name="SEARCH"
-          component={Search}
+          name="SEARCH_NAVIGATOR"
+          component={SearchNavigator}
           options={{
             tabBarLabel: 'Tìm kiếm',
             tabBarIcon: ({color}) => (

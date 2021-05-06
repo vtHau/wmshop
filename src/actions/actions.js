@@ -349,3 +349,30 @@ export const fetchCart = () => {
     }
   };
 };
+
+export const fetchSearch = keyword => {
+  return dispatch => {
+    if (keyword !== '') {
+      CallAPI(`${Config.API_PRODUCT}search&keyword=${keyword}`, 'GET', null)
+        .then(res => {
+          if (typeof res.data !== 'string' && typeof res.data === 'object') {
+            dispatch(initSearch(res.data));
+          } else {
+            dispatch(initSearch([]));
+          }
+        })
+        .catch(() => {
+          console.log('Error sigin via token');
+        });
+    } else {
+      dispatch(initSearch([]));
+    }
+  };
+};
+
+export const initSearch = searchs => {
+  return {
+    type: 'INIT_SEARCH',
+    payload: searchs,
+  };
+};
