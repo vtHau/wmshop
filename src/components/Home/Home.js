@@ -10,11 +10,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {
-  fetchCategory,
-  fetchBrand,
-  fetchHotProduct,
-} from './../../actions/actions';
+import {fetchCategory, fetchBrand, fetchProduct} from './../../actions/actions';
 const {height, width} = Dimensions.get('window');
 const imageWidth = width - 40;
 const imageHeight = (imageWidth / 933) * 465;
@@ -25,6 +21,10 @@ import * as Config from './../../Config/config';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {renderRating} from './../../utils/common';
 
+const HOT = {
+  type: 'HOT',
+};
+
 const Home = props => {
   const {navigation} = props;
   const dispatch = useDispatch();
@@ -33,17 +33,17 @@ const Home = props => {
 
   const cates = useSelector(state => state.cateReducer.cates);
   const brands = useSelector(state => state.brandReducer.brands);
-  const hotProducts = useSelector(state => state.productReducer.hotProducts);
+  const products = useSelector(state => state.productReducer.hotProducts);
 
   useEffect(() => {
     dispatch(fetchCategory());
     dispatch(fetchBrand());
-    dispatch(fetchHotProduct());
+    dispatch(fetchProduct(HOT));
   }, [dispatch]);
 
   const onRefresh = () => {
     setRefresh(true);
-    dispatch(fetchHotProduct());
+    dispatch(fetchProduct(HOT));
     setRefresh(false);
   };
 
@@ -65,9 +65,11 @@ const Home = props => {
             autoplayTimeout={2.5}
             showsButtons={true}
             style={styles.boxImage}>
-            {hotProducts.length > 0 &&
-              hotProducts.map((value, key) => (
-                <TouchableOpacity key={key}>
+            {products.length > 0 &&
+              products.map((value, key) => (
+                <TouchableOpacity
+                  key={key}
+                  onPress={() => navigation.push('PRODUCT_DETAIL', value)}>
                   <Image
                     style={styles.image}
                     source={{
@@ -86,7 +88,9 @@ const Home = props => {
           <Swiper showsButtons={true} style={styles.boxImage}>
             {cates.length > 0 &&
               cates.map((value, key) => (
-                <TouchableOpacity key={key}>
+                <TouchableOpacity
+                  key={key}
+                  onPress={() => navigation.push('PRODUCT_LIST', value)}>
                   <Image
                     style={styles.image}
                     source={{
@@ -105,7 +109,9 @@ const Home = props => {
           <Swiper showsButtons={true} style={styles.boxImage}>
             {brands.length > 0 &&
               brands.map((value, key) => (
-                <TouchableOpacity key={key}>
+                <TouchableOpacity
+                  key={key}
+                  onPress={() => navigation.push('PRODUCT_LIST', value)}>
                   <Image
                     style={styles.image}
                     source={{
@@ -121,8 +127,8 @@ const Home = props => {
             <Text style={styles.title}>sản phẩm moi</Text>
           </View>
           <View style={styles.listProduct}>
-            {hotProducts.length > 0 &&
-              hotProducts.map((product, key) => (
+            {products.length > 0 &&
+              products.map((product, key) => (
                 <TouchableOpacity
                   key={key}
                   style={styles.boxProduct}

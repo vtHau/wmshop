@@ -290,11 +290,69 @@ export const initCart = carts => {
   };
 };
 
-export const fetchHotProduct = () => {
+export const fetchProduct = info => {
   return dispatch => {
-    CallAPI(`${Config.API_PRODUCT}hot`, 'GET', null).then(res => {
-      dispatch(initProduct(res.data));
+    CallAPI(Config.API_PRODUCT, 'POST', info).then(res => {
+      if (typeof res.data !== 'string' && typeof res.data === 'object') {
+        switch (info.type) {
+          case 'HOT':
+            dispatch(initHotProduct(res.data));
+            break;
+
+          // case 'BRAND':
+          //   dispatch(initBrandProduct(res.data));
+          //   break;
+
+          // case 'CATE':
+          //   dispatch(initCatProduct(res.data));
+          //   break;
+
+          default:
+            dispatch(initProduct(res.data));
+            break;
+        }
+      } else {
+        switch (info.type) {
+          case 'HOT':
+            dispatch(initHotProduct([]));
+            break;
+
+          // case 'BRAND':
+          //   dispatch(initBrandProduct([]));
+          //   break;
+
+          // case 'CATE':
+          //   dispatch(initCatProduct([]));
+          // break;
+
+          default:
+            dispatch(initProduct([]));
+
+            break;
+        }
+      }
     });
+  };
+};
+
+export const initHotProduct = products => {
+  return {
+    type: 'INIT_HOT_PRODUCT',
+    payload: products,
+  };
+};
+
+export const initBrandProduct = products => {
+  return {
+    type: 'INIT_BRAND_PRODUCT',
+    payload: products,
+  };
+};
+
+export const initCatProduct = products => {
+  return {
+    type: 'INIT_CAT_PRODUCT',
+    payload: products,
   };
 };
 
@@ -318,6 +376,8 @@ export const fetchOrderHistory = userID => {
       .then(res => {
         if (typeof res.data !== 'string' && typeof res.data === 'object') {
           dispatch(initOrderHistory(res.data));
+        } else {
+          dispatch(initOrderHistory([]));
         }
       })
       .catch(() => {
@@ -350,10 +410,10 @@ export const fetchCart = () => {
   };
 };
 
-export const fetchSearch = keyword => {
+export const fetchSearch = info => {
   return dispatch => {
-    if (keyword !== '') {
-      CallAPI(`${Config.API_PRODUCT}search&keyword=${keyword}`, 'GET', null)
+    if (info.keyword !== '') {
+      CallAPI(Config.API_PRODUCT, 'POST', info)
         .then(res => {
           if (typeof res.data !== 'string' && typeof res.data === 'object') {
             dispatch(initSearch(res.data));

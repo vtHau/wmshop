@@ -20,7 +20,11 @@ const Search = props => {
   const typingTimeoutRef = useRef(null);
 
   useEffect(() => {
-    dispatch(fetchSearch(keyword));
+    const info = {
+      type: 'SEARCH',
+      keyword,
+    };
+    dispatch(fetchSearch(info));
   }, [keyword]);
 
   const searchChange = search => {

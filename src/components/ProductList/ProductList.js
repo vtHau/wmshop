@@ -1,13 +1,35 @@
-import React from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, View, ScrollView, Text} from 'react-native';
 import RenderProduct from '../common/RenderProduct';
+import {fetchProduct} from './../../actions/actions';
+import {useSelector, useDispatch} from 'react-redux';
 
-const ProductList = () => {
-  const products = [1, 2, 3, 4];
+const ProductList = props => {
+  const {navigation, route} = props;
+  const dispatch = useDispatch();
+  const info = route.params;
+  const products = useSelector(state => state.productReducer.products);
+
+  useEffect(() => {
+    if (info.brandID !== undefined) {
+      const brand = {
+        type: 'BRAND',
+        brandID: info.brandID,
+      };
+      dispatch(fetchProduct(brand));
+    } else if (info.catID !== undefined) {
+      const cat = {
+        type: 'CATE',
+        catID: info.catID,
+      };
+      dispatch(fetchProduct(cat));
+    }
+  }, []);
+
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={styles.container}>
-        <RenderProduct products={products} />
+        <RenderProduct products={products} navigation={navigation} />
       </View>
     </ScrollView>
   );
