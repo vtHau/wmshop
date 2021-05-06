@@ -53,7 +53,11 @@ const Search = props => {
       </View>
       <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
         <View style={styles.container}>
-          <RenderProduct products={products} navigation={navigation} />
+          <RenderProduct
+            style={styles.productComponent}
+            products={products}
+            navigation={navigation}
+          />
         </View>
       </ScrollView>
     </View>
@@ -63,11 +67,13 @@ const Search = props => {
 export default Search;
 
 const styles = StyleSheet.create({
+  productComponent: {
+    marginTop: 40,
+  },
   btnSearch: {
     marginRight: 4,
   },
   keyWord: {
-    // paddingLeft: 6,
     width: '80%',
   },
   searchContent: {
