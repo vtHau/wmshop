@@ -14,34 +14,32 @@ import {
   updateCartQuantity,
   deleteCart,
 } from './../../actions/actions';
+import * as Config from './../../Config/config';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
 const {height, width} = Dimensions.get('window');
 const productWidth = width / 4.5;
 const productHeight = productWidth * 1.2;
-import * as Config from './../../Config/config';
 
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
-import product from './../../../assets/img/product.png';
 const Cart = props => {
   const {navigation} = props;
-
   const dispatch = useDispatch();
   const carts = useSelector(state => state.cartReducer.carts);
   let totalMoney = 0;
-  carts.forEach(cart => {
-    totalMoney += cart.productQuantity * cart.productPrice;
-  });
 
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
+
+  carts.forEach(cart => {
+    totalMoney += cart.productQuantity * cart.productPrice;
+  });
 
   const updateQuantity = (cartID, quantity) => {
     if (quantity >= 1) {
       dispatch(updateCartQuantity(cartID, quantity));
     }
   };
-
   const deleteCarts = cartID => {
     dispatch(deleteCart(cartID));
   };
@@ -49,19 +47,14 @@ const Cart = props => {
   const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <ScrollView>
         <View style={styles.box}>
-          <View style={styles.boxTitle}>
-            <TouchableOpacity>
-              <FontAwesome5 name={'angle-left'} size={22} color={'#414dd1'} />
-            </TouchableOpacity>
-            <Text style={styles.title}>giỏ hàng</Text>
-          </View>
-          <View style={styles.listProduct}>
+          <Text style={styles.title}>giỏ hàng</Text>
+          <View style={styles.products}>
             {carts.length > 0 &&
               carts.map((cart, key) => (
-                <View key={key} style={styles.boxProduct}>
+                <View key={key} style={styles.productContainer}>
                   <View style={styles.product}>
                     <TouchableOpacity
                       onPress={() => navigation.push('PRODUCT_DETAIL', cart)}>
@@ -93,7 +86,7 @@ const Cart = props => {
                           <FontAwesome5
                             name={'angle-left'}
                             size={18}
-                            color={'#616161'}
+                            color={'#4d4d4d'}
                           />
                         </TouchableOpacity>
                         <Text style={styles.quantity}>
@@ -109,7 +102,7 @@ const Cart = props => {
                           <FontAwesome5
                             name={'angle-right'}
                             size={18}
-                            color={'#616161'}
+                            color={'#4d4d4d'}
                           />
                         </TouchableOpacity>
                       </View>
@@ -118,7 +111,7 @@ const Cart = props => {
                         VND
                       </Text>
                     </View>
-                    <View style={styles.boxClose}>
+                    <View style={styles.close}>
                       <TouchableOpacity
                         onPress={() => deleteCarts(cart.cartID)}>
                         <FontAwesome5
@@ -132,63 +125,66 @@ const Cart = props => {
                   </View>
                 </View>
               ))}
-            <View style={styles.boxTotal}>
-              <Text style={styles.totalMoney}>Tổng cộng: {totalMoney} VND</Text>
-            </View>
           </View>
+        </View>
+      </ScrollView>
+      <View style={styles.bottomAction}>
+        <View style={styles.boxTotal}>
+          <Text style={styles.totalMoney}>Tổng cộng: {totalMoney} VND</Text>
         </View>
         <TouchableOpacity style={styles.btnPayment}>
           <Text style={styles.payment}>Mua hàng</Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
 export default Cart;
 
 const styles = StyleSheet.create({
+  bottomAction: {
+    position: 'absolute',
+    paddingVertical: 4,
+    bottom: 0,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    borderTopWidth: 0.6,
+    borderColor: '#e8e9ed',
+  },
+  btnPayment: {
+    marginVertical: 4,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
+    position: 'relative',
     flex: 1,
-    paddingHorizontal: 10,
-    paddingBottom: 10,
+    backgroundColor: '#fff',
   },
   box: {
     marginTop: 20,
-    padding: 10,
+    marginHorizontal: 16,
+    marginBottom: 100,
     backgroundColor: '#fff',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 3,
-      height: 3,
-    },
-    shadowOpacity: 0.01,
-    shadowRadius: 0.05,
-    elevation: 3,
-  },
-  boxTitle: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#d9dade',
-    paddingBottom: 6,
-    marginBottom: 10,
   },
   title: {
-    marginLeft: 14,
-    paddingBottom: 4,
+    marginLeft: 16,
+    paddingBottom: 8,
     fontWeight: 'bold',
     fontSize: 16,
     color: '#5059B6',
     textTransform: 'uppercase',
   },
-  listProduct: {
+  products: {
     width: '100%',
     flexWrap: 'wrap',
     flexDirection: 'row',
   },
-  boxProduct: {
+  productContainer: {
     paddingVertical: 5,
     width: '100%',
   },
@@ -198,9 +194,9 @@ const styles = StyleSheet.create({
     padding: 5,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#F7F7F7',
     borderRadius: 10,
-    borderWidth: 1,
+    borderWidth: 0.6,
     borderColor: '#e8e9ed',
   },
   productImage: {
@@ -212,8 +208,6 @@ const styles = StyleSheet.create({
   productInfo: {
     paddingVertical: 4,
     marginLeft: 4,
-    borderLeftColor: '#d9dade',
-    borderLeftWidth: 1,
     flex: 1,
     height: '100%',
     marginVertical: 6,
@@ -222,51 +216,26 @@ const styles = StyleSheet.create({
   productName: {
     flexGrow: 1,
     fontSize: 16,
-    color: '#5059B6',
+    color: '#414dd1',
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
   productPrice: {
     flexGrow: 1,
-    color: '#5B6397',
+    color: '#4d4d4d',
     fontSize: 14,
   },
-  starView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  productStar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  productView: {
-    flexDirection: 'row',
-  },
-  productViewText: {
-    fontSize: 14,
-  },
-  btnPayment: {
-    width: '99%',
-    marginTop: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#003FFF',
-    borderRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 4,
-      height: 4,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 0.1,
-    elevation: 4,
-  },
+
   payment: {
-    paddingVertical: 16,
+    paddingVertical: 14,
+    width: '90%',
+    textAlign: 'center',
     fontSize: 16,
     fontWeight: 'bold',
     color: '#fff',
     textTransform: 'uppercase',
+    backgroundColor: '#003FFF',
+    borderRadius: 16,
   },
   boxQuantity: {
     flexGrow: 1,
@@ -277,12 +246,12 @@ const styles = StyleSheet.create({
   quantity: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#616161',
+    color: '#4d4d4d',
     paddingHorizontal: 18,
   },
   totalMoneyProduct: {
     flexGrow: 1,
-    color: '#616161',
+    color: '#4d4d4d',
     alignItems: 'center',
   },
   boxTotal: {
@@ -290,14 +259,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    marginRight: 14,
   },
   totalMoney: {
     paddingRight: 4,
     fontSize: 15,
-    color: '#616161',
+    color: '#414dd1',
     fontWeight: 'bold',
   },
-  boxClose: {
+  close: {
     height: '100%',
     alignItems: 'center',
     paddingTop: 10,

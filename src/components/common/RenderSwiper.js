@@ -12,7 +12,7 @@ import Swiper from 'react-native-swiper';
 import * as Config from './../../Config/config';
 const {width} = Dimensions.get('window');
 
-const imageWidth = width - 40;
+const imageWidth = width - 25;
 const imageHeight = (imageWidth / 933) * 465;
 const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: imageWidth,
-    height: imageHeight + 15,
+    height: imageHeight,
     borderRadius: 4,
     borderWidth: 0.6,
     borderColor: '#e8e9ed',
