@@ -9,21 +9,16 @@ import {
   ScrollView,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {
-  fetchCategory,
-  fetchBrand,
-  fetchHotProduct,
-} from '../../actions/actions';
 const {height, width} = Dimensions.get('window');
 const productWidth = width / 4.5;
 const productHeight = productWidth * 1.2;
 import * as Config from '../../Config/config';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {fetchOrderHistory} from './../../actions/actions';
+import TitleView from './../common/TitleView';
 
 import product from './../../../assets/img/product.png';
 const OrderHistory = props => {
-  const {navigation, route} = props;
+  const {navigation} = props;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,44 +29,45 @@ const OrderHistory = props => {
     state => state.orderHistoryReducer.orderHistorys,
   );
 
+  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
+
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={styles.container}>
-        <View style={styles.box}>
-          <View style={styles.boxTitle}>
-            <TouchableOpacity onPress={() => navigation.pop()}>
-              <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />
-            </TouchableOpacity>
-            <Text style={styles.title}>lịch sử đặt hàng</Text>
-          </View>
-          <View style={styles.listProduct}>
-            {orderHistorys.length > 0 &&
-              orderHistorys.map((orderHistory, key) => (
-                <View key={key} style={styles.boxProduct}>
-                  <View style={styles.product}>
+        <TitleView title="Lịch sử đặt hàng" navigation={navigation} />
+        <Text style={styles.title}>Danh sách sản phẩm</Text>
+        <View style={styles.listProduct}>
+          {orderHistorys.length > 0 &&
+            orderHistorys.map((orderHistory, key) => (
+              <View key={key} style={styles.boxProduct}>
+                <View style={styles.product}>
+                  <TouchableOpacity>
+                    <Image
+                      style={styles.productImage}
+                      source={{
+                        uri: `${URL}/products/${orderHistory.productImage}`,
+                      }}
+                    />
+                  </TouchableOpacity>
+                  <View style={styles.productInfo}>
                     <TouchableOpacity>
-                      <Image style={styles.productImage} source={product} />
+                      <Text style={styles.productName}>
+                        {orderHistory.productName}
+                      </Text>
                     </TouchableOpacity>
-                    <View style={styles.productInfo}>
-                      <TouchableOpacity>
-                        <Text style={styles.productName}>
-                          {orderHistory.productName}
-                        </Text>
-                      </TouchableOpacity>
-                      <Text style={styles.quantity}>
-                        Số lương: {orderHistory.productQuantity}
-                      </Text>
-                      <Text style={styles.totalMoneyProduct}>
-                        Tổng tiền: {orderHistory.productPrice} VND
-                      </Text>
-                      <Text style={styles.timeOrder}>
-                        Thời gian: {orderHistory.timeOrder}
-                      </Text>
-                    </View>
+                    <Text style={styles.quantity}>
+                      Số lương: {orderHistory.productQuantity}
+                    </Text>
+                    <Text style={styles.totalMoneyProduct}>
+                      Tổng tiền: {orderHistory.productPrice} VND
+                    </Text>
+                    <Text style={styles.timeOrder}>
+                      Thời gian: {orderHistory.timeOrder}
+                    </Text>
                   </View>
                 </View>
-              ))}
-          </View>
+              </View>
+            ))}
         </View>
       </View>
     </ScrollView>
@@ -83,32 +79,11 @@ export default OrderHistory;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 14,
     paddingBottom: 10,
   },
-  box: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 3,
-      height: 3,
-    },
-    shadowOpacity: 0.01,
-    shadowRadius: 0.05,
-    elevation: 3,
-  },
-  boxTitle: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#d9dade',
-    paddingBottom: 6,
-    marginBottom: 10,
-  },
   title: {
+    paddingTop: 14,
     marginLeft: 14,
     paddingBottom: 4,
     fontWeight: 'bold',
@@ -131,10 +106,10 @@ const styles = StyleSheet.create({
     padding: 5,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#F7F7F7',
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#d9dade',
+    borderWidth: 0.6,
+    borderColor: '#e8e9ed',
   },
   productImage: {
     width: productWidth,
@@ -145,8 +120,8 @@ const styles = StyleSheet.create({
   productInfo: {
     paddingVertical: 4,
     marginLeft: 4,
-    borderLeftColor: '#d9dade',
-    borderLeftWidth: 1,
+    borderLeftColor: '#e8e9ed',
+    borderLeftWidth: 0.6,
     flex: 1,
     height: '100%',
     marginVertical: 6,
@@ -154,23 +129,23 @@ const styles = StyleSheet.create({
   },
   productName: {
     flexGrow: 1,
+    color: '#414dd1',
     fontSize: 14,
-    color: '#5B6397',
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
   timeOrder: {
     flexGrow: 1,
-    color: '#5B6397',
+    color: '#4d4d4d',
     fontSize: 14,
   },
   quantity: {
     flexGrow: 1,
     fontSize: 14,
-    color: '#616161',
+    color: '#4d4d4d',
   },
   totalMoneyProduct: {
     flexGrow: 1,
-    color: '#616161',
+    color: '#4d4d4d',
   },
 });
