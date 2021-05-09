@@ -8,33 +8,20 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {
-  fetchCategory,
-  fetchBrand,
-  fetchHotProduct,
-} from '../../actions/actions';
+
 const {height, width} = Dimensions.get('window');
 const productWidth = width - width * 0.1;
 const productHeight = productWidth / 2;
-import * as Config from '../../Config/config';
 import map from './../../../assets/img/map.png';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import TitleView from './../common/TitleView';
 
-import product from './../../../assets/img/product.png';
-import {atan} from 'react-native-reanimated';
 const OrderHistory = () => {
-  const products = [1, 2, 3, 4, 5];
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={styles.container}>
+        <TitleView title="Liên hệ" />
         <View style={styles.box}>
-          <View style={styles.boxTitle}>
-            <TouchableOpacity>
-              <FontAwesome5 name={'angle-left'} size={22} color={'#414dd1'} />
-            </TouchableOpacity>
-            <Text style={styles.title}>liên hệ</Text>
-          </View>
           <View style={styles.listProduct}>
             <View style={styles.googleMap}>
               <Image style={styles.image} source={map} />
@@ -81,36 +68,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     paddingBottom: 10,
+    backgroundColor: '#fff',
   },
   box: {
-    marginTop: 20,
     padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 3,
-      height: 3,
-    },
-    shadowOpacity: 0.01,
-    shadowRadius: 0.05,
-    elevation: 3,
-  },
-  boxTitle: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#d9dade',
-    paddingBottom: 6,
-    marginBottom: 10,
-  },
-  title: {
-    marginLeft: 14,
-    paddingBottom: 4,
-    fontWeight: 'bold',
-    fontSize: 16,
-    color: '#5059B6',
-    textTransform: 'uppercase',
   },
   listProduct: {
     width: '100%',
