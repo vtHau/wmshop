@@ -3,16 +3,14 @@ import {StyleSheet, Text, View, Modal, TouchableOpacity} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const ModalView = props => {
-  const {modalVisible, handleModal} = props;
+  const {title, modalVisible, handleModal} = props;
 
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible}>
       <View style={styles.boxModal}>
         <View style={styles.modalView}>
           <View style={styles.boxContent}>
-            <Text style={styles.textContent}>
-              Đăng nhập để thêm vào giỏ hàng
-            </Text>
+            <Text style={styles.textContent}>{title}</Text>
           </View>
           <View style={styles.boxIcon}>
             <FontAwesome5

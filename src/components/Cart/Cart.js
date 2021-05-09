@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,22 +7,27 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   fetchCart,
   updateCartQuantity,
   deleteCart,
+  insertOrderHistory,
 } from './../../actions/actions';
 import * as Config from './../../Config/config';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import ModalView from './../common/ModalView';
 
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 const {height, width} = Dimensions.get('window');
 const productWidth = width / 4.5;
 const productHeight = productWidth * 1.2;
 
 const Cart = props => {
   const {navigation} = props;
+  const [disBtn, setDisBtn] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const carts = useSelector(state => state.cartReducer.carts);
   let totalMoney = 0;
@@ -30,6 +35,14 @@ const Cart = props => {
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (carts.length < 1) {
+      setDisBtn(true);
+    } else {
+      setDisBtn(false);
+    }
+  }, [carts]);
 
   carts.forEach(cart => {
     totalMoney += cart.productQuantity * cart.productPrice;
@@ -44,10 +57,30 @@ const Cart = props => {
     dispatch(deleteCart(cartID));
   };
 
+  const payProduct = async () => {
+    setDisBtn(true);
+    const resp = await insertOrderHistory();
+    if (resp) {
+      setModalVisible(!modalVisible);
+    } else {
+      Alert('Mua sản phầm thất bại');
+    }
+    setDisBtn(false);
+  };
+
+  const handleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
   const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
     <View style={styles.container}>
+      <ModalView
+        title="Mua sản phẩm thành công"
+        modalVisible={modalVisible}
+        handleModal={handleModal}
+      />
       <ScrollView>
         <View style={styles.box}>
           <Text style={styles.title}>giỏ hàng</Text>
@@ -130,11 +163,20 @@ const Cart = props => {
       </ScrollView>
       <View style={styles.bottomAction}>
         <View style={styles.boxTotal}>
-          <Text style={styles.totalMoney}>Tổng cộng: {totalMoney} VND</Text>
+          <Text
+            style={!disBtn > 0 ? styles.totalMoney : styles.disableTotalMoney}>
+            Tổng cộng: {totalMoney} VND
+          </Text>
         </View>
-        <TouchableOpacity style={styles.btnPayment}>
-          <Text style={styles.payment}>Mua hàng</Text>
-        </TouchableOpacity>
+        {disBtn ? (
+          <View style={styles.btnPayment}>
+            <Text style={styles.disablePayment}>Mua hàng</Text>
+          </View>
+        ) : (
+          <TouchableOpacity style={styles.btnPayment} onPress={payProduct}>
+            <Text style={styles.payment}>Mua hàng</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -237,6 +279,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#003FFF',
     borderRadius: 16,
   },
+  disablePayment: {
+    paddingVertical: 14,
+    width: '90%',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
+    textTransform: 'uppercase',
+    backgroundColor: '#ccc',
+    borderRadius: 16,
+  },
   boxQuantity: {
     flexGrow: 1,
     flexDirection: 'row',
@@ -265,6 +318,12 @@ const styles = StyleSheet.create({
     paddingRight: 4,
     fontSize: 15,
     color: '#414dd1',
+    fontWeight: 'bold',
+  },
+  disableTotalMoney: {
+    paddingRight: 4,
+    fontSize: 15,
+    color: '#ccc',
     fontWeight: 'bold',
   },
   close: {

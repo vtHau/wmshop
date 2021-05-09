@@ -25,10 +25,9 @@ import product from './../../../assets/img/product.png';
 const OrderHistory = props => {
   const {navigation, route} = props;
   const dispatch = useDispatch();
-  const userID = route.params.userID;
 
   useEffect(() => {
-    dispatch(fetchOrderHistory(userID));
+    dispatch(fetchOrderHistory());
   }, [dispatch]);
 
   const orderHistorys = useSelector(

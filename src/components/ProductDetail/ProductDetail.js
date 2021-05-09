@@ -335,7 +335,11 @@ const ProductDetail = props => {
 
   return (
     <View style={styles.container}>
-      <ModalView modalVisible={modalVisible} handleModal={handleModal} />
+      <ModalView
+        title=" Đăng nhập để thêm vào giỏ hàng"
+        modalVisible={modalVisible}
+        handleModal={handleModal}
+      />
       <ScrollView>
         <View style={styles.boxImage}>
           <TouchableOpacity

@@ -370,19 +370,51 @@ export const initOrderHistory = orderHistorys => {
   };
 };
 
-export const fetchOrderHistory = userID => {
+export const insertOrderHistory = async () => {
+  const resp = await readStorage('signIn');
+
+  if (resp && resp !== null) {
+    const {userID} = resp.userInfo;
+    const order = {
+      type: 'INSERT_ORDER',
+      userID,
+    };
+
+    const res = await CallAPI(Config.API_ORDER_HISTORY, 'POST', order);
+    if (
+      typeof res.data === 'string' &&
+      res.data.trim() === 'INSERT_ORDER_SUCCESS'
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+};
+
+export const fetchOrderHistory = () => {
   return async dispatch => {
-    CallAPI(Config.API_ORDER_HISTORY, 'POST', {userID})
-      .then(res => {
-        if (typeof res.data !== 'string' && typeof res.data === 'object') {
-          dispatch(initOrderHistory(res.data));
-        } else {
-          dispatch(initOrderHistory([]));
-        }
-      })
-      .catch(() => {
-        console.log('Error fetch orderHistory');
-      });
+    const resp = await readStorage('signIn');
+
+    if (resp && resp !== null) {
+      const {userID} = resp.userInfo;
+      const order = {
+        type: 'GET_ORDER',
+        userID,
+      };
+
+      CallAPI(Config.API_ORDER_HISTORY, 'POST', order)
+        .then(res => {
+          if (typeof res.data !== 'string' && typeof res.data === 'object') {
+            dispatch(initOrderHistory(res.data));
+          } else {
+            dispatch(initOrderHistory([]));
+          }
+        })
+        .catch(() => {
+          console.log('Error fetch orderHistory');
+        });
+    }
   };
 };
 
