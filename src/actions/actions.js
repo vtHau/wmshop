@@ -2,6 +2,7 @@ import CallAPI from './../utils/CallAPI';
 import * as Config from './../Config/config';
 import readStorage from './../utils/readStorage';
 import removeStorage from './../utils//removeStorage';
+import axios from 'axios';
 
 export const signInRequest = dataLogin => {
   return dispatch => {
@@ -466,5 +467,77 @@ export const initSearch = searchs => {
   return {
     type: 'INIT_SEARCH',
     payload: searchs,
+  };
+};
+
+export const fetchWeatherFiveDay = () => {
+  return dispatch => {
+    axios({
+      method: 'GET',
+      url: `${Config.API_WEATHER_FIVE_DAY}Saigon${Config.API_WEATHER_KEY}`,
+      data: null,
+    })
+      .then(resTwo => {
+        dispatch(initWeatherFiveDay(resTwo.data.list));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+export const fetchWeather = () => {
+  return async dispatch => {
+    axios({
+      method: 'GET',
+      url: `${Config.API_WEATHER}Saigon${Config.API_WEATHER_KEY}`,
+      data: null,
+    })
+      .then(resOne => {
+        if (resOne.data !== undefined) {
+          dispatch(initWeather(resOne.data));
+
+          axios({
+            method: 'GET',
+            url: 'https://api.openuv.io/api/v1/uv',
+            headers: {
+              'content-type': 'application/json',
+              'x-access-token': '6abf8c1ab048d0cb001e2b3fc3a7d71c',
+            },
+            params: {
+              lat: `${resOne.data.coord.lat}`,
+              lng: `${resOne.data.coord.lon}`,
+            },
+          })
+            .then(resThree => {
+              dispatch(initUV(resThree.data.result.uv));
+            })
+            .catch(err => {});
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+export const initWeather = weathers => {
+  return {
+    type: 'INIT_WEATHER',
+    payload: weathers,
+  };
+};
+
+export const initWeatherFiveDay = weathers => {
+  return {
+    type: 'INIT_WEATHER_FIVE_DAY',
+    payload: weathers,
+  };
+};
+
+export const initUV = uv => {
+  return {
+    type: 'INIT_UV',
+    payload: uv,
   };
 };

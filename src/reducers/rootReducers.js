@@ -7,7 +7,7 @@ import orderHistoryReducer from './orderHistoryReducer';
 import cartReducer from './cartReducer';
 import reviewReducer from './reviewReducer';
 import searchReducer from './searchReducer';
-
+import weatherReducer from './weatherReducer';
 const rootReducers = combineReducers({
   authenReducer,
   cateReducer,
@@ -17,6 +17,7 @@ const rootReducers = combineReducers({
   cartReducer,
   reviewReducer,
   searchReducer,
+  weatherReducer,
 });
 
 export default rootReducers;
