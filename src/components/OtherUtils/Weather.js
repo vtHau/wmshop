@@ -117,7 +117,7 @@ const Weather = props => {
           </View>
           {weatherFiveDay.length > 0 && (
             <View style={styles.content}>
-              <Text style={styles.location}>Dự báo cho 5 ngày</Text>
+              <Text style={styles.location}>Dự báo cho 5 ngày tiếp theo</Text>
               {weatherFiveDay.length > 0 &&
                 weatherFiveDay.map((weather, key) => (
                   <View key={key} style={styles.infoWeather}>
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
   info: {
     marginTop: 4,
     fontWeight: 'bold',
+    color: '#414dd1',
   },
   img: {
     width: 32,
@@ -183,8 +184,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#414dd1',
   },
   timeCurrent: {
+    color: '#414dd1',
     marginTop: 4,
     fontSize: 16,
     fontWeight: 'bold',
@@ -199,6 +202,5 @@ const styles = StyleSheet.create({
   content: {
     marginTop: 10,
     padding: 10,
-    // flex: 1,
   },
 });

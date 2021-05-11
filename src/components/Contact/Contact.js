@@ -15,6 +15,7 @@ const productHeight = productWidth / 2;
 import map from './../../../assets/img/map.png';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import TitleView from './../common/TitleView';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 
 const OrderHistory = () => {
   return (
@@ -24,7 +25,25 @@ const OrderHistory = () => {
         <View style={styles.box}>
           <View style={styles.listProduct}>
             <View style={styles.googleMap}>
-              <Image style={styles.image} source={map} />
+              {/* <Image style={styles.image} source={map} /> */}
+              <MapView
+                style={styles.image}
+                provider={PROVIDER_GOOGLE}
+                initialRegion={{
+                  latitude: 10.761573058608514,
+                  longitude: 106.68217271221745,
+                  latitudeDelta: 0.004,
+                  longitudeDelta: 0.002,
+                }}>
+                <Marker
+                  coordinate={{
+                    latitude: 10.761573058608514,
+                    longitude: 106.68217271221745,
+                  }}
+                  title="Đại học Sư Phạm Thành Phố Hồ Chí Minh"
+                  description="Đại học Sư Phạm Thành Phố Hồ Chí Minh"
+                />
+              </MapView>
             </View>
             <View style={styles.infoContact}>
               <View style={styles.infoItem}>
@@ -107,7 +126,7 @@ const styles = StyleSheet.create({
   },
   googleMap: {
     width: productWidth + 2,
-    height: productHeight + 4,
+    height: productHeight + 40,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
@@ -123,9 +142,6 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   image: {
-    width: productWidth,
-    height: productHeight,
-    alignSelf: 'stretch',
-    borderRadius: 10,
+    ...StyleSheet.absoluteFillObject,
   },
 });
