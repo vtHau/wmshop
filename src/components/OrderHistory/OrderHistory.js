@@ -8,28 +8,27 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
+
 import {useSelector, useDispatch} from 'react-redux';
-const {height, width} = Dimensions.get('window');
-const productWidth = width / 4.5;
-const productHeight = productWidth * 1.2;
 import * as Config from '../../Config/config';
 import {fetchOrderHistory} from './../../actions/actions';
 import TitleView from './../common/TitleView';
 
-import product from './../../../assets/img/product.png';
+const {width} = Dimensions.get('window');
+const productWidth = width / 4.5;
+const productHeight = productWidth * 1.2;
+const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
+
 const OrderHistory = props => {
   const {navigation} = props;
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchOrderHistory());
-  }, [dispatch]);
-
   const orderHistorys = useSelector(
     state => state.orderHistoryReducer.orderHistorys,
   );
 
-  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
+  useEffect(() => {
+    dispatch(fetchOrderHistory());
+  }, [dispatch]);
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>

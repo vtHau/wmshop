@@ -9,15 +9,18 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {useSelector, useDispatch} from 'react-redux';
-const {height, width} = Dimensions.get('window');
+
+import {useDispatch} from 'react-redux';
+const {width} = Dimensions.get('window');
 import * as Config from './../../Config/config';
 import {Formik} from 'formik';
 import {validateUpdateProfile} from './../../utils/validation';
 import {updateInfo} from './../../utils/checkAPI';
 import {signInToken} from './../../actions/actions';
 import ModalChangeInfo from './../common/ModalChangeInfo';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
+const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
 const Proflie = props => {
   const {navigation, route} = props;
@@ -50,8 +53,6 @@ const Proflie = props => {
   };
 
   const [modalVisible, setModalVisible] = useState(false);
-
-  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
     <ScrollView>

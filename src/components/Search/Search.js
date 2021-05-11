@@ -3,10 +3,10 @@ import {
   StyleSheet,
   View,
   ScrollView,
-  Text,
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+
 import RenderProduct from '../common/RenderProduct';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {fetchSearch} from './../../actions/actions';

@@ -9,13 +9,8 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {Formik} from 'formik';
-import {validateUpdateComment} from '../../utils/validation';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {renderRating} from './../../utils/common';
-import Rating from './../Rating/Rating';
-import * as Config from './../../Config/config';
+
+import {useSelector, useDispatch} from 'react-redux';
 import {
   inserCart,
   fetchReview,
@@ -24,12 +19,18 @@ import {
   deleteYourComment,
   newYourReview,
 } from './../../actions/actions';
-import {useSelector, useDispatch} from 'react-redux';
+import {Formik} from 'formik';
+import {validateUpdateComment} from '../../utils/validation';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {renderRating} from './../../utils/common';
+import Rating from './../Rating/Rating';
+import * as Config from './../../Config/config';
+import ModalView from './../common/ModalView';
 
 const {height, width} = Dimensions.get('window');
 const productWidth = width - 200;
 const productHeight = productWidth * 1.25;
-import ModalView from './../common/ModalView';
 
 const listTab = [
   {

@@ -1,25 +1,26 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
-  ScrollView,
   Image,
   Text,
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
 import {useSelector, useDispatch} from 'react-redux';
-const {height, width} = Dimensions.get('window');
-const boxSize = width / 2 - 40;
 import * as Config from './../../Config/config';
 import {signOut} from './../../actions/actions';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
+const {width} = Dimensions.get('window');
+const boxSize = width / 2 - 40;
+const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
 const Setting = props => {
   const {navigation} = props;
   const dispatch = useDispatch();
   const user = useSelector(state => state.authenReducer.userInfo);
-  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
     <View style={styles.container}>

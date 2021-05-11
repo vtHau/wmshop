@@ -26,21 +26,18 @@ function SignIn(props) {
   const [statusSignIn, setStatusSignIn] = useState(false);
   const [statusSignUp, setStatusSignUp] = useState(false);
   const [typingPassword, setTypingPassword] = useState(false);
-
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleModal = () => {
     setModalVisible(!modalVisible);
     navigation.pop();
   };
-
   const typing = (
     <TypingAnimation
       dotColor="#93278f"
       style={{marginRight: 25, marginTop: 20}}
     />
   );
-
   const focusInput = value => {
     setStatusSignIn(false);
 
@@ -102,13 +99,11 @@ function SignIn(props) {
               <View style={styles.action}>
                 <TextInput
                   style={styles.textInput}
-                  // onFocus={() => focusInput('email')}
                   onBlur={handleBlur('name')}
                   onChangeText={handleChange('name')}
                   value={values.name}
                   placeholder="Nhập họ tên..."
                 />
-                {/* {typingEmail ? typing : null} */}
               </View>
               {errors.name && touched.name ? (
                 <Text style={styles.textError}>{errors.name}</Text>
@@ -152,13 +147,11 @@ function SignIn(props) {
               <View style={styles.action}>
                 <TextInput
                   style={styles.textInput}
-                  // onFocus={() => focusInput('password')}
                   onBlur={handleBlur('prePassword')}
                   onChangeText={handleChange('prePassword')}
                   value={values.prePassword}
                   placeholder="Nhập lại mật khẩu..."
                 />
-                {/* {typingPassword ? typing : null} */}
               </View>
               {errors.prePassword && touched.prePassword ? (
                 <Text style={styles.textError}>{errors.prePassword}</Text>

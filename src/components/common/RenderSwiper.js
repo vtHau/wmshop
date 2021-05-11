@@ -11,7 +11,6 @@ import Swiper from 'react-native-swiper';
 
 import * as Config from './../../Config/config';
 const {width} = Dimensions.get('window');
-
 const imageWidth = width - 25;
 const imageHeight = (imageWidth / 933) * 465;
 const URL = `${Config.API_URL}${Config.URL_IMAGE}`;

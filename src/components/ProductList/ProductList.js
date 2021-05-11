@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, ScrollView, Text} from 'react-native';
+
 import RenderProduct from '../common/RenderProduct';
 import {fetchProduct} from './../../actions/actions';
 import {useSelector, useDispatch} from 'react-redux';

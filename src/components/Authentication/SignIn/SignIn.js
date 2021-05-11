@@ -5,11 +5,10 @@ import {
   View,
   ImageBackground,
   TextInput,
-  Dimensions,
   TouchableOpacity,
 } from 'react-native';
 
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {TypingAnimation} from 'react-native-typing-animation';
 import {Formik} from 'formik';
 import {validateSignIn} from './../../../utils/validation';
@@ -23,7 +22,6 @@ function SignIn(props) {
   const dispatch = useDispatch();
   const [typingEmail, setTypingEmail] = useState(false);
   const [statusSignIn, setStatusSignIn] = useState(true);
-
   const [typingPassword, setTypingPassword] = useState(false);
 
   const typing = (
@@ -32,7 +30,6 @@ function SignIn(props) {
       style={{marginRight: 25, marginTop: 20}}
     />
   );
-
   const focusInput = value => {
     setStatusSignIn(true);
 

@@ -4,15 +4,12 @@ import {
   Text,
   View,
   Dimensions,
-  TouchableOpacity,
-  Image,
   ScrollView,
 } from 'react-native';
 
 const {height, width} = Dimensions.get('window');
 const productWidth = width - width * 0.1;
 const productHeight = productWidth / 2;
-import map from './../../../assets/img/map.png';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import TitleView from './../common/TitleView';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
@@ -23,10 +20,11 @@ const OrderHistory = () => {
       <View style={styles.container}>
         <TitleView title="Liên hệ" />
         <View style={styles.box}>
+          <Text style={styles.titleMap}>Bản đồ</Text>
           <View style={styles.listProduct}>
             <View style={styles.googleMap}>
-              {/* <Image style={styles.image} source={map} /> */}
               <MapView
+                zoomControlEnabled
                 style={styles.image}
                 provider={PROVIDER_GOOGLE}
                 initialRegion={{
@@ -116,6 +114,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontWeight: 'bold',
     fontSize: 16,
+    flexGrow: 1,
+    color: '#414dd1',
+  },
+  titleMap: {
+    marginLeft: 10,
+    marginBottom: 10,
+    fontWeight: 'bold',
+    fontSize: 18,
     flexGrow: 1,
     color: '#414dd1',
   },

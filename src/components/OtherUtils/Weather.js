@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
+
 import TitleView from './../common/TitleView';
 import {fetchWeather, fetchWeatherFiveDay} from './../../actions/actions';
 import moment from 'moment';

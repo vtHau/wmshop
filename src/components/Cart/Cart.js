@@ -10,6 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+
 import {
   fetchCart,
   updateCartQuantity,
@@ -18,11 +19,12 @@ import {
 } from './../../actions/actions';
 import * as Config from './../../Config/config';
 import ModalView from './../common/ModalView';
-
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-const {height, width} = Dimensions.get('window');
+
+const {width} = Dimensions.get('window');
 const productWidth = width / 4.5;
 const productHeight = productWidth * 1.2;
+const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
 const Cart = props => {
   const {navigation} = props;
@@ -71,8 +73,6 @@ const Cart = props => {
   const handleModal = () => {
     setModalVisible(!modalVisible);
   };
-
-  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
     <View style={styles.container}>

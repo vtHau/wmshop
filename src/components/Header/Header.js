@@ -1,35 +1,44 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TextInput,
-  ImageBackground,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {useSelector} from 'react-redux';
+import * as Config from './../../Config/config';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import avatar from './../../../assets/img/avatars/avatar.png';
 
 const Header = props => {
   const {navigation} = props;
+  const signIn = useSelector(state => state.authenReducer.signIn);
+  const user = useSelector(state => state.authenReducer.userInfo);
+  const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.btnSearch}>
+      <TouchableOpacity style={styles.btn}>
         <FontAwesome5
-          style={styles.searchIcon}
-          name={'search'}
-          size={18}
+          style={styles.barsIcon}
+          name={'bars'}
+          size={22}
           color={'#0077FF'}
         />
       </TouchableOpacity>
-      <Text style={styles.title}>WB Shop</Text>
+      <Text style={styles.title}>App Shop</Text>
       <TouchableOpacity
-        style={styles.btnSearch}
+        style={styles.btn}
         onPress={() => navigation.push('SETTING_AUTHEN_CONTAINER')}>
-        <Image style={styles.avatarIcon} source={avatar} />
+        {signIn !== undefined && signIn === true ? (
+          <Image
+            style={styles.avatarIcon}
+            source={{
+              uri: `${URL}/avatars/${user.userImage}`,
+            }}
+          />
+        ) : (
+          <FontAwesome5
+            style={styles.avatarIcon}
+            name={'user-circle'}
+            size={22}
+            color={'#0077FF'}
+          />
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -46,30 +55,26 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.05,
-    shadowRadius: 0.05,
-    elevation: 6,
-    borderBottomLeftRadius: 16,
-    borderBottomRightRadius: 16,
+    elevation: 3,
   },
-  btnSearch: {
+  btn: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 6,
     borderRadius: 50,
   },
   avatarIcon: {
-    width: 30,
-    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 22,
+    height: 22,
     borderRadius: 50,
   },
-  searchIcon: {
-    width: 18,
-    height: 18,
+  barsIcon: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 22,
+    height: 22,
   },
   title: {
     fontSize: 20,
