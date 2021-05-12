@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
   avatarIcon: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 22,
-    height: 22,
+    width: 24,
+    height: 24,
     borderRadius: 50,
   },
   barsIcon: {

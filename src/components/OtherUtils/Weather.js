@@ -16,23 +16,19 @@ import uvImg from './../../../assets/img/weather/uv.png';
 const Weather = props => {
   const {navigation} = props;
   const dispatch = useDispatch();
-  const [weatherFiveDay, setWeatherFiveDay] = useState([]);
   const weathers = useSelector(state => state.weatherReducer.weathers);
   const FiveDay = useSelector(state => state.weatherReducer.weatherFiveDay);
   const uv = useSelector(state => state.weatherReducer.uv);
 
-  useEffect(() => {
-    let arr = [];
-    if (FiveDay.length > 0) {
-      FiveDay.map(item => {
-        var date = new Date(item.dt * 1000);
-        if (date.getHours() == 10) {
-          arr.push(item);
-        }
-      });
-    }
-    setWeatherFiveDay(arr);
-  }, []);
+  let weatherFive = [];
+  if (FiveDay.length > 0) {
+    FiveDay.map(item => {
+      var date = new Date(item.dt * 1000);
+      if (date.getHours() == 10) {
+        weatherFive.push(item);
+      }
+    });
+  }
 
   let colorsUV = '';
   let uvLevelName = '';
@@ -57,9 +53,9 @@ const Weather = props => {
   }
 
   useEffect(async () => {
-    dispatch(fetchWeather());
     dispatch(fetchWeatherFiveDay());
-  }, [dispatch]);
+    dispatch(fetchWeather());
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -116,11 +112,11 @@ const Weather = props => {
               </View>
             </View>
           </View>
-          {weatherFiveDay.length > 0 && (
+          {weatherFive.length > 0 && (
             <View style={styles.content}>
               <Text style={styles.location}>Dự báo cho 5 ngày tiếp theo</Text>
-              {weatherFiveDay.length > 0 &&
-                weatherFiveDay.map((weather, key) => (
+              {weatherFive.length > 0 &&
+                weatherFive.map((weather, key) => (
                   <View key={key} style={styles.infoWeather}>
                     <Text style={styles.timeCurrent}>{`${moment(
                       weather.dt * 1000,

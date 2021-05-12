@@ -478,7 +478,9 @@ export const fetchWeatherFiveDay = () => {
       data: null,
     })
       .then(resTwo => {
-        dispatch(initWeatherFiveDay(resTwo.data.list));
+        if (resTwo.data.list !== undefined) {
+          dispatch(initWeatherFiveDay(resTwo.data.list));
+        }
       })
       .catch(err => {
         console.log(err);
