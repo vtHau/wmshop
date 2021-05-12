@@ -44,6 +44,7 @@ export const signIn = info => {
 };
 
 export const signOut = () => {
+  console.log('da chay');
   return {
     type: 'SIGN_OUT',
   };

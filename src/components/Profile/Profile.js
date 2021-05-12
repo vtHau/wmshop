@@ -31,7 +31,6 @@ const Proflie = props => {
   const [name, setName] = useState(user.userFullName);
   const [email, setEmail] = useState(user.userEmail);
   const [phone, setPhone] = useState(user.userPhone);
-  const [address, setAddress] = useState(user.userAddress);
   const [status, setStatus] = useState(user.userStatus);
   const [avatar, setAvatar] = useState(user.userImage);
   const [update, setUpdate] = useState(false);
@@ -91,7 +90,7 @@ const Proflie = props => {
         </View>
         <View style={styles.boxInfo}>
           <Formik
-            initialValues={{name, email, phone, address, status}}
+            initialValues={{name, email, phone, status}}
             validationSchema={validateUpdateProfile}
             onSubmit={info => changeInfo(info)}>
             {({
@@ -170,25 +169,6 @@ const Proflie = props => {
                   <Text style={styles.errorFill}>{errors.status}</Text>
                 ) : null}
 
-                <Text style={styles.nameFill}>Địa chỉ</Text>
-                <View style={styles.infoItem}>
-                  <FontAwesome5
-                    name={'map-marked-alt'}
-                    size={22}
-                    color={'#616161'}
-                  />
-                  <TextInput
-                    style={styles.textInput}
-                    onBlur={handleBlur('address')}
-                    onChangeText={handleChange('address')}
-                    value={values.address}
-                    placeholder="Nhập địa chỉ của bạn"
-                    editable={update}
-                  />
-                </View>
-                {errors.address && touched.address ? (
-                  <Text style={styles.errorFill}>{errors.address}</Text>
-                ) : null}
                 {update ? (
                   <TouchableOpacity onPress={() => handleSubmit()}>
                     <View style={styles.changeInfo}>

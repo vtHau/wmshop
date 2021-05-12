@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -12,6 +12,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import * as Config from './../../Config/config';
 import {signOut} from './../../actions/actions';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import ModuleSignOut from './../common/ModuleSignOut';
 
 const {width} = Dimensions.get('window');
 const boxSize = width / 2 - 40;
@@ -22,8 +23,15 @@ const Setting = props => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.authenReducer.userInfo);
 
+  const handleModal = () => {
+    setModalVisible(!modalVisible);
+    dispatch(signOut());
+  };
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View style={styles.container}>
+      <ModuleSignOut modalVisible={modalVisible} handleModal={handleModal} />
       <View style={styles.boxHeader}>
         <TouchableOpacity onPress={() => navigation.pop()}>
           <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />
@@ -70,7 +78,7 @@ const Setting = props => {
             style={styles.settingItem}
             onPress={() => navigation.push('ORDER_HISTORY', user)}>
             <FontAwesome5 name={'credit-card'} size={22} color={'#414dd1'} />
-            <Text style={styles.titleItem}>Lịch sử mua hàng</Text>
+            <Text style={styles.titleItem}>Lịch sử đặt hàng</Text>
             <FontAwesome5 name={'angle-right'} size={22} color={'#414dd1'} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -83,7 +91,7 @@ const Setting = props => {
 
           <TouchableOpacity
             style={styles.settingItem}
-            onPress={() => dispatch(signOut())}>
+            onPress={() => setModalVisible(!modalVisible)}>
             <FontAwesome5 name={'sign-out-alt'} size={22} color={'#414dd1'} />
             <Text style={styles.titleItem}>Đăng xuất</Text>
             <FontAwesome5 name={'angle-right'} size={22} color={'#414dd1'} />
@@ -119,8 +127,8 @@ const styles = StyleSheet.create({
   },
   avatarIcon: {
     marginLeft: 6,
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: 50,
     borderColor: '#ccc',
     borderWidth: 1,
