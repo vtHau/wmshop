@@ -12,7 +12,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import * as Config from './../../Config/config';
 import {signOut} from './../../actions/actions';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import ModuleSignOut from './../common/ModuleSignOut';
+import ModalView from '../common/ModalView';
 
 const {width} = Dimensions.get('window');
 const boxSize = width / 2 - 40;
@@ -23,15 +23,24 @@ const Setting = props => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.authenReducer.userInfo);
 
+  const [modalVisible, setModalVisible] = useState(false);
   const handleModal = () => {
     setModalVisible(!modalVisible);
     dispatch(signOut());
   };
-  const [modalVisible, setModalVisible] = useState(false);
+  const closeModal = () => setModalVisible(false);
 
   return (
     <View style={styles.container}>
-      <ModuleSignOut modalVisible={modalVisible} handleModal={handleModal} />
+      <ModalView
+        twoButton
+        title="Bạn có chắc muốn đăng xuất ?"
+        titleButton="Đăng xuất"
+        closeModal={closeModal}
+        modalVisible={modalVisible}
+        handleModal={handleModal}>
+        <FontAwesome5 name={'sign-out-alt'} size={46} color={'#3b72ff'} />
+      </ModalView>
       <View style={styles.boxHeader}>
         <TouchableOpacity onPress={() => navigation.pop()}>
           <FontAwesome5 name={'angle-left'} size={24} color={'#414dd1'} />

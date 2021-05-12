@@ -18,7 +18,7 @@ import {
   insertOrderHistory,
 } from './../../actions/actions';
 import * as Config from './../../Config/config';
-import ModalView from './../common/ModalView';
+import ModalView from '../common/ModalView';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const {width} = Dimensions.get('window');
@@ -29,7 +29,6 @@ const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 const Cart = props => {
   const {navigation} = props;
   const [disBtn, setDisBtn] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const carts = useSelector(state => state.cartReducer.carts);
   let totalMoney = 0;
@@ -70,6 +69,7 @@ const Cart = props => {
     setDisBtn(false);
   };
 
+  const [modalVisible, setModalVisible] = useState(false);
   const handleModal = () => {
     setModalVisible(!modalVisible);
   };
@@ -78,9 +78,11 @@ const Cart = props => {
     <View style={styles.container}>
       <ModalView
         title="Mua sản phẩm thành công"
+        titleButton="OK"
         modalVisible={modalVisible}
-        handleModal={handleModal}
-      />
+        handleModal={handleModal}>
+        <FontAwesome5 name={'cart-arrow-down'} size={40} color={'#3b72ff'} />
+      </ModalView>
       <ScrollView>
         <View style={styles.box}>
           <Text style={styles.title}>giỏ hàng</Text>

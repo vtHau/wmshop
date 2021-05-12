@@ -9,19 +9,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {useSelector, useDispatch} from 'react-redux';
 import {TypingAnimation} from 'react-native-typing-animation';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {Formik} from 'formik';
 import {validateSignUp} from '../../../utils/validation';
 import header from './../../../../assets/img/header.png';
 import {checkSignUp} from './../../../utils/checkAPI';
-import ModalSignUp from './../../common/ModalSignUp';
+import ModalView from './../../common/ModalView';
 
-function SignIn(props) {
+function SignUp(props) {
   const {navigation} = props;
   const {width} = Dimensions.get('screen');
-  const dispatch = useDispatch();
   const [typingEmail, setTypingEmail] = useState(false);
   const [statusSignIn, setStatusSignIn] = useState(false);
   const [statusSignUp, setStatusSignUp] = useState(false);
@@ -66,7 +64,13 @@ function SignIn(props) {
 
   return (
     <View style={styles.container}>
-      <ModalSignUp modalVisible={modalVisible} handleModal={handleModal} />
+      <ModalView
+        title="Cập nhập thông tin tài khoản thành công"
+        titleButton="OK"
+        modalVisible={modalVisible}
+        handleModal={handleModal}>
+        <FontAwesome5 name={'check-circle'} size={46} color={'#3b72ff'} />
+      </ModalView>
       <TouchableOpacity style={styles.boxBack} onPress={() => navigation.pop()}>
         <FontAwesome5 name={'angle-left'} size={26} color={'#fff'} />
       </TouchableOpacity>
@@ -188,7 +192,7 @@ function SignIn(props) {
   );
 }
 
-export default SignIn;
+export default SignUp;
 
 const styles = StyleSheet.create({
   emailExist: {

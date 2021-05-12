@@ -1,11 +1,5 @@
 import React, {useEffect} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, Text, View, Dimensions, ScrollView} from 'react-native';
 
 const {height, width} = Dimensions.get('window');
 const productWidth = width - width * 0.1;
@@ -20,7 +14,7 @@ const OrderHistory = () => {
       <View style={styles.container}>
         <TitleView title="Liên hệ" />
         <View style={styles.box}>
-          <Text style={styles.titleMap}>Bản đồ</Text>
+          <Text style={styles.titleMap}>BẢN ĐỒ</Text>
           <View style={styles.listProduct}>
             <View style={styles.googleMap}>
               <MapView

@@ -17,8 +17,9 @@ import {Formik} from 'formik';
 import {validateUpdateProfile} from './../../utils/validation';
 import {updateInfo} from './../../utils/checkAPI';
 import {signInToken} from './../../actions/actions';
-import ModalChangeInfo from './../common/ModalChangeInfo';
+import ModalView from './../common/ModalView';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import backgroudProfile from './../../../assets/img/background-profile.png';
 
 const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
@@ -34,18 +35,21 @@ const Proflie = props => {
   const [status, setStatus] = useState(user.userStatus);
   const [avatar, setAvatar] = useState(user.userImage);
   const [update, setUpdate] = useState(false);
+  const [updating, setUpdating] = useState(false);
 
   const changeInfo = async info => {
     const userInfo = {
       userID,
       ...info,
     };
+    setUpdating(true);
     const resUpdate = await updateInfo(userInfo);
     if (resUpdate.trim() === 'UPDATE_INFO_SUCCESS') {
       setModalVisible(!modalVisible);
-      dispatch(signInToken());
+      await dispatch(signInToken());
       setUpdate(false);
     }
+    setUpdating(false);
   };
   const handleModal = () => {
     setModalVisible(!modalVisible);
@@ -55,7 +59,13 @@ const Proflie = props => {
 
   return (
     <ScrollView>
-      <ModalChangeInfo modalVisible={modalVisible} handleModal={handleModal} />
+      <ModalView
+        title="Đăng ký tài khoản thành công"
+        titleButton="OK"
+        modalVisible={modalVisible}
+        handleModal={handleModal}>
+        <FontAwesome5 name={'check-circle'} size={46} color={'#3b72ff'} />
+      </ModalView>
       <View style={styles.container}>
         <View style={styles.boxHeader}>
           <TouchableOpacity onPress={() => navigation.pop()}>
@@ -66,6 +76,7 @@ const Proflie = props => {
         </View>
         <View style={styles.boxBackground}>
           <View style={styles.boxImage}>
+            <Image style={styles.backgroudProfile} source={backgroudProfile} />
             <TouchableOpacity style={styles.wrapImage}>
               <Image
                 style={styles.avatarImage}
@@ -165,16 +176,29 @@ const Proflie = props => {
                     editable={update}
                   />
                 </View>
-                {errors.status && touched.status ? (
-                  <Text style={styles.errorFill}>{errors.status}</Text>
-                ) : null}
 
                 {update ? (
-                  <TouchableOpacity onPress={() => handleSubmit()}>
-                    <View style={styles.changeInfo}>
-                      <Text style={styles.textChangeInfo}>Cập nhập</Text>
-                    </View>
-                  </TouchableOpacity>
+                  <>
+                    {!updating ? (
+                      <TouchableOpacity onPress={() => handleSubmit()}>
+                        <View style={styles.changeInfo}>
+                          <Text style={styles.textChangeInfo}>Cập nhập</Text>
+                        </View>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity onPress={() => handleSubmit()}>
+                        <View style={styles.changeInfo}>
+                          <Text
+                            style={[
+                              styles.textChangeInfo,
+                              styles.disableChangeInfo,
+                            ]}>
+                            Cập nhập
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                  </>
                 ) : (
                   <TouchableOpacity onPress={() => setUpdate(true)}>
                     <View style={styles.changeInfo}>
@@ -194,6 +218,11 @@ const Proflie = props => {
 export default Proflie;
 
 const styles = StyleSheet.create({
+  backgroudProfile: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+  },
   boxNameEdit: {
     position: 'relative',
     flexDirection: 'row',
@@ -209,6 +238,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff',
     textTransform: 'uppercase',
+  },
+  disableChangeInfo: {
+    backgroundColor: 'grey',
   },
   changeInfo: {
     marginTop: 30,
@@ -269,6 +301,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#ccc',
     borderRadius: 10,
+    elevation: 3,
   },
   wrapImage: {
     position: 'absolute',

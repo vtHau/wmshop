@@ -337,10 +337,12 @@ const ProductDetail = props => {
   return (
     <View style={styles.container}>
       <ModalView
-        title=" Đăng nhập để thêm vào giỏ hàng"
+        title="Đăng nhập để thêm sản phẩm vào giỏ hàng"
+        titleButton="OK"
         modalVisible={modalVisible}
-        handleModal={handleModal}
-      />
+        handleModal={handleModal}>
+        <FontAwesome5 name={'user-circle'} size={40} color={'#003FFF'} />
+      </ModalView>
       <ScrollView>
         <View style={styles.boxImage}>
           <TouchableOpacity
@@ -575,9 +577,10 @@ const styles = StyleSheet.create({
   },
   tabItem: {
     padding: 8,
-    borderWidth: 0.5,
-    borderColor: '#ccc',
+    borderWidth: 0.6,
+    borderColor: '#e8e9ed',
     borderRadius: 10,
+    backgroundColor: '#f8f8f8',
   },
   listTab: {
     flexDirection: 'row',

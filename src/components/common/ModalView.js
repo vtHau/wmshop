@@ -1,28 +1,38 @@
 import React from 'react';
 import {StyleSheet, Text, View, Modal, TouchableOpacity} from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const ModalView = props => {
-  const {title, modalVisible, handleModal} = props;
+  const {
+    modalVisible,
+    handleModal,
+    title,
+    titleButton,
+    children,
+    twoButton,
+    closeModal,
+  } = props;
 
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible}>
       <View style={styles.boxModal}>
         <View style={styles.modalView}>
           <View style={styles.boxContent}>
-            <Text style={styles.textContent}>{title}</Text>
+            <Text style={styles.textContent}>{title || 'Notification'}</Text>
           </View>
-          <View style={styles.boxIcon}>
-            <FontAwesome5
-              name={'cart-arrow-down'}
-              size={40}
-              color={'#3b72ff'}
-            />
-          </View>
+          <View style={styles.boxIcon}>{children}</View>
           <View style={styles.boxAction}>
             <TouchableOpacity onPress={handleModal}>
-              <Text style={styles.textAction}>OK</Text>
+              <Text style={[styles.textAction, twoButton && styles.twoButton]}>
+                {titleButton || 'Action'}
+              </Text>
             </TouchableOpacity>
+            {twoButton && (
+              <TouchableOpacity onPress={closeModal}>
+                <Text style={[styles.textAction, styles.twoButton]}>
+                  Hủy bỏ
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
@@ -33,13 +43,22 @@ const ModalView = props => {
 export default ModalView;
 
 const styles = StyleSheet.create({
+  jusCenter: {
+    justifyContent: 'center',
+  },
+  jusBetween: {
+    justifyContent: 'space-between',
+  },
   boxIcon: {
-    margin: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  twoButton: {
+    paddingHorizontal: 14,
+  },
   textAction: {
-    paddingHorizontal: 50,
+    paddingHorizontal: 40,
+    marginHorizontal: 6,
     paddingVertical: 8,
     fontSize: 20,
     fontWeight: 'bold',
@@ -54,7 +73,8 @@ const styles = StyleSheet.create({
   },
   boxAction: {
     padding: 10,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   boxTitle: {
@@ -76,9 +96,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
     marginBottom: 60,
     paddingVertical: 4,
-    paddingHorizontal: 40,
+    paddingHorizontal: 10,
     borderRadius: 16,
-
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

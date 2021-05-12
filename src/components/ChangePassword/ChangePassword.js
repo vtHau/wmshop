@@ -14,8 +14,9 @@ const {height, width} = Dimensions.get('window');
 import * as Config from './../../Config/config';
 import {Formik} from 'formik';
 import {validateUpdatePassword} from '../../utils/validation';
-import ModalChangeInfo from './../common/ModalChangeInfo';
+import ModalView from './../common/ModalView';
 import {updatePassword} from './../../utils/checkAPI';
+import backgroudProfile from './../../../assets/img/background-profile.png';
 
 const ChangePassword = props => {
   const [wrongPassword, setWrongPassword] = useState(false);
@@ -53,7 +54,13 @@ const ChangePassword = props => {
 
   return (
     <ScrollView>
-      <ModalChangeInfo modalVisible={modalVisible} handleModal={handleModal} />
+      <ModalView
+        title="Cập nhập mật khẩu tài khoản thành công"
+        titleButton="OK"
+        modalVisible={modalVisible}
+        handleModal={handleModal}>
+        <FontAwesome5 name={'check-circle'} size={46} color={'#3b72ff'} />
+      </ModalView>
       <View style={styles.container}>
         <View style={styles.boxHeader}>
           <TouchableOpacity onPress={() => navigation.pop()}>
@@ -64,6 +71,7 @@ const ChangePassword = props => {
         </View>
         <View style={styles.boxBackground}>
           <View style={styles.boxImage}>
+            <Image style={styles.backgroudProfile} source={backgroudProfile} />
             <TouchableOpacity style={styles.wrapImage}>
               <Image
                 style={styles.avatarImage}
@@ -116,7 +124,7 @@ const ChangePassword = props => {
                     onChangeText={handleChange('password')}
                     value={values.password}
                     editable={update}
-                    placeholder="Nhập tên của bạn..."
+                    placeholder="Nhập mật khẩu hiện tại của bạn..."
                   />
                 </View>
                 {errors.password && touched.password ? (
@@ -132,7 +140,7 @@ const ChangePassword = props => {
                     onChangeText={handleChange('newPassword')}
                     value={values.newPassword}
                     editable={update}
-                    placeholder="Nhập tên của bạn..."
+                    placeholder="Nhập mật khẩu mới của bạn..."
                   />
                 </View>
                 {errors.newPassword && touched.newPassword ? (
@@ -147,7 +155,7 @@ const ChangePassword = props => {
                     onChangeText={handleChange('preNewPassword')}
                     value={values.preNewPassword}
                     editable={update}
-                    placeholder="Nhập số điện thoại của bạn..."
+                    placeholder="Nhập lại mật khẩu mới của bạn..."
                   />
                 </View>
                 {errors.preNewPassword && touched.preNewPassword ? (
@@ -185,6 +193,11 @@ const ChangePassword = props => {
 export default ChangePassword;
 
 const styles = StyleSheet.create({
+  backgroudProfile: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+  },
   editIcon: {
     position: 'absolute',
     right: -24,
@@ -268,6 +281,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#ccc',
     borderRadius: 10,
+    elevation: 3,
   },
   wrapImage: {
     position: 'absolute',
