@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  RefreshControl,
 } from 'react-native';
 
 import {useSelector, useDispatch} from 'react-redux';
@@ -18,6 +19,7 @@ import {
   updateYourReview,
   deleteYourComment,
   newYourReview,
+  updateViewProduct,
 } from './../../actions/actions';
 import {Formik} from 'formik';
 import {validateUpdateComment} from '../../utils/validation';
@@ -50,6 +52,7 @@ const ProductDetail = props => {
   const product = route.params;
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const [status, setStatus] = useState('ALL_COMMENT');
   const [editComment, setEditComment] = useState(false);
   const [rating, setRating] = useState(0);
@@ -58,7 +61,14 @@ const ProductDetail = props => {
   const yourReviews = useSelector(state => state.reviewReducer.yourReviews);
   const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
+  const onRefresh = () => {
+    setRefresh(true);
+    dispatch(fetchReview(product.productID));
+    setRefresh(false);
+  };
+
   useEffect(() => {
+    updateViewProduct(product.productID);
     dispatch(fetchReview(product.productID));
   }, [dispatch]);
 
@@ -343,7 +353,10 @@ const ProductDetail = props => {
         handleModal={handleModal}>
         <FontAwesome5 name={'user-circle'} size={40} color={'#003FFF'} />
       </ModalView>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+        }>
         <View style={styles.boxImage}>
           <TouchableOpacity
             style={styles.backIcon}

@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   Alert,
+  RefreshControl,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 
@@ -29,6 +30,7 @@ const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 const Cart = props => {
   const {navigation} = props;
   const [disBtn, setDisBtn] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const dispatch = useDispatch();
   const carts = useSelector(state => state.cartReducer.carts);
   let totalMoney = 0;
@@ -44,6 +46,12 @@ const Cart = props => {
       setDisBtn(false);
     }
   }, [carts]);
+
+  const onRefresh = () => {
+    setRefresh(true);
+    dispatch(fetchCart());
+    setRefresh(false);
+  };
 
   carts.forEach(cart => {
     totalMoney += cart.productQuantity * cart.productPrice;
@@ -83,7 +91,10 @@ const Cart = props => {
         handleModal={handleModal}>
         <FontAwesome5 name={'cart-arrow-down'} size={40} color={'#3b72ff'} />
       </ModalView>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+        }>
         <View style={styles.box}>
           <Text style={styles.title}>giỏ hàng</Text>
           <View style={styles.products}>

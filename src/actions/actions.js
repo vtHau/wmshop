@@ -292,6 +292,14 @@ export const initCart = carts => {
   };
 };
 
+export const updateViewProduct = productID => {
+  const info = {
+    type: 'UPDATE_VIEW',
+    productID,
+  };
+  CallAPI(Config.API_PRODUCT, 'POST', info).then(res => {});
+};
+
 export const fetchProduct = info => {
   return dispatch => {
     CallAPI(Config.API_PRODUCT, 'POST', info).then(res => {

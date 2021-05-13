@@ -26,6 +26,8 @@ const Home = props => {
 
   const onRefresh = () => {
     setRefresh(true);
+    dispatch(fetchCategory());
+    dispatch(fetchBrand());
     dispatch(fetchProduct(HOT));
     setRefresh(false);
   };
