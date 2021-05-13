@@ -14,7 +14,7 @@ import {TypingAnimation} from 'react-native-typing-animation';
 import {Formik} from 'formik';
 import {validateSignIn} from './../../../utils/validation';
 import header from './../../../../assets/img/header.png';
-import {checkSignIn} from './../../../utils/checkAPI';
+import {checkSignIn} from './../../../actions/actions';
 import {signIn} from './../../../actions/actions';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 

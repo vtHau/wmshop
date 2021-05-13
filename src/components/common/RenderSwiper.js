@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   item: {
-    height: imageHeight + 15,
+    height: imageHeight,
   },
   image: {
     width: imageWidth,

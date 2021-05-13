@@ -15,7 +15,7 @@ const {width} = Dimensions.get('window');
 import * as Config from './../../Config/config';
 import {Formik} from 'formik';
 import {validateUpdateProfile} from './../../utils/validation';
-import {updateInfo} from './../../utils/checkAPI';
+import {updateInfo} from './../../actions/actions';
 import {signInToken} from './../../actions/actions';
 import ModalView from './../common/ModalView';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -58,7 +58,7 @@ const Proflie = props => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollView}>
       <ModalView
         title="Đăng ký tài khoản thành công"
         titleButton="OK"
@@ -194,15 +194,9 @@ const Proflie = props => {
                         </View>
                       </TouchableOpacity>
                     ) : (
-                      <TouchableOpacity onPress={() => handleSubmit()}>
-                        <View style={styles.changeInfo}>
-                          <Text
-                            style={[
-                              styles.textChangeInfo,
-                              styles.disableChangeInfo,
-                            ]}>
-                            Cập nhập
-                          </Text>
+                      <TouchableOpacity>
+                        <View style={styles.disableChangeInfo}>
+                          <Text style={styles.textChangeInfo}>Cập nhập</Text>
                         </View>
                       </TouchableOpacity>
                     )}
@@ -226,6 +220,9 @@ const Proflie = props => {
 export default Proflie;
 
 const styles = StyleSheet.create({
+  scrollView: {
+    backgroundColor: '#fff',
+  },
   backgroudProfile: {
     width: '100%',
     height: '100%',
@@ -248,7 +245,10 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   disableChangeInfo: {
+    marginTop: 30,
     backgroundColor: 'grey',
+    borderRadius: 14,
+    alignItems: 'center',
   },
   changeInfo: {
     marginTop: 30,
@@ -286,7 +286,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
   },
   boxHeader: {
     paddingHorizontal: 10,

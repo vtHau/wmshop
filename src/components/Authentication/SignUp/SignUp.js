@@ -15,7 +15,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {Formik} from 'formik';
 import {validateSignUp} from '../../../utils/validation';
 import header from './../../../../assets/img/header.png';
-import {checkSignUp} from './../../../utils/checkAPI';
+import {checkSignUp} from './../../../actions/actions';
 import ModalView from './../../common/ModalView';
 
 function SignUp(props) {

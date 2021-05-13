@@ -15,7 +15,7 @@ import * as Config from './../../Config/config';
 import {Formik} from 'formik';
 import {validateUpdatePassword} from '../../utils/validation';
 import ModalView from './../common/ModalView';
-import {updatePassword} from './../../utils/checkAPI';
+import {updatePassword} from './../../actions/actions';
 import backgroudProfile from './../../../assets/img/background-profile.png';
 
 const ChangePassword = props => {
@@ -53,7 +53,7 @@ const ChangePassword = props => {
   const URL = `${Config.API_URL}${Config.URL_IMAGE}`;
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollView}>
       <ModalView
         title="Cập nhập mật khẩu tài khoản thành công"
         titleButton="OK"
@@ -202,6 +202,9 @@ const ChangePassword = props => {
 export default ChangePassword;
 
 const styles = StyleSheet.create({
+  scrollView: {
+    backgroundColor: '#fff',
+  },
   backgroudProfile: {
     width: '100%',
     height: '100%',
@@ -267,7 +270,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
   },
   boxHeader: {
     paddingHorizontal: 10,
