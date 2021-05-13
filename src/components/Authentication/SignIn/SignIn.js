@@ -141,7 +141,7 @@ function SignIn(props) {
                   </TouchableOpacity>
                   <View style={styles.btnSignUp}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('SIGN_UP')}>
+                      onPress={() => navigation.replace('SIGN_UP')}>
                       <Text style={styles.textSignIn}>Đăng ký</Text>
                     </TouchableOpacity>
                   </View>

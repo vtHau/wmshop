@@ -15,8 +15,16 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {Formik} from 'formik';
 import {validateSignUp} from '../../../utils/validation';
 import header from './../../../../assets/img/header.png';
-import {checkSignUp} from './../../../actions/actions';
+import {checkEmail, sendEmail} from './../../../actions/actions';
 import ModalView from './../../common/ModalView';
+
+const randomCode = () => {
+  let code = '';
+  for (var i = 0; i < 4; i++) {
+    code += Math.floor(Math.random() * 10);
+  }
+  return code;
+};
 
 function SignUp(props) {
   const {navigation} = props;
@@ -26,6 +34,7 @@ function SignUp(props) {
   const [statusSignUp, setStatusSignUp] = useState(false);
   const [typingPassword, setTypingPassword] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [status, setStatus] = useState(true);
 
   const handleModal = () => {
     setModalVisible(!modalVisible);
@@ -52,13 +61,22 @@ function SignUp(props) {
     setTypingEmail(false);
     setStatusSignUp(false);
     setTypingPassword(false);
+    setStatus(false);
 
-    const respSignUp = await checkSignUp(values);
-    if (respSignUp === 'SIGNUP_SUCCESS') {
-      setModalVisible(!modalVisible);
-    } else if (respSignUp === 'SIGNUP_FAIL') {
-      setStatusSignUp(true);
-    } else if (respSignUp === 'EMAIL_EXIST') {
+    const resp = await checkEmail(values);
+    if (!resp) {
+      const info = {
+        ...values,
+        code: randomCode(),
+      };
+      const resp = await sendEmail(info);
+      if (resp) {
+        navigation.replace('CONFIRM_CODE', info);
+      } else {
+        setStatus(true);
+      }
+    } else {
+      setStatus(true);
       setStatusSignIn(true);
     }
   };
@@ -183,18 +201,27 @@ function SignUp(props) {
                     Đăng ký tài khoản không thành công
                   </Text>
                 ) : null}
-
-                <TouchableOpacity onPress={handleSubmit}>
-                  <View style={styles.buttonContainer}>
-                    <View style={styles.animation}>
-                      <Text style={styles.textLogin}>Đăng ký</Text>
+                {status ? (
+                  <TouchableOpacity onPress={handleSubmit}>
+                    <View style={styles.buttonContainer}>
+                      <View style={styles.animation}>
+                        <Text style={styles.textLogin}>Đăng ký</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ) : (
+                  <View>
+                    <View style={styles.buttonContainer}>
+                      <View style={styles.animationDis}>
+                        <Text style={styles.textLogin}>Đăng ký</Text>
+                      </View>
                     </View>
                   </View>
-                </TouchableOpacity>
+                )}
 
                 <View style={styles.btnSignUp}>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('SIGN_IN')}>
+                    onPress={() => navigation.replace('SIGN_IN')}>
                     <Text style={styles.textSignIn}>Đăng nhập</Text>
                   </TouchableOpacity>
                 </View>
@@ -277,6 +304,15 @@ const styles = StyleSheet.create({
   },
   animation: {
     backgroundColor: '#93278f',
+    paddingVertical: 10,
+    paddingHorizontal: 60,
+    marginTop: 30,
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  animationDis: {
+    backgroundColor: 'grey',
     paddingVertical: 10,
     paddingHorizontal: 60,
     marginTop: 30,

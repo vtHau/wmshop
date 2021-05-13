@@ -1,7 +1,8 @@
 import CallAPI from './../utils/CallAPI';
 import * as Config from './../Config/config';
 import readStorage from './../utils/readStorage';
-import removeStorage from './../utils//removeStorage';
+import removeStorage from './../utils/removeStorage';
+import writeStorage from './../utils/writeStorage';
 import axios from 'axios';
 
 export const signInRequest = dataLogin => {
@@ -576,4 +577,25 @@ export const checkSignIn = async signin => {
     return res.data;
   }
   return 'SIGIN_FAIL';
+};
+
+export const checkEmail = async infoUser => {
+  const res = await CallAPI(Config.API_CHECK_EMAIL, 'POST', {...infoUser});
+  if (typeof res.data === 'string' && res.data.trim() === 'EMAIL_EXIST') {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const sendEmail = async email => {
+  const res = await CallAPI(Config.API_SEND_EMAIL, 'POST', {...email});
+  if (
+    typeof res.data === 'string' &&
+    res.data.trim() === 'SEND_EMAIL_SUCCESS'
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };
