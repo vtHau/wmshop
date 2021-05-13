@@ -22,7 +22,11 @@ const RenderSwiper = props => {
     <View style={style}>
       <Text style={styles.title}>{title || 'Danh sách sản phẩm'}</Text>
       <View style={styles.items}>
-        <Swiper autoplay={autoplay} showsButtons={true} style={styles.item}>
+        <Swiper
+          autoplay={autoplay}
+          showsButtons
+          loop={false}
+          style={styles.item}>
           {items.length > 0 &&
             items.map((item, key) => (
               <TouchableOpacity

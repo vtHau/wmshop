@@ -6,6 +6,7 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 
 import {useDispatch} from 'react-redux';
@@ -84,60 +85,68 @@ function SignIn(props) {
               </ImageBackground>
             </View>
             <View style={styles.footer}>
-              <View style={styles.boxInput}>
-                <Text style={styles.title}>Email</Text>
-                <View style={styles.action}>
-                  <TextInput
-                    style={styles.textInput}
-                    onFocus={() => focusInput('email')}
-                    onBlur={handleBlur('email')}
-                    onChangeText={handleChange('email')}
-                    value={values.email}
-                    placeholder="Nhập địa chỉ Email..."
-                  />
-                  {typingEmail ? typing : null}
-                </View>
-                {errors.email && touched.email ? (
-                  <Text style={styles.textError}>{errors.email}</Text>
-                ) : null}
-
-                <Text style={[styles.title, {marginTop: 20}]}>Mật khẩu</Text>
-                <View style={styles.action}>
-                  <TextInput
-                    style={styles.textInput}
-                    onFocus={() => focusInput('password')}
-                    onBlur={handleBlur('password')}
-                    onChangeText={handleChange('password')}
-                    value={values.password}
-                    placeholder="Nhập mật khẩu..."
-                  />
-                  {typingPassword ? typing : null}
-                </View>
-                {errors.password && touched.password ? (
-                  <Text style={styles.textError}>{errors.password}</Text>
-                ) : null}
-
-                {!statusSignIn ? (
-                  <Text style={styles.loginFail}>
-                    Email hoặc mật khẩu không đúng
-                  </Text>
-                ) : null}
-              </View>
-              <View style={styles.boxAction}>
-                <TouchableOpacity onPress={handleSubmit}>
-                  <View style={styles.buttonContainer}>
-                    <View style={styles.animation}>
-                      <Text style={styles.textLogin}>Đăng nhập</Text>
-                    </View>
+              <ScrollView>
+                <View style={styles.boxInput}>
+                  <Text style={styles.title}>Email</Text>
+                  <View style={styles.action}>
+                    <TextInput
+                      style={styles.textInput}
+                      color="#414dd1"
+                      underlineColorAndroid="transparent"
+                      onFocus={() => focusInput('email')}
+                      onBlur={handleBlur('email')}
+                      onChangeText={handleChange('email')}
+                      value={values.email}
+                      placeholder="Nhập địa chỉ Email..."
+                    />
+                    {typingEmail ? typing : null}
                   </View>
-                </TouchableOpacity>
-                <View style={styles.btnSignUp}>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('SIGN_UP')}>
-                    <Text style={styles.textSignIn}>Đăng ký</Text>
-                  </TouchableOpacity>
+                  {errors.email && touched.email ? (
+                    <Text style={styles.textError}>{errors.email}</Text>
+                  ) : null}
+
+                  <Text style={[styles.title, {marginTop: 20}]}>Mật khẩu</Text>
+                  <View style={styles.action}>
+                    <TextInput
+                      style={styles.textInput}
+                      color="#414dd1"
+                      underlineColorAndroid="transparent"
+                      secureTextEntry={true}
+                      onFocus={() => focusInput('password')}
+                      onBlur={handleBlur('password')}
+                      onChangeText={handleChange('password')}
+                      value={values.password}
+                      placeholder="Nhập mật khẩu..."
+                    />
+                    {typingPassword ? typing : null}
+                  </View>
+                  {errors.password && touched.password ? (
+                    <Text style={styles.textError}>{errors.password}</Text>
+                  ) : null}
+
+                  {!statusSignIn ? (
+                    <Text style={styles.loginFail}>
+                      Email hoặc mật khẩu không đúng
+                    </Text>
+                  ) : null}
                 </View>
-              </View>
+
+                <View style={styles.boxAction}>
+                  <TouchableOpacity onPress={handleSubmit}>
+                    <View style={styles.buttonContainer}>
+                      <View style={styles.animation}>
+                        <Text style={styles.textLogin}>Đăng nhập</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                  <View style={styles.btnSignUp}>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('SIGN_UP')}>
+                      <Text style={styles.textSignIn}>Đăng ký</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </ScrollView>
             </View>
           </>
         )}
@@ -149,6 +158,9 @@ function SignIn(props) {
 export default SignIn;
 
 const styles = StyleSheet.create({
+  boxAction: {
+    marginTop: '35%',
+  },
   boxBack: {
     position: 'absolute',
     zIndex: 1,
@@ -175,11 +187,12 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
   },
+  boxInput: {
+    padding: 20,
+  },
   footer: {
     justifyContent: 'space-between',
     flex: 2,
-    padding: 20,
-    paddingBottom: 40,
   },
   imageBackground: {
     flex: 1,

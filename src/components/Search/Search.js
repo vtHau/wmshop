@@ -43,6 +43,8 @@ const Search = props => {
         <View style={styles.searchContent}>
           <TextInput
             style={styles.keyWord}
+            color="#414dd1"
+            underlineColorAndroid="transparent"
             onChangeText={search => searchChange(search)}
             placeholder="Nhập từ khóa để tìm kiếm..."
           />

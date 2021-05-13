@@ -5,7 +5,7 @@ export const validateSignIn = Yup.object().shape({
     .email('Địa chỉ Email không hợp lệ')
     .required('Vui lòng nhập địa chỉ Email'),
   password: Yup.string()
-    .min(2, 'Mật khẩu quá ngắn!')
+    .min(8, 'Mật khẩu quá ngắn!')
     .max(50, 'Mật khẩu quá dài!')
     .required('Vui lòng nhập mật khẩu'),
 });
@@ -19,12 +19,12 @@ export const validateSignUp = Yup.object().shape({
     .email('Địa chỉ Email không hợp lệ')
     .required('Vui lòng nhập địa chỉ Email'),
   password: Yup.string()
-    .min(2, 'Mật khẩu quá ngắn')
+    .min(8, 'Mật khẩu quá ngắn')
     .max(50, 'Mật khẩu quá dài')
     .required('Vui lòng nhập mật khẩu'),
   prePassword: Yup.string()
     .oneOf([Yup.ref('password')], 'Mật khẩu không khớp')
-    .min(2, 'Mật khẩu quá ngắn')
+    .min(8, 'Mật khẩu quá ngắn')
     .max(50, 'Mật khẩu quá dài')
     .required('Vui lòng nhập lại mật khẩu'),
 });
@@ -59,6 +59,6 @@ export const validateUpdatePassword = Yup.object().shape({
 export const validateUpdateComment = Yup.object().shape({
   comment: Yup.string()
     .min(2, 'Đánh giá quá ngắn!')
-    .max(10, 'Đánh giá quá dài!')
+    .max(200, 'Đánh giá quá dài!')
     .required('Vui lòng nhập đánh giá'),
 });

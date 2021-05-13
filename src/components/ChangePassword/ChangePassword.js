@@ -119,6 +119,9 @@ const ChangePassword = props => {
                   <FontAwesome5 name={'key'} size={22} color={'#616161'} />
                   <TextInput
                     style={styles.textInput}
+                    secureTextEntry={true}
+                    color="#414dd1"
+                    underlineColorAndroid="transparent"
                     onFocus={() => setWrongPassword(false)}
                     onBlur={handleBlur('password')}
                     onChangeText={handleChange('password')}
@@ -136,6 +139,9 @@ const ChangePassword = props => {
                   <FontAwesome5 name={'key'} size={22} color={'#616161'} />
                   <TextInput
                     style={styles.textInput}
+                    secureTextEntry={true}
+                    color="#414dd1"
+                    underlineColorAndroid="transparent"
                     onBlur={handleBlur('newPassword')}
                     onChangeText={handleChange('newPassword')}
                     value={values.newPassword}
@@ -151,6 +157,9 @@ const ChangePassword = props => {
                   <FontAwesome5 name={'key'} size={22} color={'#616161'} />
                   <TextInput
                     style={styles.textInput}
+                    secureTextEntry={true}
+                    color="#414dd1"
+                    underlineColorAndroid="transparent"
                     onBlur={handleBlur('preNewPassword')}
                     onChangeText={handleChange('preNewPassword')}
                     value={values.preNewPassword}

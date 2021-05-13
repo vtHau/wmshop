@@ -377,7 +377,9 @@ const ProductDetail = props => {
               </Text>
             </TouchableOpacity>
             <View style={styles.starView}>
-              <View style={styles.productStar}>{renderRating(3)}</View>
+              <View style={styles.productStar}>
+                {renderRating(product.productStar)}
+              </View>
               <View style={styles.productView}>
                 <Text style={styles.productViewText}>
                   {product.productView}

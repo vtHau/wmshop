@@ -7,6 +7,7 @@ import {
   TextInput,
   Dimensions,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 
 import {TypingAnimation} from 'react-native-typing-animation';
@@ -65,7 +66,7 @@ function SignUp(props) {
   return (
     <View style={styles.container}>
       <ModalView
-        title="Cập nhập thông tin tài khoản thành công"
+        title="Đăng ký tài khoản thành công"
         titleButton="OK"
         modalVisible={modalVisible}
         handleModal={handleModal}>
@@ -99,91 +100,105 @@ function SignUp(props) {
               </ImageBackground>
             </View>
             <View style={styles.footer}>
-              <Text style={styles.title}>Tên</Text>
-              <View style={styles.action}>
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={handleBlur('name')}
-                  onChangeText={handleChange('name')}
-                  value={values.name}
-                  placeholder="Nhập họ tên..."
-                />
-              </View>
-              {errors.name && touched.name ? (
-                <Text style={styles.textError}>{errors.name}</Text>
-              ) : null}
-
-              <Text style={[styles.title, {marginTop: 20}]}>Email</Text>
-              <View style={styles.action}>
-                <TextInput
-                  style={styles.textInput}
-                  onFocus={() => focusInput('email')}
-                  onBlur={handleBlur('email')}
-                  onChangeText={handleChange('email')}
-                  value={values.email}
-                  placeholder="Nhập địa chỉ Email..."
-                />
-                {typingEmail ? typing : null}
-              </View>
-              {errors.email && touched.email ? (
-                <Text style={styles.textError}>{errors.email}</Text>
-              ) : null}
-
-              <Text style={[styles.title, {marginTop: 20}]}>Mật khẩu</Text>
-              <View style={styles.action}>
-                <TextInput
-                  style={styles.textInput}
-                  onFocus={() => focusInput('password')}
-                  onBlur={handleBlur('password')}
-                  onChangeText={handleChange('password')}
-                  value={values.password}
-                  placeholder="Nhập mật khẩu..."
-                />
-                {typingPassword ? typing : null}
-              </View>
-              {errors.password && touched.password ? (
-                <Text style={styles.textError}>{errors.password}</Text>
-              ) : null}
-
-              <Text style={[styles.title, {marginTop: 20}]}>
-                Xác nhận mật khẩu
-              </Text>
-              <View style={styles.action}>
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={handleBlur('prePassword')}
-                  onChangeText={handleChange('prePassword')}
-                  value={values.prePassword}
-                  placeholder="Nhập lại mật khẩu..."
-                />
-              </View>
-              {errors.prePassword && touched.prePassword ? (
-                <Text style={styles.textError}>{errors.prePassword}</Text>
-              ) : null}
-
-              {statusSignIn ? (
-                <Text style={styles.emailExist}>Địa chỉ Email đã tồn tại</Text>
-              ) : null}
-              {statusSignUp ? (
-                <Text style={styles.emailExist}>
-                  Đăng ký tài khoản không thành công
-                </Text>
-              ) : null}
-
-              <TouchableOpacity onPress={handleSubmit}>
-                <View style={styles.buttonContainer}>
-                  <View style={styles.animation}>
-                    <Text style={styles.textLogin}>Đăng ký</Text>
-                  </View>
+              <ScrollView>
+                <Text style={styles.title}>Tên</Text>
+                <View style={styles.action}>
+                  <TextInput
+                    style={styles.textInput}
+                    color="#414dd1"
+                    underlineColorAndroid="transparent"
+                    onBlur={handleBlur('name')}
+                    onChangeText={handleChange('name')}
+                    value={values.name}
+                    placeholder="Nhập họ tên..."
+                  />
                 </View>
-              </TouchableOpacity>
+                {errors.name && touched.name ? (
+                  <Text style={styles.textError}>{errors.name}</Text>
+                ) : null}
 
-              <View style={styles.btnSignUp}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('SIGN_IN')}>
-                  <Text style={styles.textSignIn}>Đăng nhập</Text>
+                <Text style={[styles.title, {marginTop: 20}]}>Email</Text>
+                <View style={styles.action}>
+                  <TextInput
+                    style={styles.textInput}
+                    color="#414dd1"
+                    underlineColorAndroid="transparent"
+                    onFocus={() => focusInput('email')}
+                    onBlur={handleBlur('email')}
+                    onChangeText={handleChange('email')}
+                    value={values.email}
+                    placeholder="Nhập địa chỉ Email..."
+                  />
+                  {typingEmail ? typing : null}
+                </View>
+                {errors.email && touched.email ? (
+                  <Text style={styles.textError}>{errors.email}</Text>
+                ) : null}
+
+                <Text style={[styles.title, {marginTop: 20}]}>Mật khẩu</Text>
+                <View style={styles.action}>
+                  <TextInput
+                    style={styles.textInput}
+                    secureTextEntry={true}
+                    color="#414dd1"
+                    underlineColorAndroid="transparent"
+                    onFocus={() => focusInput('password')}
+                    onBlur={handleBlur('password')}
+                    onChangeText={handleChange('password')}
+                    value={values.password}
+                    placeholder="Nhập mật khẩu..."
+                  />
+                  {typingPassword ? typing : null}
+                </View>
+                {errors.password && touched.password ? (
+                  <Text style={styles.textError}>{errors.password}</Text>
+                ) : null}
+
+                <Text style={[styles.title, {marginTop: 20}]}>
+                  Xác nhận mật khẩu
+                </Text>
+                <View style={styles.action}>
+                  <TextInput
+                    style={styles.textInput}
+                    secureTextEntry={true}
+                    color="#414dd1"
+                    underlineColorAndroid="transparent"
+                    onBlur={handleBlur('prePassword')}
+                    onChangeText={handleChange('prePassword')}
+                    value={values.prePassword}
+                    placeholder="Nhập lại mật khẩu..."
+                  />
+                </View>
+                {errors.prePassword && touched.prePassword ? (
+                  <Text style={styles.textError}>{errors.prePassword}</Text>
+                ) : null}
+
+                {statusSignIn ? (
+                  <Text style={styles.emailExist}>
+                    Địa chỉ Email đã tồn tại
+                  </Text>
+                ) : null}
+                {statusSignUp ? (
+                  <Text style={styles.emailExist}>
+                    Đăng ký tài khoản không thành công
+                  </Text>
+                ) : null}
+
+                <TouchableOpacity onPress={handleSubmit}>
+                  <View style={styles.buttonContainer}>
+                    <View style={styles.animation}>
+                      <Text style={styles.textLogin}>Đăng ký</Text>
+                    </View>
+                  </View>
                 </TouchableOpacity>
-              </View>
+
+                <View style={styles.btnSignUp}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('SIGN_IN')}>
+                    <Text style={styles.textSignIn}>Đăng nhập</Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
             </View>
           </>
         )}

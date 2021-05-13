@@ -118,6 +118,8 @@ const Proflie = props => {
                   <FontAwesome5 name={'user'} size={22} color={'#616161'} />
                   <TextInput
                     style={styles.textInput}
+                    color="#414dd1"
+                    underlineColorAndroid="transparent"
                     onBlur={handleBlur('name')}
                     onChangeText={handleChange('name')}
                     value={values.name}
@@ -134,6 +136,8 @@ const Proflie = props => {
                   <FontAwesome5 name={'envelope'} size={22} color={'#616161'} />
                   <TextInput
                     style={styles.textInput}
+                    color="#414dd1"
+                    underlineColorAndroid="transparent"
                     value={values.email}
                     onChangeText={handleChange('email')}
                     editable={false}
@@ -149,6 +153,8 @@ const Proflie = props => {
                   />
                   <TextInput
                     style={styles.textInput}
+                    color="#414dd1"
+                    underlineColorAndroid="transparent"
                     onBlur={handleBlur('phone')}
                     onChangeText={handleChange('phone')}
                     value={values.phone}
@@ -169,6 +175,8 @@ const Proflie = props => {
                   />
                   <TextInput
                     style={styles.textInput}
+                    color="#414dd1"
+                    underlineColorAndroid="transparent"
                     onBlur={handleBlur('status')}
                     onChangeText={handleChange('status')}
                     value={values.status}
