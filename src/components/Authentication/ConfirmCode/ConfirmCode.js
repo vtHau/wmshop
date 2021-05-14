@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import {checkSignUp, sendEmail} from './../../../actions/actions';
 import TitleView from './../../common/TitleView';
+import Toast from 'react-native-toast-message';
 
 const randomCode = () => {
   let code = '';
@@ -41,7 +42,19 @@ const ConfirmCode = props => {
       const resp = await checkSignUp(infoUser);
       if (resp === 'SIGNUP_SUCCESS') {
         setStatus(false);
-        navigation.replace('SIGN_IN');
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Thành công!!!',
+          text2: 'Đăng nhập tài khoản để tiếp tục',
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+          onHide: () => {
+            navigation.replace('SIGN_IN');
+          },
+        });
       } else {
         setStatus(true);
       }
@@ -62,6 +75,17 @@ const ConfirmCode = props => {
     const resp = await sendEmail(info);
     if (resp) {
       setEmailSend(false);
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Đã gửi!!!',
+        text2:
+          'Đã gửi lại mã xác nhận, vui lòng kiểm tra lại để lấy mã xác nhận',
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
     }
   };
 
@@ -137,6 +161,7 @@ const ConfirmCode = props => {
           </TouchableOpacity>
         )}
       </View>
+      <Toast ref={ref => Toast.setRef(ref)} />
     </View>
   );
 };

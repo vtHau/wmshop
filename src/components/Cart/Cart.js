@@ -19,8 +19,8 @@ import {
   insertOrderHistory,
 } from './../../actions/actions';
 import * as Config from './../../Config/config';
-import ModalView from '../common/ModalView';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Toast from 'react-native-toast-message';
 
 const {width} = Dimensions.get('window');
 const productWidth = width / 4.5;
@@ -70,27 +70,24 @@ const Cart = props => {
     setDisBtn(true);
     const resp = await insertOrderHistory();
     if (resp) {
-      setModalVisible(!modalVisible);
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Mua sản phẩm thành công',
+        text2: 'Mua thành công, vào lịch sử đơn hàng kể kiểm tra',
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
     } else {
       Alert('Mua sản phầm thất bại');
     }
     setDisBtn(false);
   };
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const handleModal = () => {
-    setModalVisible(!modalVisible);
-  };
-
   return (
     <View style={styles.container}>
-      <ModalView
-        title="Mua sản phẩm thành công"
-        titleButton="OK"
-        modalVisible={modalVisible}
-        handleModal={handleModal}>
-        <FontAwesome5 name={'cart-arrow-down'} size={40} color={'#3b72ff'} />
-      </ModalView>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
@@ -191,6 +188,7 @@ const Cart = props => {
           </TouchableOpacity>
         )}
       </View>
+      <Toast ref={ref => Toast.setRef(ref)} />
     </View>
   );
 };

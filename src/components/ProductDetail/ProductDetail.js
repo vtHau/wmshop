@@ -131,7 +131,6 @@ const ProductDetail = props => {
           topOffset: 30,
           bottomOffset: 40,
           onShow: () => {},
-          onHide: () => {},
           onPress: () => {},
         });
         dispatch(fetchCart());
