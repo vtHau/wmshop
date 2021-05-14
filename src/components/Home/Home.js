@@ -18,11 +18,11 @@ const Home = props => {
   const brands = useSelector(state => state.brandReducer.brands);
   const products = useSelector(state => state.productReducer.hotProducts);
 
-  useEffect(() => {
-    dispatch(fetchCategory());
-    dispatch(fetchBrand());
-    dispatch(fetchProduct(HOT));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchCategory());
+  //   dispatch(fetchBrand());
+  //   dispatch(fetchProduct(HOT));
+  // }, [dispatch]);
 
   const onRefresh = () => {
     setRefresh(true);

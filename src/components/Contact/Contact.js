@@ -57,7 +57,7 @@ const OrderHistory = () => {
               <View style={styles.infoItem}>
                 <FontAwesome5 name={'envelope'} size={22} color={'#414dd1'} />
                 <Text style={styles.titleInfo}>Email: </Text>
-                <Text style={styles.contentInfo}>ShopApp@ShopApp.com</Text>
+                <Text style={styles.contentInfo}>mwstoreeee@gmail.com</Text>
               </View>
               <View style={styles.infoItem}>
                 <FontAwesome5 name={'facebook'} size={22} color={'#414dd1'} />

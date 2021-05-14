@@ -4,6 +4,7 @@ import {Provider} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Main from './Main';
+import SplashScreen from './SplashScreen';
 import SettingAuthenContainer from './SettingAuthenContainer/SettingAuthenContainer';
 import store from './../store';
 
@@ -17,7 +18,8 @@ function App() {
           screenOptions={{
             headerShown: false,
           }}
-          initialRouteName="MAIN">
+          initialRouteName="SPLASH_SCREEN">
+          <Stack.Screen name="SPLASH_SCREEN" component={SplashScreen} />
           <Stack.Screen name="MAIN" component={Main} />
           <Stack.Screen
             name="SETTING_AUTHEN_CONTAINER"
