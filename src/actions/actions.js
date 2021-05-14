@@ -1,10 +1,7 @@
-import CallAPI from './../utils/CallAPI';
-import * as Config from './../Config/config';
-import readStorage from './../utils/readStorage';
-import removeStorage from './../utils/removeStorage';
-import writeStorage from './../utils/writeStorage';
-import {useSelector, useDispatch} from 'react-redux';
 import axios from 'axios';
+import CallAPI from './../utils/CallAPI';
+import * as Config from './../config/config';
+import readStorage from './../utils/readStorage';
 
 export const signInRequest = dataLogin => {
   return dispatch => {
