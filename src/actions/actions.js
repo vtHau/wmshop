@@ -3,6 +3,7 @@ import * as Config from './../Config/config';
 import readStorage from './../utils/readStorage';
 import removeStorage from './../utils/removeStorage';
 import writeStorage from './../utils/writeStorage';
+import {useSelector, useDispatch} from 'react-redux';
 import axios from 'axios';
 
 export const signInRequest = dataLogin => {
@@ -236,32 +237,27 @@ export const updateCartQuantity = (cartID, quantity) => {
   };
 };
 
-export const inserCart = (productID, quantity = 1) => {
-  return async dispatch => {
-    const resp = await readStorage('signIn');
-    if (resp && resp !== null) {
-      const {userID} = resp.userInfo;
-      const update = {
-        type: 'INSERT_CART',
-        userID,
-        productID,
-        quantity,
-      };
+export const insertCart = async (productID, quantity = 1) => {
+  const resp = await readStorage('signIn');
+  if (resp && resp !== null) {
+    const {userID} = resp.userInfo;
+    const update = {
+      type: 'INSERT_CART',
+      userID,
+      productID,
+      quantity,
+    };
 
-      CallAPI(Config.API_CART_UPDATE, 'POST', update)
-        .then(res => {
-          if (
-            typeof res.data === 'string' &&
-            res.data.trim() == 'INSERT_CART_SUCCESS'
-          ) {
-            dispatch(fetchCart());
-          }
-        })
-        .catch(() => {
-          console.log('Error insert cart');
-        });
+    const res = await CallAPI(Config.API_CART_UPDATE, 'POST', update);
+    if (
+      typeof res.data === 'string' &&
+      res.data.trim() == 'INSERT_CART_SUCCESS'
+    ) {
+      return true;
+    } else {
+      return false;
     }
-  };
+  }
 };
 
 export const deleteCart = cartID => {

@@ -20,7 +20,7 @@ const Header = props => {
           color={'#0077FF'}
         />
       </TouchableOpacity>
-      <Text style={styles.title}>App Shop</Text>
+      <Text style={styles.title}>MW Store</Text>
       <TouchableOpacity
         style={styles.btn}
         onPress={() => navigation.push('SETTING_AUTHEN_CONTAINER')}>

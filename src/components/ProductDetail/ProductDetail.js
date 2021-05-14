@@ -13,12 +13,13 @@ import {
 
 import {useSelector, useDispatch} from 'react-redux';
 import {
-  inserCart,
+  insertCart,
   fetchReview,
   fetchYourReview,
   updateYourReview,
   deleteYourComment,
   newYourReview,
+  fetchCart,
   updateViewProduct,
 } from './../../actions/actions';
 import {Formik} from 'formik';
@@ -29,6 +30,7 @@ import {renderRating} from './../../utils/common';
 import Rating from './../Rating/Rating';
 import * as Config from './../../Config/config';
 import ModalView from './../common/ModalView';
+import Toast from 'react-native-toast-message';
 
 const {height, width} = Dimensions.get('window');
 const productWidth = width - 200;
@@ -115,9 +117,25 @@ const ProductDetail = props => {
     }
   };
 
-  const insertCarts = () => {
+  const insertCarts = async () => {
     if (signIn) {
-      dispatch(inserCart(product.productID));
+      const resp = await insertCart(product.productID);
+      if (resp) {
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Thành công',
+          text2: 'Đã thêm sản phẩm vào giỏ hàng thành công 👋',
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+          onShow: () => {},
+          onHide: () => {},
+          onPress: () => {},
+        });
+        dispatch(fetchCart());
+      }
     } else {
       setModalVisible(!modalVisible);
     }
@@ -474,6 +492,7 @@ const ProductDetail = props => {
           </Text>
         </View>
       )}
+      <Toast ref={ref => Toast.setRef(ref)} />
     </View>
   );
 };
