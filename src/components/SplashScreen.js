@@ -1,12 +1,9 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, ImageBackground} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {fetchCategory, fetchBrand, fetchProduct} from './../actions/actions';
-import {
-  LineDotsLoader,
-  CirclesRotationScaleLoader,
-  TextLoader,
-} from 'react-native-indicator';
+import logo from './../../assets/img/logo/logo.png';
+import {DotsLoader} from 'react-native-indicator';
 
 const HOT = {
   type: 'HOT',
@@ -34,14 +31,16 @@ const SplashScreen = props => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text>header</Text>
-      </View>
+      <View style={styles.header}></View>
       <View style={styles.body}>
-        <CirclesRotationScaleLoader size={80} />
+        <View style={styles.boxLogo}>
+          <ImageBackground style={styles.image} source={logo}>
+            <Text style={styles.titleLogo}>MW Store</Text>
+          </ImageBackground>
+        </View>
       </View>
       <View style={styles.footer}>
-        <LineDotsLoader />
+        <DotsLoader size={14} color={'#8fc8ff'} />
       </View>
     </View>
   );
@@ -52,14 +51,34 @@ export default SplashScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#5257f2',
   },
   body: {
+    marginBottom: '20%',
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   footer: {
     paddingVertical: 10,
+    alignItems: 'center',
+  },
+  titleLogo: {
+    color: '#e3e4ff',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+  boxLogo: {
+    width: 200,
+    height: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: 200,
+    height: 200,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
 });
