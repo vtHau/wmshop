@@ -6,13 +6,13 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {checkSignUp} from './../../../actions/actions';
+import {checkSignUp, sendEmail} from './../../../actions/actions';
 import TitleView from './../../common/TitleView';
 
 const randomCode = () => {
   let code = '';
   for (var i = 0; i < 4; i++) {
-    code = code + ' ' + Math.floor(Math.random() * 10);
+    code += Math.floor(Math.random() * 10);
   }
   return code;
 };
@@ -20,20 +20,24 @@ const randomCode = () => {
 const ConfirmCode = props => {
   const {navigation, route} = props;
   const infoUser = route.params;
-  const [code, setCode] = useState();
+  const [code, setCode] = useState(infoUser.code);
   const [numOne, setNumOne] = useState('');
   const [numTwo, setNumTwo] = useState('');
   const [numThree, setNumThree] = useState('');
   const [numFour, setNumFour] = useState('');
   const [status, setStatus] = useState(false);
+  const [emailSend, setEmailSend] = useState(false);
+  const [signUpStatus, setSignUpStatus] = useState(false);
 
   const confirm = async () => {
+    setSignUpStatus(true);
     const codeInput =
       numOne.toString() +
       numTwo.toString() +
       numThree.toString() +
       numFour.toString();
-    if (codeInput === infoUser.code) {
+
+    if (codeInput === code) {
       const resp = await checkSignUp(infoUser);
       if (resp === 'SIGNUP_SUCCESS') {
         setStatus(false);
@@ -43,6 +47,21 @@ const ConfirmCode = props => {
       }
     } else {
       setStatus(true);
+    }
+    setSignUpStatus(false);
+  };
+
+  const resendCode = async () => {
+    setEmailSend(true);
+    const newCode = randomCode();
+    const info = {
+      ...infoUser,
+      code: newCode,
+    };
+    setCode(newCode);
+    const resp = await sendEmail(info);
+    if (resp) {
+      setEmailSend(false);
     }
   };
 
@@ -98,9 +117,25 @@ const ConfirmCode = props => {
           </Text>
         )}
 
-        <TouchableOpacity style={styles.btnConfirm} onPress={() => confirm()}>
-          <Text style={styles.textConfirm}>Xác nhận</Text>
-        </TouchableOpacity>
+        {signUpStatus ? (
+          <TouchableOpacity style={styles.btnConfirmDis}>
+            <Text style={styles.textConfirm}>Xác nhận</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.btnConfirm} onPress={() => confirm()}>
+            <Text style={styles.textConfirm}>Xác nhận</Text>
+          </TouchableOpacity>
+        )}
+
+        {emailSend ? (
+          <View>
+            <Text style={styles.textResendCodeDis}>Gửi lại mã xác nhận</Text>
+          </View>
+        ) : (
+          <TouchableOpacity onPress={() => resendCode()}>
+            <Text style={styles.textResendCode}>Gửi lại mã xác nhận</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -155,9 +190,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 30,
   },
+  btnConfirmDis: {
+    marginTop: 40,
+    backgroundColor: 'grey',
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    borderRadius: 30,
+  },
   textConfirm: {
     fontSize: 18,
     color: '#fff',
+    fontWeight: 'bold',
+  },
+  textResendCode: {
+    marginTop: 20,
+    fontSize: 18,
+    color: '#414dd1',
+    fontWeight: 'bold',
+  },
+  textResendCodeDis: {
+    marginTop: 20,
+    fontSize: 18,
+    color: 'grey',
     fontWeight: 'bold',
   },
   confirmFail: {
