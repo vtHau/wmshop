@@ -20,6 +20,8 @@ target 'wmshop' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+  pod 'ReactNativeART', :path => '../node_modules/@react-native-community/art'
+
   target 'wmshopTests' do
     inherit! :complete
     # Pods for testing
