@@ -13,6 +13,7 @@ import {
 import {useSelector, useDispatch} from 'react-redux';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Toast from 'react-native-toast-message';
+import ModalView from './../components/ModalView';
 
 import {
   fetchCart,
@@ -32,8 +33,11 @@ const Cart = props => {
   const dispatch = useDispatch();
   const [disBtn, setDisBtn] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const carts = useSelector(state => state.cartReducer.carts);
+
+  const closeModal = () => setModalVisible(false);
 
   let totalMoney = 0;
 
@@ -69,6 +73,7 @@ const Cart = props => {
   };
 
   const payProduct = async () => {
+    setModalVisible(!modalVisible);
     setDisBtn(true);
     const resp = await insertOrderHistory();
     if (resp) {
@@ -82,6 +87,7 @@ const Cart = props => {
         topOffset: 30,
         bottomOffset: 40,
       });
+      dispatch(fetchCart());
     } else {
       Alert('Mua sản phầm thất bại');
     }
@@ -90,6 +96,15 @@ const Cart = props => {
 
   return (
     <View style={styles.container}>
+      <ModalView
+        twoButton
+        title="Bạn có chắc muốn mua sản phẩm ???"
+        titleButton="Có"
+        closeModal={closeModal}
+        modalVisible={modalVisible}
+        handleModal={payProduct}>
+        <FontAwesome5 name={'cart-plus'} size={40} color={'#003FFF'} />
+      </ModalView>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
@@ -185,7 +200,9 @@ const Cart = props => {
             <Text style={styles.disablePayment}>Mua hàng</Text>
           </View>
         ) : (
-          <TouchableOpacity style={styles.btnPayment} onPress={payProduct}>
+          <TouchableOpacity
+            style={styles.btnPayment}
+            onPress={() => setModalVisible(!modalVisible)}>
             <Text style={styles.payment}>Mua hàng</Text>
           </TouchableOpacity>
         )}
