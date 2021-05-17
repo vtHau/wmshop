@@ -43,7 +43,7 @@ const RenderProduct = props => {
                 <View style={styles.productInfo}>
                   <Text style={styles.productName}>{product.productName}</Text>
                   <Text style={styles.productPrice}>
-                    {product.productPrice}
+                    {product.productPrice} VNĐ
                   </Text>
                   <View style={styles.starView}>
                     <View style={styles.productStar}>

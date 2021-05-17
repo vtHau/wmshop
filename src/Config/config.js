@@ -1,4 +1,3 @@
-export const API_URL = 'https://mwstoree.000webhostapp.com';
 // export const API_URL = 'http://192.168.1.22/webshop';
 export const API_CATE = '/other/api/category.php';
 export const API_BRAND = '/other/api/brand.php';
