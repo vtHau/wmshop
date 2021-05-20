@@ -1,4 +1,6 @@
 // export const API_URL = 'http://192.168.1.22/webshop';
+export const API_URL = 'https://mwstoree.000webhostapp.com';
+
 export const API_CATE = '/other/api/category.php';
 export const API_BRAND = '/other/api/brand.php';
 export const API_CART = '/other/api/cart.php';
@@ -20,3 +22,4 @@ export const API_WEATHER_FIVE_DAY =
   'http://api.openweathermap.org/data/2.5/forecast?q=';
 export const API_WEATHER_KEY =
   ',Vietnam&units=metric&appid=09522e7c1b90d4c879371c025ae95996';
+i
