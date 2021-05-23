@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 
-import * as Config from './../config/config';
+import * as Config from '../config/config';
 
 const {width} = Dimensions.get('window');
 const imageWidth = width - 25;
